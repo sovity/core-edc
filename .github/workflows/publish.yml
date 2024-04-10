@@ -12,13 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-build
+      - uses: ./.github/actions/run-tests
 
       - name: "Gradle: Build"
-        uses: ./.github/actions/run-tests
         run: ./gradlew build check
 
       - name: "Gradle: Publish (Main & Release Only)"
-        uses: ./.github/actions/run-tests
         if: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/0.2.1-sovity' }}
         run: ./gradlew publishAllPublicationsToGitHubPackagesRepository ${{ env.GRADLE_ARGS }}
         env:
