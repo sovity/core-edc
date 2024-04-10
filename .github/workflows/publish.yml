@@ -5,7 +5,7 @@ on:
   release:
     types: [ published ]
   pull_request:
-    branches: [ "main", "version/0.2.1" ]
+    branches: [ "main", "version/0.2.1", "0.2.1-sovity" ]
 
 jobs:
   build-gradle-project:
