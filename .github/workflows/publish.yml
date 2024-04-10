@@ -19,7 +19,7 @@ jobs:
           command: ./gradlew build check ${{ env.GRADLE_ARGS }}
       - name: "Gradle: Publish (Main & Release Only)"
         uses: ./.github/actions/run-tests
-        if: ${{ startsWith(github.ref, 'refs/tags/v', 'refs/heads/0.2.1-sovity') }}
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/0.2.1-sovity' }}
         with:
           command: ./gradlew publishAllPublicationsToGitHubPackagesRepository ${{ env.GRADLE_ARGS }}
         env:
