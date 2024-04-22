@@ -15,6 +15,7 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
 - [ ] Check that the forked branch uses the latest revision of the branch version
   from [Eclipse EDC's Connector](https://github.com/eclipse-edc/Connector).
 - [ ] Decide a release version. The version must be the eclipse EDC version `X.Y.Z` appended with the sovity fork
+- [ ] Update the `version` in [gradle.properties](..%2F..%2Fgradle.properties)
   version `.W`. eg `0.2.1.1`.
 - [ ] Update this issue's title to the new version.
 - [ ] `release-prep` PR:
