@@ -1,7 +1,7 @@
 ---
 name: Release
 about: Create an issue to track a release process.
-title: "Release x.x.x"
+title: "Release X.Y.Z.W"
 labels: [ "task/release", "scope/core" ]
 assignees: ""
 ---
@@ -12,7 +12,7 @@ assignees: ""
 
 Feel free to edit this release checklist in-progress depending on what tasks need to be done:
 
-- [ ] Decide a release version. The version must be the eclipse EDC version `X.Y.Z` appended with the sovity fork version `.W`. eg `0.2.1.1`.
+- [ ] Decide a release version. The version must be the Eclipse core-edc version `X.Y.Z` appended with the sovity fork version `.W`, eg. `0.2.1.1`.
 - [ ] Update the `version` in `gradle.properties`
 - [ ] Update this issue's title to the new version.
 - [ ] `release-prep` PR:
@@ -29,8 +29,8 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
     - [ ] Merge the `release-prep` PR.
 - [ ] Wait for the main branch to be green. You can check the status in GH [actions](https://github.com/sovity/core-edc/actions).
 - [ ] [Create a release](https://github.com/sovity/core-edc/releases/new)
-    - [ ] In `Choose the tag`, type your new release version in the format `vx.y.z.w` (for instance `v1.2.3.4`) then
-      click `+Create new tag vx.y.z.w on release`.
+    - [ ] In `Choose the tag`, type your new release version in the format `vX.Y.Z.W` (for instance `v1.2.3.4`) then
+      click `+Create new tag vX.Y.Z.W on release`.
     - [ ] Re-use the changelog section as release description, and the version as title.
 - [ ] Check if the pipeline built the release versions in the Actions-Section (or you won't see it).
 - [ ] Revisit the changed list of tasks and compare it
