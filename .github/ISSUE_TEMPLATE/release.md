@@ -1,7 +1,7 @@
 ---
 name: Release
 about: Create an issue to track a release process.
-title: "Release x.x.x"
+title: "Release X.Y.Z.W"
 labels: [ "task/release", "scope/core" ]
 assignees: ""
 ---
