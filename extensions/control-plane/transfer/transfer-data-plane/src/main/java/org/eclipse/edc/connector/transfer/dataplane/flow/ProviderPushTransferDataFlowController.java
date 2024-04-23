@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Amadeus - initial API and implementation
+ *       sovity - Add workaround for the asset parameterization for the provider push scenario
  *
  */
 
