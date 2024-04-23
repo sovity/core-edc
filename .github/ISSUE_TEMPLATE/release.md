@@ -12,7 +12,7 @@ assignees: ""
 
 Feel free to edit this release checklist in-progress depending on what tasks need to be done:
 
-- [ ] Decide a release version. The version must be the eclipse EDC version `X.Y.Z` appended with the sovity fork version `.W`. eg `0.2.1.1`.
+- [ ] Decide a release version. The version must be the Eclipse core-edc version `X.Y.Z` appended with the sovity fork version `.W`, eg. `0.2.1.1`.
 - [ ] Update the `version` in `gradle.properties`
 - [ ] Update this issue's title to the new version.
 - [ ] `release-prep` PR:
