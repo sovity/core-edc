@@ -15,7 +15,7 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
 - [ ] Decide a release version. The version must be the Eclipse core-edc version `X.Y.Z` appended with the sovity fork version `.W`, eg. `0.2.1.1`.
 - [ ] Update the `version` in `gradle.properties`
 - [ ] Update this issue's title to the new version.
-- [ ] `release-prep` PR:
+- [ ] `release-prep` PR with target version-branch `sovity/X.Y.Z`:
     - [ ] Update the `CHANGELOG.md`.
         - [ ] Add a clean `Unreleased` version.
         - [ ] Add the version to the old section.
@@ -27,7 +27,7 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
         - [ ] Write or review the compatible versions section.
         - [ ] Remove empty sections from the patch notes.
     - [ ] Merge the `release-prep` PR.
-- [ ] Wait for the main branch to be green. You can check the status in GH [actions](https://github.com/sovity/core-edc/actions).
+- [ ] Wait for the `sovity/X.Y.Z` branch to be green. You can check the status in GH [actions](https://github.com/sovity/core-edc/actions).
 - [ ] [Create a release](https://github.com/sovity/core-edc/releases/new)
     - [ ] In `Choose the tag`, type your new release version in the format `vX.Y.Z.W` (for instance `v1.2.3.4`) then
       click `+Create new tag vX.Y.Z.W on release`.
