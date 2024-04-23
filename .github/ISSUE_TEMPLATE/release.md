@@ -30,7 +30,7 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
 - [ ] Wait for the main branch to be green. You can check the status in GH [actions](https://github.com/sovity/core-edc/actions).
 - [ ] [Create a release](https://github.com/sovity/core-edc/releases/new)
     - [ ] In `Choose the tag`, type your new release version in the format `vX.Y.Z.W` (for instance `v1.2.3.4`) then
-      click `+Create new tag vx.y.z.w on release`.
+      click `+Create new tag vX.Y.Z.W on release`.
     - [ ] Re-use the changelog section as release description, and the version as title.
 - [ ] Check if the pipeline built the release versions in the Actions-Section (or you won't see it).
 - [ ] Revisit the changed list of tasks and compare it
