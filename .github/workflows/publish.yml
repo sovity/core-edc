@@ -21,11 +21,19 @@ jobs:
       - uses: ./.github/actions/run-tests
 
       - name: Debug
-        run: echo ${{ github.ref }}
+        run: echo ${{ github.ref }} ; echo ${GITHUB_REF}
 
       - name: "Gradle: Publish"
         if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') }}
-        run: ./gradlew check publishAllPublicationsToGitHubPackagesRepository ${{ env.GRADLE_ARGS }}
+        run: |
+          if [[ "$GITHUB_REF" == "refs/tags/v"* ]]; then
+            GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+          elif [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
+            GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
+          elif [[ "$GITHUB_REF" == "refs/pull/"* ]]; then
+            GRADLE_ARGS="-Pversion=0.PR-$(echo $GITHUB_REF | cut -d '/' -f 3)"
+          fi
+          ./gradlew "$GRADLE_ARGS" check publishAllPublicationsToGitHubPackagesRepository
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
