@@ -11,11 +11,17 @@
 #### How do we resolve this conflict?
 
 
-## [0.2.1.1] - 2024-04-22
+## [0.2.1.2] - 2024-04-24
 
 ### Overview
 
-Adds a workaround to preserve the parameterization feature from pre-0.1 releases.
+Re-release of `0.2.1-sovity1.0` as an official version following the established branches and version conventions.
+
+## [0.2.1-sovity1.0] - 2024-04-12
+
+### Overview
+
+Adds a workaround to preserve the asset parameterization feature from pre-0.1 releases in a *provider push* scenario.
 
 #### Requirements
 
@@ -27,8 +33,12 @@ This feature is needed by one of our clients.
 
 #### Implementation
 
-The only field (as of IDS version `2024-01`) that lets us send data in the concerned message is the `DataAddress`'s properties. This is the field, in combination with specific properties, that we use in this workaround to transfer the missing information to the Provider.
-This extra information is extracted on the Provider's side and put back where it used to be for consumption as it used to be in earlier versions.
+The only field (as of IDS version `2024-01`) that lets us send data in the concerned message is the `DataAddress`'s properties. This is the field, in combination with specific properties, that we use in this workaround to transfer the missing information to the provider.
+This extra information is extracted on the provider's side and put back where it used to be, in the `properties` of the `DataFlowRequest`.
+
+The workaround happens at this location:
+
+`org.eclipse.edc.connector.transfer.dataplane.flow.ProviderPushTransferDataFlowController.createRequest`
 
 With this workaround, a parameterized asset can be requested with the following query:
 
@@ -61,12 +71,18 @@ Where the `https://sovity.de/workaround/proxy/param/*` carry the parameterizatio
 There is a ticket open on the [IDS side](https://github.com/International-Data-Spaces-Association/ids-specification/discussions/262)
 
 The goal is to
-* have this feature standardize
+* have this feature standardized
 * have it implemented in core EDC
 * use the new core EDC version
 
 #### Compatibility
 
-The parameterization feature will only work between 2 EDCs that use this forked version.
+This change is targeting the *provider push* use-case only. The *consumer pull* use-case is not affected.
 
-Expecting no incompatibilities with core EDC 0.2.1.
+The parameterization feature must work between 2 EDCs that use this forked version.
+
+The parameterization must work from an unpatched Consumer EDC, targeting a patched EDC provider, using the request mentioned in the Implementation section.
+
+The parametrization will not work if the provider EDC is not using this patched version.
+
+Expecting no other incompatibilities with core EDC 0.2.1.
