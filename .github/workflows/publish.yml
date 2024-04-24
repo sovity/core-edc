@@ -21,7 +21,7 @@ jobs:
       - uses: ./.github/actions/run-tests
 
       - name: Debug
-        run: echo ${{ github.ref }}
+        run: echo ${{ github.ref }} ; echo ${GITHUB_REF}
 
       - name: "Gradle: Publish"
         if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') || startsWith(github.ref, 'refs/pull/') }}
