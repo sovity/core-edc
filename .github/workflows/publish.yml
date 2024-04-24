@@ -1,11 +1,11 @@
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "sovity/**" ]
   release:
     types: [ published ]
   pull_request:
-    branches: [ "main", "version/**" ]
+    branches: [ "sovity/**" ]
 
 jobs:
   build-gradle-project:
