@@ -24,7 +24,7 @@ jobs:
         run: echo ${{ github.ref }}
 
       - name: "Gradle: Publish"
-        if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') }}
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') || startsWith(github.ref, 'refs/pull/') }}
         run: |
           if [[ "$GITHUB_REF" == "refs/tags/v"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
