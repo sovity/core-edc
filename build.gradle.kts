@@ -9,7 +9,7 @@
  *
  *  Contributors:
  *       Microsoft Corporation - initial API and implementation
- *       sovity - implementation of assets parameterization
+ *       sovity GmbH - Add workaround for the asset parameterization for the provider push scenario
  *
  */
 
