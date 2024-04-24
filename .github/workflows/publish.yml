@@ -28,7 +28,7 @@ jobs:
         run: |
           if [[ "$GITHUB_REF" == "refs/tags/v"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
-          else if [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
+          elif [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
           else
             GRADLE_ARGS="-Pversion=0.$(date '+%Y%m%d.%H%M%S')"
