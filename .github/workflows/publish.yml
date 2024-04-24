@@ -25,7 +25,13 @@ jobs:
 
       - name: "Gradle: Publish"
         if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') }}
-        run: ./gradlew check publishAllPublicationsToGitHubPackagesRepository ${{ env.GRADLE_ARGS }}
+        run: |
+          if [[ "$GITHUB_REF" == "refs/tags/v"* ]]; then
+            GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+          else if [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
+            GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
+          fi
+          ./gradlew "$GRADLE_ARGS" check publishAllPublicationsToGitHubPackagesRepository
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
