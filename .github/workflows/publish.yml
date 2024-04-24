@@ -30,8 +30,8 @@ jobs:
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
           elif [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
-          else
-            GRADLE_ARGS="-Pversion=0.$(date '+%Y%m%d.%H%M%S')"
+          elif [[ "$GITHUB_REF" == "refs/pull/"* ]]; then
+            GRADLE_ARGS="-Pversion=0.PR-$(echo $GITHUB_REF | cut -d '/' -f 3)"
           fi
           echo "$GRADLE_ARGS"
           #./gradlew "$GRADLE_ARGS" check publishAllPublicationsToGitHubPackagesRepository
