@@ -23,17 +23,20 @@ jobs:
       - name: Debug
         run: echo ${{ github.ref }} ; echo ${GITHUB_REF}
 
+      - name: Check
+        run: ./gradlew check
+
       - name: "Gradle: Publish"
         if: ${{ startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/sovity/') }}
         run: |
           if [[ "$GITHUB_REF" == "refs/tags/v"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+            ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzurePackagesRepository
           elif [[ "$GITHUB_REF" == "refs/heads/sovity/"* ]]; then
             GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
-          elif [[ "$GITHUB_REF" == "refs/pull/"* ]]; then
-            GRADLE_ARGS="-Pversion=0.PR-$(echo $GITHUB_REF | cut -d '/' -f 3)"
+            ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureTestPackagesRepository
           fi
-          ./gradlew "$GRADLE_ARGS" check publishAllPublicationsToGitHubPackagesRepository
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}

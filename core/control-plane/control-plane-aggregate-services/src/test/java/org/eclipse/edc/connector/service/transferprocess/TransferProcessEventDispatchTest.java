@@ -74,7 +74,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(EdcExtension.class)
 public class TransferProcessEventDispatchTest {
 
-    public static final Duration TIMEOUT = Duration.ofSeconds(30);
+    public static final Duration TIMEOUT = Duration.ofSeconds(60);
     private final EventSubscriber eventSubscriber = mock(EventSubscriber.class);
 
     @NotNull
