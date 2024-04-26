@@ -14,6 +14,7 @@
 
 plugins {
     `java-library`
+    id("org.gradle.test-retry") version "1.5.9"
 }
 
 dependencies {
@@ -31,4 +32,13 @@ dependencies {
     testImplementation(libs.awaitility)
 }
 
+tasks {
+    withType<Test> {
+        retry {
+            maxRetries.set(3)
+            maxFailures.set(6)
+            failOnPassedAfterRetry.set(true)
+        }
+    }
+}
 
