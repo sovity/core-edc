@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
 curl  -H "Authorization: Basic $AZURE_PAT" \
-"https://feeds.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_apis/packaging/Feeds/core-edc/packages?protocolType=maven&includeUrls=false&includeAllVersions=true&includeDeleted=false&api-version=7.0" > /tmp/artifacts
-
-for arti in $(cat /tmp/artifacts | jq --raw-output '.value[].name' | cut -d ':' -f 2)
+"https://feeds.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_apis/packaging/Feeds/core-edc/packages?protocolType=maven&includeUrls=false&includeAllVersions=true&includeDeleted=false&api-version=7.0" \
+| jq --raw-output '.value[].name' | cut -d ':' -f 2 | while read -r arti
 do
   curl \
     -X PATCH \
