@@ -7,9 +7,8 @@ do
   curl \
     -X PATCH \
     -H "Authorization: Basic $AZURE_PAT" \
-    -H "Content-Type: application/json" \
     "https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_apis/packaging/feeds/core-edc/maven/groups/org.eclipse.edc/artifacts/${arti}/versions/${VERSION}?api-version=7.1-preview.1" \
-    --data-binary @- << EOF
+    --json @- <<"EOF"
 {
   "views": {
     "op": "add",
