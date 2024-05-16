@@ -6,7 +6,7 @@ This can either be done manually or via the web API.
 
 The [promote.sh](promote.sh) does this.
 
-You will need to specify an Azure Personal Access Token that has the permissions:
+You will need to specify an Azure Personal Access Token with following permissions:
 - Packaging
   - Read
   - Write
