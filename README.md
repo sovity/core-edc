@@ -50,8 +50,6 @@ Each branch under `sovity/` is a different fork version and may contain differen
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
-
 ## Getting Started
 
 The `main` branch tracks the **Eclipse EDC** `main` branch. It is not used as the main branch in this fork.
@@ -64,7 +62,13 @@ Any version that needs forking should be labeled `sovity/X.Y.Z` where `X.Y.Z` is
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTING -->
+## Releasing
+
+The artifacts for this repository are not available on Github but on Azure.
+
+The repo's URL is:
+
+https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1
 
 ## Contributing
 
@@ -72,15 +76,11 @@ This is already a set of workarounds and patches, diverging from the original re
 
 To submit changes to the Eclipse EDC, please refer to [the original repository](https://github.com/eclipse-edc/Connector)
 
-<!-- LICENSE -->
-
 ## License
 
 Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTACT -->
 
 ## Contact
 
