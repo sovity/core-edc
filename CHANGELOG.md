@@ -4,7 +4,7 @@
 
 ### Overview
 
-Ported a security flaw fix from https://github.com/eclipse-edc/Connector/pull/3719/files
+Backports a security flaw fix from https://github.com/eclipse-edc/Connector/pull/3719/files
 
 #### Why do we need this?
 
