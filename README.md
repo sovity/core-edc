@@ -70,6 +70,8 @@ The repo's URL is:
 
 https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1
 
+The artifacts are released under the same group id as the original EDC: `org.eclipse.edc` and the same artifact names. Only the version differs.
+
 ## Contributing
 
 This is already a set of workarounds and patches, diverging from the original repository. Some patches have been backported from later EDC versions.
