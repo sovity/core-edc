@@ -4,12 +4,19 @@
 
 ### Overview
 
+Ported a security flaw fix from https://github.com/eclipse-edc/Connector/pull/3719/files
+
 #### Why do we need this?
+
+Fix the security flaw in `0.2.1`.
 
 #### How does it work?
 
+Imported the patch from `0.5`
+
 #### How do we resolve this conflict?
 
+Update to `0.5+`
 
 ## [0.2.1.2] - 2024-04-24
 
