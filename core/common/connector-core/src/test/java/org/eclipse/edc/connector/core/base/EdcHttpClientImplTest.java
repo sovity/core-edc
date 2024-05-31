@@ -115,14 +115,20 @@ class EdcHttpClientImplTest {
 
         var request = new Request.Builder()
                 .url("http://localhost:" + port)
+                .header("Authorization", "Sensitive data")
                 .build();
 
         server.when(request(), unlimited()).respond(new HttpResponse().withStatusCode(500));
 
         var result = client.execute(request, List.of(retryWhenStatusNot2xxOr4xx()), handleResponse());
 
-        assertThat(result).matches(Result::failed).extracting(Result::getFailureMessages).asList()
-                .first().asString().matches(it -> it.startsWith("Server response to"));
+        assertThat(result).matches(Result::failed)
+                .extracting(Result::getFailureMessages)
+                .asList()
+                .first()
+                .asString()
+                .matches(it -> it.startsWith("Server response to"))
+                .doesNotMatch(".*Sensitive data.*");
         server.verify(request(), exactly(2));
     }
 
@@ -132,13 +138,19 @@ class EdcHttpClientImplTest {
 
         var request = new Request.Builder()
                 .url("http://localhost:" + port)
+                .header("Authorization", "Sensitive data")
                 .build();
         server.when(request(), unlimited()).respond(new HttpResponse().withStatusCode(200));
 
         var result = client.execute(request, List.of(retryWhenStatusIsNot(204)), handleResponse());
 
-        assertThat(result).matches(Result::failed).extracting(Result::getFailureMessages).asList()
-                .first().asString().matches(it -> it.startsWith("Server response to"));
+        assertThat(result).matches(Result::failed)
+                .extracting(Result::getFailureMessages)
+                .asList()
+                .first()
+                .asString()
+                .matches(it -> it.startsWith("Server response to"))
+                .doesNotMatch(".*Sensitive data.*");
         server.verify(request(), exactly(2));
     }
 
