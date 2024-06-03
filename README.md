@@ -2,26 +2,18 @@
 
 <a name="readme-top"></a>
 
-<!-- PROJECT SHIELDS -->
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Apache 2.0][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
+<!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <a href="https://github.com/sovity/edc-extensions">
-        <img src="https://raw.githubusercontent.com/sovity/edc-ui/main/src/assets/images/sovity_logo.svg" alt="Logo" width="300">
-    </a>
-</div>
+<a href="https://github.com/sovity/edc-extensions">
+<img src="https://raw.githubusercontent.com/sovity/edc-ui/main/src/assets/images/sovity_logo.svg" alt="Logo" width="300">
+</a>
 
-<h1 align="center">
-  <br/>
-      EDC Connector (fork)
-  <br/>
-</h1>
+<h3 align="center">EDC Connector</h3>
+<p align="center" style="padding-bottom:16px">
+Fork for supporting older Eclipse EDC versions
+</p>
+</div>
 
 ## About The Project
 
@@ -77,35 +69,3 @@ contact@sovity.de
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]:
-https://img.shields.io/github/contributors/sovity/core-edc.svg?style=for-the-badge
-
-[contributors-url]: https://github.com/sovity/core-edc/graphs/contributors
-
-[forks-shield]:
-https://img.shields.io/github/forks/sovity/core-edc.svg?style=for-the-badge
-
-[forks-url]: https://github.com/sovity/core-edc/network/members
-
-[stars-shield]:
-https://img.shields.io/github/stars/sovity/core-edc.svg?style=for-the-badge
-
-[stars-url]: https://github.com/sovity/core-edc/stargazers
-
-[issues-shield]:
-https://img.shields.io/github/issues/sovity/core-edc.svg?style=for-the-badge
-
-[issues-url]: https://github.com/sovity/core-edc/issues
-
-[license-shield]:
-https://img.shields.io/github/license/sovity/core-edc.svg?style=for-the-badge
-
-[license-url]: https://github.com/sovity/core-edc/blob/main/LICENSE
-
-[linkedin-shield]:
-https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-
-[linkedin-url]: https://www.linkedin.com/company/sovity
