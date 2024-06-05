@@ -1,22 +1,38 @@
 # Changelog
 
-## [x.x.x] - UNRELEASED
+## [x.x.x.x] - UNRELEASED
+
+### Overview
+
+#### Requirements
+
+#### Implementation
+
+#### Compatibility
+
+#### Resolution plan
+
+## [0.2.1.3] - 2024-06-05
 
 ### Overview
 
 Backports a security flaw fix from https://github.com/eclipse-edc/Connector/pull/3719/files
 
-#### Why do we need this?
+#### Requirements
 
-Fix the security flaw in `0.2.1`.
+Fix the security flaw in `0.2.1` that was patched in `0.5`.
 
-#### How does it work?
+#### Implementation
 
-Imported the patch from `0.5`
+Imported the patch from `0.5` into `0.2.1`.
 
-#### How do we resolve this conflict?
+#### Compatibility
 
-Update to `0.5+`
+Only the log's output was changed, removing potentially sensitive data.
+
+#### Resolution plan
+
+Update to `0.5+`.
 
 ## [0.2.1.2] - 2024-04-24
 
