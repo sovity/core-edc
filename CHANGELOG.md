@@ -24,7 +24,7 @@ Security fix
 
 #### Details
 
-- Fix security flaw in logging: [fork's documentation](docs%2Fdeveloper%2Ffork%2F0.2.1.X.md).
+See the [fork's documentation](docs/developer/fork/0.2.1.X.md#fix-security-flaw-in-logging): `Fix security flaw in logging`
 
 ## [0.2.1.2] - 2024-04-24
 
@@ -45,4 +45,4 @@ Re-implementing the assets parameterization
 
 #### Details
 
-See the [fork's documentation](docs%2Fdeveloper%2Ffork%2F0.2.1.X.md).
+See the [fork's documentation](docs/developer/fork/0.2.1.X.md#Add-assets-parametrization-for-provider-push-scenario): `Add assets parametrization for provider push scenario`
