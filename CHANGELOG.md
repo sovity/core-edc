@@ -16,24 +16,24 @@
 
 ### Overview
 
-Backports a security flaw fix from `0.5` https://github.com/eclipse-edc/Connector/pull/3719/files
+Security fix
 
-#### Requirements
+#### Changes
 
-Fix the security flaw in `0.2.1` that was patched in `0.5`.
+- Fix security flaw in logging
 
-#### Implementation
+##### Fix security flaw in logging
 
-Imported the patch from `0.5` into `0.2.1`.
+Imported a security patch from `0.5` into `0.2.1` https://github.com/eclipse-edc/Connector/pull/3719/files
 
-#### Compatibility
+###### Compatibility
 
 Only the log's output was changed, removing potentially sensitive data.
 Expect no other change in behavior.
 
-#### Resolution plan
+###### Resolution plan
 
-Update to `0.5+`.
+Update to Eclipse EDC `0.5+`.
 
 ## [0.2.1.2] - 2024-04-24
 
