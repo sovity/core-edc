@@ -16,7 +16,7 @@
 
 ### Overview
 
-Backports a security flaw fix from https://github.com/eclipse-edc/Connector/pull/3719/files
+Backports a security flaw fix from `0.5` https://github.com/eclipse-edc/Connector/pull/3719/files
 
 #### Requirements
 
@@ -29,6 +29,7 @@ Imported the patch from `0.5` into `0.2.1`.
 #### Compatibility
 
 Only the log's output was changed, removing potentially sensitive data.
+Expect no other change in behavior.
 
 #### Resolution plan
 
