@@ -18,14 +18,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.entity.Entity;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.Optional.ofNullable;
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
@@ -212,7 +211,7 @@ public class Asset extends Entity {
             super.build();
 
             if (entity.getId() == null) {
-                id(UuidCreator.getTimeOrderedEpoch().toString());
+                id(Generators.timeBasedGenerator().generate().toString());
             }
 
             return entity;

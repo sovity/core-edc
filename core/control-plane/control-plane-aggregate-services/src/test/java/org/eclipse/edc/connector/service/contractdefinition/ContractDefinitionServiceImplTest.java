@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractdefinition;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionListener;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionObservable;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionObservableImpl;
@@ -33,7 +34,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -233,9 +233,9 @@ class ContractDefinitionServiceImplTest {
 
     private ContractDefinition createContractDefinition() {
         return ContractDefinition.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
-                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
                 .build();
     }
 }

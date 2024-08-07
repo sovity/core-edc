@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.service.contractnegotiation;
 
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.negotiation.observe.ContractNegotiationObservable;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
@@ -39,7 +39,6 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.PROVIDER;
@@ -171,7 +170,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @NotNull
     private ServiceResult<ContractNegotiation> createNegotiation(ContractRequestMessage message, ValidatedConsumerOffer validatedOffer) {
         var negotiation = ContractNegotiation.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .correlationId(message.getProcessId())
                 .counterPartyId(validatedOffer.getConsumerIdentity())
                 .counterPartyAddress(message.getCallbackAddress())

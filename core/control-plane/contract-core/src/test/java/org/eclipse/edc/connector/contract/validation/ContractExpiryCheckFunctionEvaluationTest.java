@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.contract.validation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.policy.engine.PolicyEngineImpl;
@@ -38,7 +39,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Instant;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static java.time.Duration.ofDays;
@@ -167,9 +167,9 @@ class ContractExpiryCheckFunctionEvaluationTest {
     private ContractAgreement createAgreement(String agreementId, Instant signingTime) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(UuidCreator.getTimeOrderedEpoch().toString())
-                .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .providerId(Generators.timeBasedGenerator().generate().toString())
+                .consumerId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .contractSigningDate(signingTime.getEpochSecond())
                 .policy(Policy.Builder.newInstance().build())
                 .build();

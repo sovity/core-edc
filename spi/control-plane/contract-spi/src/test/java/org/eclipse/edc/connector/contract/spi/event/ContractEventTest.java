@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.contract.spi.event;
 
 import com.fasterxml.jackson.databind.jsontype.NamedType;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionCreated;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionDeleted;
 import org.eclipse.edc.connector.contract.spi.event.contractnegotiation.ContractNegotiationAccepted;
@@ -38,7 +39,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,7 +90,7 @@ class ContractEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UuidCreator.getTimeOrderedEpoch().toString()).payload(it)
+                            .id(Generators.timeBasedGenerator().generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

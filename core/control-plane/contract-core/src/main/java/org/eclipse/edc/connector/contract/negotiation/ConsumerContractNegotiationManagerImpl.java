@@ -18,7 +18,7 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
@@ -31,8 +31,6 @@ import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequest;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequestMessage;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.statemachine.StateMachineManager;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.CONSUMER;
@@ -82,7 +80,7 @@ public class ConsumerContractNegotiationManagerImpl extends AbstractContractNego
     @WithSpan
     @Override
     public StatusResult<ContractNegotiation> initiate(ContractRequest request) {
-        var id = UuidCreator.getTimeOrderedEpoch().toString();
+        var id = Generators.timeBasedGenerator().generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id)
                 .correlationId(id)

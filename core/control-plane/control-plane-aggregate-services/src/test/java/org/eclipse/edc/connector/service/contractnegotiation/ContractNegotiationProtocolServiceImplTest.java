@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractnegotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.observe.ContractNegotiationObservableImpl;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.observe.ContractNegotiationListener;
@@ -51,7 +52,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -454,7 +454,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("callbackAddress")

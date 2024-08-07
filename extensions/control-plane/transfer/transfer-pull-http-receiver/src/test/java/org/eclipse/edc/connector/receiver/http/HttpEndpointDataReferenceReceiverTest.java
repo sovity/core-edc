@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.receiver.http;
 
+import com.fasterxml.uuid.Generators;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import org.eclipse.edc.spi.EdcException;
@@ -30,7 +31,6 @@ import org.mockserver.model.HttpResponse;
 import org.mockserver.model.HttpStatusCode;
 import org.mockserver.model.MediaType;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -123,8 +123,8 @@ public class HttpEndpointDataReferenceReceiverTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("some.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UuidCreator.getTimeOrderedEpoch().toString())
-                .id(UuidCreator.getTimeOrderedEpoch().toString()).build();
+                .authCode(Generators.timeBasedGenerator().generate().toString())
+                .id(Generators.timeBasedGenerator().generate().toString()).build();
     }
 
     private String receiverUrl() {

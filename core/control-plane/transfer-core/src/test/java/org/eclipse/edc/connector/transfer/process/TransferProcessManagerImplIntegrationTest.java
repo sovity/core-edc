@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.process;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.defaults.storage.transferprocess.InMemoryTransferProcessStore;
 import org.eclipse.edc.connector.policy.spi.store.PolicyArchive;
 import org.eclipse.edc.connector.transfer.TestProvisionedDataDestinationResource;
@@ -40,7 +41,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -140,11 +140,11 @@ class TransferProcessManagerImplIntegrationTest {
     }
 
     private TransferProcess.Builder createInitialTransferProcess() {
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         var dataRequest = DataRequest.Builder.newInstance()
                 .id(processId)
                 .destinationType("test-type")
-                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractId(Generators.timeBasedGenerator().generate().toString())
                 .build();
 
         return TransferProcess.Builder.newInstance()

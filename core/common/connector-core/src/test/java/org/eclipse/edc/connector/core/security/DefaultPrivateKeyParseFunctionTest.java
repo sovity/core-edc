@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.core.security;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.EdcException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.io.IOException;
 import java.security.Security;
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -42,7 +42,7 @@ class DefaultPrivateKeyParseFunctionTest {
     @Test
     void verifyParseInvalidPemThrowsException() {
         assertThatExceptionOfType(EdcException.class)
-                .isThrownBy(() -> parseFunction.apply(UuidCreator.getTimeOrderedEpoch().toString()))
+                .isThrownBy(() -> parseFunction.apply(Generators.timeBasedGenerator().generate().toString()))
                 .withMessageContaining("Object cannot be null");
     }
 

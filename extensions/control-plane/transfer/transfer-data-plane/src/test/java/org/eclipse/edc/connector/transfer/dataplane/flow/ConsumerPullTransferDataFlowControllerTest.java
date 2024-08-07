@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.flow;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.selector.spi.client.DataPlaneSelectorClient;
 import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstance;
 import org.eclipse.edc.connector.transfer.dataplane.proxy.ConsumerPullDataPlaneProxyResolver;
@@ -22,8 +23,6 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.transfer.dataplane.spi.TransferDataPlaneConstants.HTTP_PROXY;
@@ -91,17 +90,17 @@ class ConsumerPullTransferDataFlowControllerTest {
     }
 
     private DataAddress dataAddress() {
-        return DataAddress.Builder.newInstance().type(UuidCreator.getTimeOrderedEpoch().toString()).build();
+        return DataAddress.Builder.newInstance().type(Generators.timeBasedGenerator().generate().toString()).build();
     }
 
     private DataRequest dataRequest() {
         return DataRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .protocol("protocol")
-                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .connectorAddress("test.connector.address")
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .destinationType(HTTP_PROXY)
                 .build();
     }

@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.selector.transformer;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -83,7 +83,7 @@ class JsonObjectToDataPlaneInstanceTransformerTest {
     void transform_withProperties() {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, UuidCreator.getTimeOrderedEpoch().toString())
+                .add(ID, Generators.timeBasedGenerator().generate().toString())
                 .add(EDC_NAMESPACE + "url", "http://localhost/control/transfer")
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "Kafka")))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "HttpProxy", "Kafka")))

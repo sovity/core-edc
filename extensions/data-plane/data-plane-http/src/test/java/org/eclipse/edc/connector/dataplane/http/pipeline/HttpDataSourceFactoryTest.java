@@ -18,6 +18,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.http.params.HttpRequestFactory;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParams;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
@@ -30,8 +31,6 @@ import org.eclipse.edc.spi.types.domain.HttpDataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.types.domain.HttpDataAddress.HTTP_DATA;
@@ -103,8 +102,8 @@ class HttpDataSourceFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress source) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("Test type").build())
                 .build();

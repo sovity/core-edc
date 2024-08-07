@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.policy.spi.event;
 
 import com.fasterxml.jackson.databind.jsontype.NamedType;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -24,7 +25,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,7 +64,7 @@ class PolicyDefinitionEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UuidCreator.getTimeOrderedEpoch().toString()).payload(it)
+                            .id(Generators.timeBasedGenerator().generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

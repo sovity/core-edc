@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.protocol.dsp.negotiation.api.controller;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -48,7 +49,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Function;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
@@ -342,7 +342,7 @@ public class DspNegotiationApiController {
         return transformerRegistry.transform(negotiation, JsonObject.class)
                 .map(transformedJson -> Response.ok().type(MediaType.APPLICATION_JSON).entity(transformedJson).build())
                 .orElse(failure -> {
-                    var errorCode = UuidCreator.getTimeOrderedEpoch();
+                    var errorCode = Generators.timeBasedGenerator().generate();
                     monitor.warning(String.format("Error transforming negotiation, error id %s: %s", errorCode, failure.getFailureDetail()));
                     var processId = negotiation.getCorrelationId();
                     return error()

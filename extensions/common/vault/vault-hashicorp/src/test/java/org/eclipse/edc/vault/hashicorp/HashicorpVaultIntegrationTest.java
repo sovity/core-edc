@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.vault.hashicorp;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.junit.extensions.EdcExtension;
 import org.eclipse.edc.spi.security.CertificateResolver;
@@ -34,7 +35,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,8 +50,8 @@ import static org.eclipse.edc.vault.hashicorp.util.X509CertificateTestUtil.gener
 class HashicorpVaultIntegrationTest {
     static final String DOCKER_IMAGE_NAME = "vault:1.9.6";
     static final String VAULT_ENTRY_KEY = "testing";
-    static final String VAULT_ENTRY_VALUE = UuidCreator.getTimeOrderedEpoch().toString();
-    static final String TOKEN = UuidCreator.getTimeOrderedEpoch().toString();
+    static final String VAULT_ENTRY_VALUE = Generators.timeBasedGenerator().generate().toString();
+    static final String TOKEN = Generators.timeBasedGenerator().generate().toString();
 
     @Container
     public static final VaultContainer<?> VAULTCONTAINER = new VaultContainer<>(DOCKER_IMAGE_NAME)
@@ -100,9 +100,9 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Update a secret that exists")
     void testSetSecret_exists(Vault vault) {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
-        var value1 = UuidCreator.getTimeOrderedEpoch().toString();
-        var value2 = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
+        var value1 = Generators.timeBasedGenerator().generate().toString();
+        var value2 = Generators.timeBasedGenerator().generate().toString();
 
         vault.storeSecret(key, value1);
         vault.storeSecret(key, value2);
@@ -113,8 +113,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Create a secret that does not exist")
     void testSetSecret_doesNotExist(Vault vault) {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
-        var value = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
+        var value = Generators.timeBasedGenerator().generate().toString();
 
         vault.storeSecret(key, value);
         var secretValue = vault.resolveSecret(key);
@@ -124,8 +124,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Delete a secret that exists")
     void testDeleteSecret_exists(Vault vault) {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
-        var value = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
+        var value = Generators.timeBasedGenerator().generate().toString();
 
         vault.storeSecret(key, value);
         vault.deleteSecret(key);
@@ -136,7 +136,7 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Try to delete a secret that does not exist")
     void testDeleteSecret_doesNotExist(Vault vault) {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
 
         vault.deleteSecret(key);
         assertThat(vault.resolveSecret(key)).isNull();
@@ -144,7 +144,7 @@ class HashicorpVaultIntegrationTest {
 
     @Test
     void resolveCertificate_success(Vault vault, CertificateResolver resolver) throws CertificateException, IOException, NoSuchAlgorithmException, org.bouncycastle.operator.OperatorCreationException {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
         var certificateExpected = generateCertificate(5, "Test");
         var pem = convertToPem(certificateExpected);
 
@@ -156,8 +156,8 @@ class HashicorpVaultIntegrationTest {
 
     @Test
     void resolveCertificate_malformed(Vault vault, CertificateResolver resolver) {
-        var key = UuidCreator.getTimeOrderedEpoch().toString();
-        var value = UuidCreator.getTimeOrderedEpoch().toString();
+        var key = Generators.timeBasedGenerator().generate().toString();
+        var value = Generators.timeBasedGenerator().generate().toString();
         vault.storeSecret(key, value);
 
         var certificateResult = resolver.resolveCertificate(key);

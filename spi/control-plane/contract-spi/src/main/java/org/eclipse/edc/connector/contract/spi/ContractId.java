@@ -14,11 +14,11 @@
 
 package org.eclipse.edc.connector.contract.spi;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.result.Result;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ public final class ContractId {
     }
 
     public static ContractId create(String definitionId, String assetId) {
-        return new ContractId(definitionId, assetId, UuidCreator.getTimeOrderedEpoch().toString());
+        return new ContractId(definitionId, assetId, Generators.timeBasedGenerator().generate().toString());
     }
 
     /**

@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.observe.ContractNegotiationObservableImpl;
 import org.eclipse.edc.connector.contract.spi.negotiation.ContractNegotiationPendingGuard;
 import org.eclipse.edc.connector.contract.spi.negotiation.observe.ContractNegotiationListener;
@@ -48,7 +49,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -282,7 +282,7 @@ class ConsumerContractNegotiationManagerImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("callbackAddress")

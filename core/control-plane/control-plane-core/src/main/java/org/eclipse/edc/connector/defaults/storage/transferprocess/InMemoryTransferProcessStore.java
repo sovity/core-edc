@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.defaults.storage.transferprocess;
 
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.defaults.storage.InMemoryStatefulEntityStore;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
@@ -29,7 +29,6 @@ import java.time.Clock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -43,7 +42,7 @@ public class InMemoryTransferProcessStore implements TransferProcessStore {
     private final InMemoryStatefulEntityStore<TransferProcess> store;
 
     public InMemoryTransferProcessStore() {
-        this(UuidCreator.getTimeOrderedEpoch().toString(), Clock.systemUTC(), new HashMap<>());
+        this(Generators.timeBasedGenerator().generate().toString(), Clock.systemUTC(), new HashMap<>());
     }
 
     public InMemoryTransferProcessStore(String leaserId, Clock clock, Map<String, Lease> leases) {

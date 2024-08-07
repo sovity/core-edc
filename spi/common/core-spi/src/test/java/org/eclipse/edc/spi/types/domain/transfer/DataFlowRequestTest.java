@@ -15,6 +15,7 @@
 package org.eclipse.edc.spi.types.domain.transfer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,8 +36,8 @@ class DataFlowRequestTest {
         var request = DataFlowRequest.Builder.newInstance()
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("foo").build())
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("bar").build())
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .destinationType("test")
                 .callbackAddress(url)
                 .properties(Map.of("key", "value"))

@@ -14,11 +14,11 @@
 
 package org.eclipse.edc.statemachine.retry;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +30,7 @@ class SimpleRetryProcessTest {
 
     @Test
     void shouldProcess() {
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
         Supplier<Boolean> process = mock(Supplier.class);
         when(process.get()).thenReturn(true);
         var configuration = new EntityRetryProcessConfiguration(2, () -> () -> 2L);

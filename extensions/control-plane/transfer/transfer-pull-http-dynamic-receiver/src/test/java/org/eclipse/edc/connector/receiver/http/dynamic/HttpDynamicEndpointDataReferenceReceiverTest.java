@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.receiver.http.dynamic;
 
 
+import com.fasterxml.uuid.Generators;
 import dev.failsafe.RetryPolicy;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
@@ -33,7 +34,6 @@ import org.mockserver.model.HttpStatusCode;
 import org.mockserver.model.MediaType;
 
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -217,8 +217,8 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("some.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UuidCreator.getTimeOrderedEpoch().toString())
-                .id(UuidCreator.getTimeOrderedEpoch().toString());
+                .authCode(Generators.timeBasedGenerator().generate().toString())
+                .id(Generators.timeBasedGenerator().generate().toString());
     }
 
     private String receiverUrl() {

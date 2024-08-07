@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.oauth2;
 
+import com.fasterxml.uuid.Generators;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -35,7 +36,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -153,7 +153,7 @@ class Oauth2CredentialsRequestFactoryTest {
     private RSAKey generateKeyPair() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
+                .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID
                 .generate();
     }
 

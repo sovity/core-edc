@@ -16,6 +16,7 @@ package org.eclipse.edc.connector.dataplane.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.selector.spi.client.DataPlaneSelectorClient;
 import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstance;
 import org.eclipse.edc.connector.dataplane.spi.client.DataPlaneClient;
@@ -40,7 +41,6 @@ import org.mockserver.verify.VerificationTimes;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,7 +156,7 @@ class RemoteDataPlaneClientTest {
 
         // config data plane mock server
         var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(flowRequest));
-        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
+        var errorMsg = Generators.timeBasedGenerator().generate().toString();
         dataPlaneClientAndServer.when(httpRequest, once()).respond(withResponse(errorMsg));
 
         var result = dataPlaneClient.transfer(flowRequest);

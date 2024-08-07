@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractdefinition;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionCreated;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionDeleted;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionEvent;
@@ -29,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.junit.matchers.EventEnvelopeMatcher.isEnvelopeOf;
@@ -57,9 +57,9 @@ public class ContractDefinitionEventDispatchTest {
     void shouldDispatchEventOnContractDefinitionCreationAndDeletion(ContractDefinitionService service, EventRouter eventRouter) {
         eventRouter.register(ContractDefinitionEvent.class, eventSubscriber);
         var contractDefinition = ContractDefinition.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
-                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
                 .build();
 
         service.create(contractDefinition);

@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.contract.spi.event;
 
 import com.fasterxml.jackson.databind.jsontype.NamedType;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.asset.spi.event.AssetCreated;
 import org.eclipse.edc.connector.asset.spi.event.AssetDeleted;
 import org.eclipse.edc.connector.asset.spi.event.AssetUpdated;
@@ -27,7 +28,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,7 +67,7 @@ class AssetEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UuidCreator.getTimeOrderedEpoch().toString()).payload(it)
+                            .id(Generators.timeBasedGenerator().generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

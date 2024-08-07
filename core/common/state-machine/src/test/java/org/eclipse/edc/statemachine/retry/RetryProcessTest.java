@@ -14,13 +14,13 @@
 
 package org.eclipse.edc.statemachine.retry;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.retry.WaitStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -46,7 +46,7 @@ class RetryProcessTest {
 
     @Test
     void execute_shouldNotProcess_whenItShouldDelay() {
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock);
 
         boolean any = retryProcess.execute("any");
@@ -57,7 +57,7 @@ class RetryProcessTest {
 
     @Test
     void execute_shouldNotProcess_whenItShouldDelayAndExecuteOnDelayIfSet() {
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
         var onDelay = mock(Consumer.class);
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock).onDelay(onDelay);
 
@@ -71,7 +71,7 @@ class RetryProcessTest {
     @Test
     void execute_shouldProcess_whenItIsNotRetry() {
         when(process.get()).thenReturn(true);
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
         var onDelay = mock(Consumer.class);
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock).onDelay(onDelay);
 
@@ -84,7 +84,7 @@ class RetryProcessTest {
     @Test
     void execute_shouldProcess_whenItIsRetryButDoesNotDelay() {
         when(process.get()).thenReturn(true);
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateTimestamp(shouldNotDelayTime).stateCount(2).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateTimestamp(shouldNotDelayTime).stateCount(2).build();
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock);
 
         boolean any = retryProcess.execute("any");
@@ -95,7 +95,7 @@ class RetryProcessTest {
 
     @Test
     void retriesExhausted_shouldReturnTrueIfRetriesHaveBeenExhausted() {
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateCount(retryLimit + 1).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateCount(retryLimit + 1).build();
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock);
 
         assertThat(retryProcess.retriesExhausted(entity)).isTrue();
@@ -103,7 +103,7 @@ class RetryProcessTest {
 
     @Test
     void retriesExhausted_shouldReturnFalseIfRetriesHaveNotBeenExhausted() {
-        var entity = TestEntity.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).stateCount(retryLimit).build();
+        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).stateCount(retryLimit).build();
         var retryProcess = new TestRetryProcess(entity, configuration, monitor, clock);
 
         assertThat(retryProcess.retriesExhausted(entity)).isFalse();

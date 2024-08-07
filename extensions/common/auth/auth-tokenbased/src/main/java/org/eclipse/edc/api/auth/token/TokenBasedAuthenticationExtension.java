@@ -16,6 +16,7 @@
 
 package org.eclipse.edc.api.auth.token;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.api.auth.spi.AuthenticationService;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
@@ -24,8 +25,6 @@ import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * Extension that registers an AuthenticationService that uses API Keys
@@ -57,7 +56,7 @@ public class TokenBasedAuthenticationExtension implements ServiceExtension {
         }
 
         if (apiKey == null) {
-            apiKey = context.getSetting(AUTH_SETTING_APIKEY, UuidCreator.getTimeOrderedEpoch().toString());
+            apiKey = context.getSetting(AUTH_SETTING_APIKEY, Generators.timeBasedGenerator().generate().toString());
         }
 
         context.registerService(AuthenticationService.class, new TokenBasedAuthenticationService(apiKey));

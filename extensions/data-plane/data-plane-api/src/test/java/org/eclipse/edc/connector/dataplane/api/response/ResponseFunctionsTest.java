@@ -15,11 +15,11 @@
 
 package org.eclipse.edc.connector.dataplane.api.response;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.spi.response.TransferErrorResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static jakarta.ws.rs.core.Response.Status.OK;
@@ -33,7 +33,7 @@ class ResponseFunctionsTest {
 
     @Test
     void verifyValidationErrors() {
-        var errorMessages = List.of(UuidCreator.getTimeOrderedEpoch().toString(), UuidCreator.getTimeOrderedEpoch().toString());
+        var errorMessages = List.of(Generators.timeBasedGenerator().generate().toString(), Generators.timeBasedGenerator().generate().toString());
         var response = validationErrors(errorMessages);
         assertThat(response.getStatusInfo()).isEqualTo(BAD_REQUEST);
 
@@ -45,7 +45,7 @@ class ResponseFunctionsTest {
 
     @Test
     void verifySuccess() {
-        var data = UuidCreator.getTimeOrderedEpoch().toString();
+        var data = Generators.timeBasedGenerator().generate().toString();
         var response = success(data);
         assertThat(response.getStatusInfo()).isEqualTo(OK);
         assertThat(response.getEntity()).asInstanceOf(STRING).isEqualTo(data);

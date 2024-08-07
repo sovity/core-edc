@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.protocol.dsp.transferprocess.api.controller;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -42,7 +43,6 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Function;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
@@ -275,7 +275,7 @@ public class DspTransferProcessApiController {
         return registry.transform(transferProcess, JsonObject.class)
                 .map(transformedJson -> Response.ok().type(MediaType.APPLICATION_JSON).entity(transformedJson).build())
                 .orElse(failure -> {
-                    var errorCode = UuidCreator.getTimeOrderedEpoch();
+                    var errorCode = Generators.timeBasedGenerator().generate();
                     monitor.warning(String.format("Error transforming transfer process, error id %s: %s", errorCode, failure.getFailureDetail()));
                     return error().processId(transferProcess.getCorrelationId()).message(String.format("Error code %s", errorCode)).internalServerError();
                 });

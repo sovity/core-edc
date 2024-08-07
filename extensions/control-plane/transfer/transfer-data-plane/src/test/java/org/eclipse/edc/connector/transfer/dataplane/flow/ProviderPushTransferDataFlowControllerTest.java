@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.flow;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.spi.client.DataPlaneClient;
 import org.eclipse.edc.connector.transfer.spi.callback.ControlPlaneApiUrl;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
@@ -30,7 +31,6 @@ import org.mockito.ArgumentCaptor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.BODY;
@@ -166,12 +166,12 @@ class ProviderPushTransferDataFlowControllerTest {
 
     private DataRequest createDataRequest(String destinationType, DataAddress dataDestination) {
         DataRequest.Builder builder = DataRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .protocol("test-protocol")
-                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .connectorAddress("test.connector.address")
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .destinationType(destinationType);
 
         if (dataDestination != null) {

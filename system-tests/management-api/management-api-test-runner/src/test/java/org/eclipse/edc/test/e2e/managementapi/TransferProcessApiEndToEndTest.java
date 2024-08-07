@@ -15,6 +15,7 @@
 package org.eclipse.edc.test.e2e.managementapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.uuid.Generators;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -29,7 +30,6 @@ import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
@@ -130,7 +130,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void deprovision() {
-        var id = UuidCreator.getTimeOrderedEpoch().toString();
+        var id = Generators.timeBasedGenerator().generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(COMPLETED.code()).build());
 
         baseRequest()
@@ -142,7 +142,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void terminate() {
-        var id = UuidCreator.getTimeOrderedEpoch().toString();
+        var id = Generators.timeBasedGenerator().generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
         var requestBody = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(VOCAB, EDC_NAMESPACE))
@@ -214,7 +214,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
                 .id(id)
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UuidCreator.getTimeOrderedEpoch().toString())
+                        .id(Generators.timeBasedGenerator().generate().toString())
                         .dataDestination(DataAddress.Builder.newInstance()
                                 .type("type")
                                 .build())

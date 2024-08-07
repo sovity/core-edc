@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.api.management.contractagreement;
 
+import com.fasterxml.uuid.Generators;
 import io.restassured.specification.RequestSpecification;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -34,7 +35,6 @@ import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -253,7 +253,7 @@ class ContractAgreementApiControllerTest extends RestControllerTestBase {
                 .id(negotiationId)
                 .consumerId("test-consumer")
                 .providerId("test-provider")
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

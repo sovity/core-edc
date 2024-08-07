@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.defaults.storage.contractnegotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractOffer;
@@ -22,7 +23,6 @@ import org.eclipse.edc.policy.model.Policy;
 
 import java.time.Instant;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 public class TestFunctions {
 
@@ -56,7 +56,7 @@ public class TestFunctions {
                 .id("agreementId")
                 .providerId("provider")
                 .consumerId("consumer")
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .contractSigningDate(Instant.now().getEpochSecond());
     }

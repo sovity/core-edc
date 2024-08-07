@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.observe.ContractNegotiationObservableImpl;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.ContractNegotiationPendingGuard;
@@ -48,7 +49,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -247,7 +247,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .type(ContractNegotiation.Type.PROVIDER)
                 .correlationId("processId")
                 .counterPartyId("connectorId")
@@ -259,7 +259,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractAgreement.Builder contractAgreementBuilder() {
         return ContractAgreement.Builder.newInstance()
-                .id(ContractId.create(UuidCreator.getTimeOrderedEpoch().toString(), "test-asset-id").toString())
+                .id(ContractId.create(Generators.timeBasedGenerator().generate().toString(), "test-asset-id").toString())
                 .providerId("any")
                 .consumerId("any")
                 .assetId("default")

@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.provision;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.transfer.TestResourceDefinition;
 import org.eclipse.edc.connector.transfer.spi.provision.ConsumerResourceDefinitionGenerator;
 import org.eclipse.edc.connector.transfer.spi.provision.ProviderResourceDefinitionGenerator;
@@ -25,8 +26,6 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,7 +55,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldGenerateResourceManifestForConsumerManagedTransferProcess() {
         var dataRequest = createDataRequest();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
         when(consumerGenerator.canGenerate(any(), any())).thenReturn(true);
         when(consumerGenerator.generate(any(), any())).thenReturn(resourceDefinition);
         when(policyEngine.evaluate(any(), any(), isA(PolicyContext.class))).thenReturn(Result.success());
@@ -83,7 +82,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldReturnFailedResultForConsumerWhenPolicyEvaluationFailed() {
         var dataRequest = createDataRequest();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
         when(consumerGenerator.generate(any(), any())).thenReturn(resourceDefinition);
         when(policyEngine.evaluate(any(), any(), isA(PolicyContext.class))).thenReturn(Result.failure("error"));
 
@@ -95,7 +94,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldGenerateResourceManifestForProviderTransferProcess() {
         var process = createDataRequest();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
         when(providerGenerator.canGenerate(any(), any(), any())).thenReturn(true);
         when(providerGenerator.generate(any(), any(), any())).thenReturn(resourceDefinition);
 

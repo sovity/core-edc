@@ -16,13 +16,13 @@
 package org.eclipse.edc.spi.entity;
 
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 
 import java.time.Clock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * Base class for state machine persistent entities.
@@ -159,7 +159,7 @@ public abstract class StatefulEntity<T extends StatefulEntity<T>> extends Mutabl
         protected T build() {
             super.build();
             if (entity.id == null) {
-                entity.id = UuidCreator.getTimeOrderedEpoch().toString();
+                entity.id = Generators.timeBasedGenerator().generate().toString();
             }
 
             if (entity.stateTimestamp == 0) {

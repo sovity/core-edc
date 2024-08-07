@@ -16,6 +16,7 @@ package org.eclipse.edc.connector.dataplane.api.validation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
@@ -28,8 +29,6 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.MediaType;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getFreePort;
@@ -69,7 +68,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifySuccessTokenValidation() throws JsonProcessingException {
-        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var token = Generators.timeBasedGenerator().generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();
@@ -88,7 +87,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifyFailedResultReturnedIfServerResponseIsUnsuccessful() throws JsonProcessingException {
-        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var token = Generators.timeBasedGenerator().generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();

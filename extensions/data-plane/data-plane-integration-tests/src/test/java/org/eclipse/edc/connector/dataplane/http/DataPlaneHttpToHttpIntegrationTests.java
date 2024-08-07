@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.dataplane.http;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.uuid.Generators;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.restassured.http.ContentType;
@@ -45,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -133,8 +133,8 @@ public class DataPlaneHttpToHttpIntegrationTests {
 
     @Test
     void transfer_success(TypeManager typeManager) {
-        var body = UuidCreator.getTimeOrderedEpoch().toString();
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var body = Generators.timeBasedGenerator().generate().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         httpSourceMockServer.when(getRequest(), once())
                 .respond(successfulResponse(body));
 
@@ -166,8 +166,8 @@ public class DataPlaneHttpToHttpIntegrationTests {
     @Test
     void transfer_WithSourceQueryParams_Success(TypeManager typeManager) {
         // HTTP Source Request & Response
-        var body = UuidCreator.getTimeOrderedEpoch().toString();
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var body = Generators.timeBasedGenerator().generate().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         var queryParams = Map.of(
                 "param1", "any value",
                 "param2", "any other value"
@@ -207,7 +207,7 @@ public class DataPlaneHttpToHttpIntegrationTests {
     @Test
     void transfer_invalidInput_failure(TypeManager typeManager) {
         // Request without processId to initiate transfer.
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         var invalidRequest = transferRequestPayload(processId, typeManager).remove("processId");
 
         // Act & Assert
@@ -223,7 +223,7 @@ public class DataPlaneHttpToHttpIntegrationTests {
 
     @Test
     void transfer_sourceNotAvailable_noInteractionWithSink(TypeManager typeManager) {
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         // HTTP Source Request & Error Response
         httpSourceMockServer.when(getRequest())
                 .error(withDropConnection());
@@ -249,13 +249,13 @@ public class DataPlaneHttpToHttpIntegrationTests {
      */
     @Test
     void transfer_sourceTemporaryDropConnection_success(TypeManager typeManager) {
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         // First two calls to HTTP Source returns a failure response.
         httpSourceMockServer.when(getRequest(), exactly(2))
                 .error(withDropConnection());
 
         // Next call to HTTP Source returns a valid response.
-        var body = UuidCreator.getTimeOrderedEpoch().toString();
+        var body = Generators.timeBasedGenerator().generate().toString();
         httpSourceMockServer.when(getRequest(), once())
                 .respond(successfulResponse(body));
 

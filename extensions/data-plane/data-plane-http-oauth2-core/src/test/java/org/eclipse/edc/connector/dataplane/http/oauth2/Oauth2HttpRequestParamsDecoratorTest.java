@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.oauth2;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParams;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.SharedSecretOauth2CredentialsRequest;
@@ -23,8 +24,6 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.HttpDataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -104,7 +103,7 @@ class Oauth2HttpRequestParamsDecoratorTest {
 
     private DataFlowRequest dummyDataFlowRequest() {
         return DataFlowRequest.Builder.newInstance()
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .sourceDataAddress(dummyAddress())
                 .destinationDataAddress(dummyAddress())
                 .properties(emptyMap())

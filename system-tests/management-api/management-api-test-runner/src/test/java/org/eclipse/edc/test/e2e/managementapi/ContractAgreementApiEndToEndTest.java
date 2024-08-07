@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.test.e2e.managementapi;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
@@ -25,7 +26,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,7 +95,7 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")
@@ -116,9 +116,9 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractAgreement createContractAgreement(String negotiationId) {
         return ContractAgreement.Builder.newInstance()
                 .id(negotiationId)
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
-                .consumerId(UuidCreator.getTimeOrderedEpoch() + "-consumer")
-                .providerId(UuidCreator.getTimeOrderedEpoch() + "-provider")
+                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .consumerId(Generators.timeBasedGenerator().generate() + "-consumer")
+                .providerId(Generators.timeBasedGenerator().generate() + "-provider")
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

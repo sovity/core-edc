@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.params;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.security.Vault;
@@ -26,7 +27,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -168,7 +168,7 @@ class HttpRequestParamsProviderImplTest {
         return DataFlowRequest.Builder.newInstance()
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .sourceDataAddress(source)
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .build();
     }
 

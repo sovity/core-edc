@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.edr;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.transfer.spi.edr.EndpointDataReferenceReceiver;
 import org.eclipse.edc.connector.transfer.spi.event.TransferProcessStarted;
 import org.eclipse.edc.spi.EdcException;
@@ -27,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -134,9 +134,9 @@ class EndpointDataReferenceReceiverRegistryImplTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("test.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UuidCreator.getTimeOrderedEpoch().toString())
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .properties(Map.of("test-key", UuidCreator.getTimeOrderedEpoch().toString()))
+                .authCode(Generators.timeBasedGenerator().generate().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .properties(Map.of("test-key", Generators.timeBasedGenerator().generate().toString()))
                 .build();
     }
 }

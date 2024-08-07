@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.protocol.dsp.catalog.api.controller;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -32,8 +33,6 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.jetbrains.annotations.NotNull;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -107,14 +106,14 @@ public class DspCatalogApiController {
 
         var catalog = service.getCatalog(message, claimToken);
         if (catalog.failed()) {
-            var errorCode = UuidCreator.getTimeOrderedEpoch();
+            var errorCode = Generators.timeBasedGenerator().generate();
             monitor.warning(format("Error returning catalog, error id %s: %s", errorCode, catalog.getFailureMessages()));
             return error().message(format("Error code %s", errorCode)).from(catalog.getFailure());
         }
 
         var catalogJson = transformerRegistry.transform(catalog.getContent(), JsonObject.class);
         if (catalogJson.failed()) {
-            var errorCode = UuidCreator.getTimeOrderedEpoch();
+            var errorCode = Generators.timeBasedGenerator().generate();
             monitor.warning(format("Error transforming catalog, error id %s: %s", errorCode, catalogJson.getFailureMessages()));
             return error().message(format("Error code %s", errorCode)).internalServerError();
         }
@@ -140,14 +139,14 @@ public class DspCatalogApiController {
 
         var datasetResult = service.getDataset(id, verificationResult.getContent());
         if (datasetResult.failed()) {
-            var errorCode = UuidCreator.getTimeOrderedEpoch();
+            var errorCode = Generators.timeBasedGenerator().generate();
             monitor.warning(format("Error returning dataset, error id %s: %s", errorCode, datasetResult.getFailureMessages()));
             return error().message(format("Error code %s", errorCode)).from(datasetResult.getFailure());
         }
 
         var datasetJson = transformerRegistry.transform(datasetResult.getContent(), JsonObject.class);
         if (datasetJson.failed()) {
-            var errorCode = UuidCreator.getTimeOrderedEpoch();
+            var errorCode = Generators.timeBasedGenerator().generate();
             monitor.warning(format("Error transforming dataset, error id %s: %s", errorCode, datasetJson.getFailureMessages()));
             return error().message(format("Error code %s", errorCode)).internalServerError();
         }

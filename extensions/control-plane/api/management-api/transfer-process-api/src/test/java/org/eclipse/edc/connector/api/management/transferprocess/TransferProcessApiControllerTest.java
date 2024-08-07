@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.api.management.transferprocess;
 
+import com.fasterxml.uuid.Generators;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.api.model.IdResponse;
@@ -32,7 +33,6 @@ import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -436,7 +436,7 @@ class TransferProcessApiControllerTest extends RestControllerTestBase {
 
     @NotNull
     private TransferProcess.Builder createTransferProcess() {
-        return TransferProcess.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString());
+        return TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString());
     }
 
 }

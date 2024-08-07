@@ -14,12 +14,11 @@
 
 package org.eclipse.edc.connector.transfer.edr;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,8 +37,8 @@ class DataAddressToEndpointDataReferenceTransformerTest {
                 .type(EndpointDataReference.EDR_SIMPLE_TYPE)
                 .property(EndpointDataReference.ENDPOINT, "some.test.endpoint")
                 .property(EndpointDataReference.AUTH_KEY, "test-authkey")
-                .property(EndpointDataReference.AUTH_CODE, UuidCreator.getTimeOrderedEpoch().toString())
-                .property(EndpointDataReference.ID, UuidCreator.getTimeOrderedEpoch().toString())
+                .property(EndpointDataReference.AUTH_CODE, Generators.timeBasedGenerator().generate().toString())
+                .property(EndpointDataReference.ID, Generators.timeBasedGenerator().generate().toString())
                 .build();
 
         var edr = transformer.transform(address, context);

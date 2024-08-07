@@ -16,6 +16,7 @@
 
 package org.eclipse.edc.connector.transfer.process;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.policy.spi.store.PolicyArchive;
 import org.eclipse.edc.connector.transfer.TestProvisionedDataDestinationResource;
 import org.eclipse.edc.connector.transfer.TestResourceDefinition;
@@ -70,7 +71,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -782,7 +782,7 @@ class TransferProcessManagerImplTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates inState) {
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         var dataRequest = createDataRequestBuilder()
                 .processId(processId)
                 .protocol("protocol")
@@ -799,9 +799,9 @@ class TransferProcessManagerImplTest {
 
     private DataRequest.Builder createDataRequestBuilder() {
         return DataRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .contractId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .destinationType(DESTINATION_TYPE);
     }
 

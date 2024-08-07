@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.asset;
 
+import com.fasterxml.uuid.Generators;
 import org.assertj.core.api.Assertions;
 import org.eclipse.edc.connector.asset.spi.observe.AssetObservable;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
@@ -44,7 +45,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -248,14 +248,14 @@ class AssetServiceImplTest {
         var asset = createAsset("assetId");
         when(index.deleteById("assetId")).thenReturn(StoreResult.success(asset));
         var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol")
                 .contractAgreement(ContractAgreement.Builder.newInstance()
-                        .id(UuidCreator.getTimeOrderedEpoch().toString())
-                        .providerId(UuidCreator.getTimeOrderedEpoch().toString())
-                        .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
+                        .id(Generators.timeBasedGenerator().generate().toString())
+                        .providerId(Generators.timeBasedGenerator().generate().toString())
+                        .consumerId(Generators.timeBasedGenerator().generate().toString())
                         .assetId(asset.getId())
                         .policy(Policy.Builder.newInstance().build())
                         .build())

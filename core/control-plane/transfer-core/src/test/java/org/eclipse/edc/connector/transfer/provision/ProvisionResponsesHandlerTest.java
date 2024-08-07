@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.provision;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.transfer.TestProvisionedContentResource;
 import org.eclipse.edc.connector.transfer.TestProvisionedDataDestinationResource;
 import org.eclipse.edc.connector.transfer.TestResourceDefinition;
@@ -35,7 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.transfer.spi.types.TransferProcess.Type.CONSUMER;
@@ -205,7 +205,7 @@ class ProvisionResponsesHandlerTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates inState) {
-        var processId = UuidCreator.getTimeOrderedEpoch().toString();
+        var processId = Generators.timeBasedGenerator().generate().toString();
         var dataRequest = createDataRequestBuilder()
                 .processId(processId)
                 .protocol("protocol")
@@ -222,9 +222,9 @@ class ProvisionResponsesHandlerTest {
 
     private DataRequest.Builder createDataRequestBuilder() {
         return DataRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .contractId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("type")
                         .build());
     }

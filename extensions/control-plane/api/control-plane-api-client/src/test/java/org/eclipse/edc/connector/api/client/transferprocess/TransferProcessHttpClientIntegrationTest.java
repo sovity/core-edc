@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.api.client.transferprocess;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.spi.manager.DataPlaneManager;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.TransferService;
@@ -41,7 +42,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.net.URL;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
@@ -137,7 +137,7 @@ public class TransferProcessHttpClientIntegrationTest {
                 .state(TransferProcessStates.STARTED.code())
                 .type(TransferProcess.Type.PROVIDER)
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UuidCreator.getTimeOrderedEpoch().toString())
+                        .id(Generators.timeBasedGenerator().generate().toString())
                         .destinationType("file")
                         .protocol("any")
                         .connectorAddress("http://an/address")
@@ -147,7 +147,7 @@ public class TransferProcessHttpClientIntegrationTest {
 
     private DataFlowRequest createDataFlowRequest(String processId, URL callbackAddress) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .processId(processId)
                 .callbackAddress(callbackAddress)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("file").build())

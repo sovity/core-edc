@@ -14,10 +14,9 @@
 
 package org.eclipse.edc.connector.api.management.contractnegotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.api.management.contractnegotiation.model.ContractOfferDescription;
 import org.eclipse.edc.policy.model.Policy;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 public class TestFunctions {
     public static ContractOfferDescription createOffer(String offerId, String assetId) {
@@ -30,17 +29,17 @@ public class TestFunctions {
 
     public static ContractOfferDescription createOffer(Policy policy) {
         return ContractOfferDescription.Builder.newInstance()
-                .offerId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .offerId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .policy(policy)
                 .build();
     }
 
     public static ContractOfferDescription createOffer(String offerId) {
-        return createOffer(offerId, UuidCreator.getTimeOrderedEpoch().toString());
+        return createOffer(offerId, Generators.timeBasedGenerator().generate().toString());
     }
 
     public static ContractOfferDescription createOffer() {
-        return createOffer(UuidCreator.getTimeOrderedEpoch().toString(), UuidCreator.getTimeOrderedEpoch().toString());
+        return createOffer(Generators.timeBasedGenerator().generate().toString(), Generators.timeBasedGenerator().generate().toString());
     }
 }

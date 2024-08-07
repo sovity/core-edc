@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractnegotiation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
@@ -37,7 +38,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -252,9 +252,9 @@ class ContractNegotiationServiceImplTest {
     private ContractAgreement createContractAgreement(String agreementId) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(UuidCreator.getTimeOrderedEpoch().toString())
-                .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .providerId(Generators.timeBasedGenerator().generate().toString())
+                .consumerId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(Generators.timeBasedGenerator().generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
@@ -262,14 +262,14 @@ class ContractNegotiationServiceImplTest {
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol");
     }
 
     private ContractOffer createContractOffer() {
         return ContractOffer.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .assetId("test-asset")
                 .build();

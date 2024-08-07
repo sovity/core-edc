@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.core.transform.transformer.from;
 
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonBuilderFactory;
@@ -43,7 +43,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VALUE;
@@ -152,7 +151,7 @@ public class JsonObjectFromPolicyTransformer extends AbstractJsonLdTransformer<P
             policy.getObligations().forEach(duty -> obligationsBuilder.add(duty.accept(this)));
 
             var builder = jsonFactory.createObjectBuilder()
-                    .add(ID, UuidCreator.getTimeOrderedEpoch().toString())
+                    .add(ID, Generators.timeBasedGenerator().generate().toString())
                     .add(TYPE, OdrlNamespace.ODRL_SCHEMA + getTypeAsString(policy.getType()))
                     .add(ODRL_PERMISSION_ATTRIBUTE, permissionsBuilder)
                     .add(ODRL_PROHIBITION_ATTRIBUTE, prohibitionsBuilder)

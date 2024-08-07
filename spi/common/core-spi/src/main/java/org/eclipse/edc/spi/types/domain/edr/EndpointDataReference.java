@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.fasterxml.uuid.Generators;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
@@ -83,7 +83,7 @@ public class EndpointDataReference {
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private final Map<String, Object> properties = new HashMap<>();
-        private String id = UuidCreator.getTimeOrderedEpoch().toString();
+        private String id = Generators.timeBasedGenerator().generate().toString();
         private String endpoint;
         private String authKey;
         private String authCode;

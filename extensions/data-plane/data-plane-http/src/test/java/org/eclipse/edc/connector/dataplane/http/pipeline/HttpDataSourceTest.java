@@ -15,6 +15,7 @@
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -35,7 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,7 +59,7 @@ class HttpDataSourceTest {
 
     @BeforeEach
     public void setUp() {
-        requestId = UuidCreator.getTimeOrderedEpoch().toString();
+        requestId = Generators.timeBasedGenerator().generate().toString();
         url = "http://some.test.url/";
     }
 

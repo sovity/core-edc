@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
+import com.fasterxml.uuid.Generators;
 import io.netty.handler.codec.http.HttpMethod;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -38,7 +39,6 @@ import org.mockito.ArgumentMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -141,8 +141,8 @@ class HttpDataSinkFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress destination) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .destinationDataAddress(destination)
                 .build();

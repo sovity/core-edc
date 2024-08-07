@@ -17,11 +17,11 @@ package org.eclipse.edc.connector.policy.spi;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.entity.Entity;
 
 import java.util.Objects;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
@@ -93,7 +93,7 @@ public class PolicyDefinition extends Entity {
 
         public PolicyDefinition build() {
             if (entity.id == null) {
-                entity.id = UuidCreator.getTimeOrderedEpoch().toString();
+                entity.id = Generators.timeBasedGenerator().generate().toString();
             }
             Objects.requireNonNull(entity.policy, "Policy cannot be null!");
             return super.build();

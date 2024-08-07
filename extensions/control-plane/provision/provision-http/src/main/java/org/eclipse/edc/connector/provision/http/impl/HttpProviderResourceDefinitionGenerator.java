@@ -16,6 +16,7 @@
 
 package org.eclipse.edc.connector.provision.http.impl;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.transfer.spi.provision.ProviderResourceDefinitionGenerator;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
 import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
@@ -23,8 +24,6 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.jetbrains.annotations.Nullable;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.Objects.requireNonNull;
 
@@ -47,7 +46,7 @@ public class HttpProviderResourceDefinitionGenerator implements ProviderResource
             throw new EdcException("Asset id was null for request: " + dataRequest.getId());
         }
         return HttpProviderResourceDefinition.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .dataAddressType(dataAddressType)
                 .transferProcessId(dataRequest.getProcessId())
                 .assetId(assetId)

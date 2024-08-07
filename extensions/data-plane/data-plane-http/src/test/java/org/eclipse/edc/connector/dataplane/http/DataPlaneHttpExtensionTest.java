@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
@@ -26,8 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpResponse;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -69,7 +68,7 @@ public class DataPlaneHttpExtensionTest {
         destinationServer.when(request()).respond(HttpResponse.response().withStatusCode(200));
 
         var request = DataFlowRequest.Builder.newInstance()
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(destination)
                 .traceContext(emptyMap())
@@ -96,7 +95,7 @@ public class DataPlaneHttpExtensionTest {
         destinationServer.when(request()).respond(HttpResponse.response().withStatusCode(200));
 
         var request = DataFlowRequest.Builder.newInstance()
-                .processId(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(Generators.timeBasedGenerator().generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(destination)
                 .traceContext(emptyMap())

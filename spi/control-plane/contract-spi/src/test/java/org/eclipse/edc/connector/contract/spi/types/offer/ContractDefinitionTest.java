@@ -16,10 +16,9 @@ package org.eclipse.edc.connector.contract.spi.types.offer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.query.Criterion.criterion;
@@ -31,8 +30,8 @@ class ContractDefinitionTest {
         ObjectMapper mapper = new TypeManager().getMapper();
         var definition = ContractDefinition.Builder.newInstance()
                 .id("1")
-                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
-                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
                 .assetsSelectorCriterion(criterion("field", "=", "value"))
                 .build();
 

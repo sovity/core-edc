@@ -17,6 +17,7 @@
 
 package org.eclipse.edc.connector.contract.validation;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.policy.PolicyEquality;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.offer.ContractDefinitionResolver;
@@ -48,7 +49,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.time.Instant.MIN;
 import static java.util.Collections.emptyMap;
@@ -518,6 +518,6 @@ class ContractValidationServiceImplTest {
                 .providerId(PROVIDER_ID)
                 .consumerId(CONSUMER_ID)
                 .policy(Policy.Builder.newInstance().build())
-                .assetId(UuidCreator.getTimeOrderedEpoch().toString());
+                .assetId(Generators.timeBasedGenerator().generate().toString());
     }
 }

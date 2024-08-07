@@ -16,7 +16,7 @@
 
 package org.eclipse.edc.connector.transfer.process;
 
-import com.github.f4b6a3.uuid.UuidCreator;
+import com.fasterxml.uuid.Generators;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.policy.spi.store.PolicyArchive;
 import org.eclipse.edc.connector.transfer.provision.DeprovisionResponsesHandler;
@@ -66,7 +66,6 @@ import java.time.Clock;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Function;
 
 import static java.lang.String.format;
@@ -168,7 +167,7 @@ public class TransferProcessManagerImpl implements TransferProcessManager {
     @Override
     public StatusResult<TransferProcess> initiateConsumerRequest(TransferRequest transferRequest) {
         // make the request idempotent: if the process exists, return
-        var id = Optional.ofNullable(transferRequest.getId()).orElseGet(() -> UuidCreator.getTimeOrderedEpoch().toString());
+        var id = Optional.ofNullable(transferRequest.getId()).orElseGet(() -> Generators.timeBasedGenerator().generate().toString());
         var existingTransferProcess = transferProcessStore.findForCorrelationId(id);
         if (existingTransferProcess != null) {
             return StatusResult.success(existingTransferProcess);

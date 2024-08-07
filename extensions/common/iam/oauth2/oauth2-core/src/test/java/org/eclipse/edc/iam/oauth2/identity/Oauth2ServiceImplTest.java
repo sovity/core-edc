@@ -17,6 +17,7 @@
 
 package org.eclipse.edc.iam.oauth2.identity;
 
+import com.fasterxml.uuid.Generators;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -51,7 +52,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.time.ZoneOffset.UTC;
 import static java.util.Collections.emptyMap;
@@ -249,7 +249,7 @@ class Oauth2ServiceImplTest {
     private RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
+                .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID
                 .generate();
     }
 

@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.test.e2e.managementapi;
 
+import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStore;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
 import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
@@ -24,8 +25,6 @@ import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
 import org.junit.jupiter.api.Test;
-
-import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
@@ -69,10 +68,10 @@ public class CatalogApiEndToEndTest extends BaseManagementApiEndToEndTest {
         var policyDefinitionStore = controlPlane.getContext().getService(PolicyDefinitionStore.class);
         var contractDefinitionStore = controlPlane.getContext().getService(ContractDefinitionStore.class);
 
-        var policyId = UuidCreator.getTimeOrderedEpoch().toString();
+        var policyId = Generators.timeBasedGenerator().generate().toString();
 
         var cd = ContractDefinition.Builder.newInstance()
-                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(Generators.timeBasedGenerator().generate().toString())
                 .contractPolicyId(policyId)
                 .accessPolicyId(policyId)
                 .build();

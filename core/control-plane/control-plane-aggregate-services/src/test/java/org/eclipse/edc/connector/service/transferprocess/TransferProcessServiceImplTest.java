@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.service.transferprocess;
 
+import com.fasterxml.uuid.Generators;
 import org.assertj.core.api.Assertions;
 import org.eclipse.edc.connector.spi.transferprocess.TransferProcessService;
 import org.eclipse.edc.connector.transfer.spi.TransferProcessManager;
@@ -44,7 +45,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -64,7 +64,7 @@ import static org.mockito.Mockito.when;
 
 class TransferProcessServiceImplTest {
 
-    private final String id = UuidCreator.getTimeOrderedEpoch().toString();
+    private final String id = Generators.timeBasedGenerator().generate().toString();
     private final TransferProcess process1 = transferProcess();
     private final TransferProcess process2 = transferProcess();
     private final QuerySpec query = QuerySpec.Builder.newInstance().limit(5).offset(2).build();
@@ -218,7 +218,7 @@ class TransferProcessServiceImplTest {
 
     private TransferProcess transferProcess() {
         var state = TransferProcessStates.values()[ThreadLocalRandom.current().nextInt(TransferProcessStates.values().length)];
-        return transferProcess(state, UuidCreator.getTimeOrderedEpoch().toString());
+        return transferProcess(state, Generators.timeBasedGenerator().generate().toString());
     }
 
     private TransferProcess transferProcess(TransferProcessStates state, String id) {
