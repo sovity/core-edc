@@ -22,7 +22,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -47,7 +47,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -76,7 +76,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .properties(Map.of(
@@ -105,7 +105,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .baseUrl("http://source")
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -131,7 +131,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();

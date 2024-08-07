@@ -41,7 +41,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.net.URL;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
@@ -137,7 +137,7 @@ public class TransferProcessHttpClientIntegrationTest {
                 .state(TransferProcessStates.STARTED.code())
                 .type(TransferProcess.Type.PROVIDER)
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidCreator.getTimeOrderedEpoch().toString())
                         .destinationType("file")
                         .protocol("any")
                         .connectorAddress("http://an/address")
@@ -147,7 +147,7 @@ public class TransferProcessHttpClientIntegrationTest {
 
     private DataFlowRequest createDataFlowRequest(String processId, URL callbackAddress) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .processId(processId)
                 .callbackAddress(callbackAddress)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("file").build())

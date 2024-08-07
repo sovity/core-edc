@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.io.IOException;
 import java.security.Security;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -42,7 +42,7 @@ class DefaultPrivateKeyParseFunctionTest {
     @Test
     void verifyParseInvalidPemThrowsException() {
         assertThatExceptionOfType(EdcException.class)
-                .isThrownBy(() -> parseFunction.apply(UUID.randomUUID().toString()))
+                .isThrownBy(() -> parseFunction.apply(UuidCreator.getTimeOrderedEpoch().toString()))
                 .withMessageContaining("Object cannot be null");
     }
 

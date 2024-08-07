@@ -39,7 +39,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;
@@ -89,7 +89,7 @@ class IssuerTests {
         var jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                 .privateKey((RSAPrivateKey) keyPair.getPrivate())
                 .keyUse(KeyUse.SIGNATURE)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(UuidCreator.getTimeOrderedEpoch().toString())
                 .issueTime(new Date())
                 .build();
         var keypair = createKeyPair(jwk);

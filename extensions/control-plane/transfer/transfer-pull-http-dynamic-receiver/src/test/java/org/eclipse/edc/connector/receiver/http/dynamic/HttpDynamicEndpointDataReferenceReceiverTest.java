@@ -33,7 +33,7 @@ import org.mockserver.model.HttpStatusCode;
 import org.mockserver.model.MediaType;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -217,8 +217,8 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("some.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UUID.randomUUID().toString())
-                .id(UUID.randomUUID().toString());
+                .authCode(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString());
     }
 
     private String receiverUrl() {

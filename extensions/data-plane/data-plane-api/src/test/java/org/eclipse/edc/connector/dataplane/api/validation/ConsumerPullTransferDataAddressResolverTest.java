@@ -29,7 +29,7 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.MediaType;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getFreePort;
@@ -69,7 +69,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifySuccessTokenValidation() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();
@@ -88,7 +88,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifyFailedResultReturnedIfServerResponseIsUnsuccessful() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();

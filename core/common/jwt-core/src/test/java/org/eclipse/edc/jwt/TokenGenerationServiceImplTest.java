@@ -33,7 +33,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static com.nimbusds.jose.JWSAlgorithm.RS256;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,7 +98,7 @@ class TokenGenerationServiceImplTest {
     private static RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
                 .generate();
     }
 }

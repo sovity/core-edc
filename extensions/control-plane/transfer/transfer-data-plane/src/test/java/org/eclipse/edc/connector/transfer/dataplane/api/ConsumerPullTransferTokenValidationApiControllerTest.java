@@ -26,7 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -53,9 +53,9 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyValidateSuccess() {
-        var token = UUID.randomUUID().toString();
-        var encryptedDataAddress = UUID.randomUUID().toString();
-        var decryptedDataAddress = DataAddress.Builder.newInstance().type(UUID.randomUUID().toString()).build();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var encryptedDataAddress = UuidCreator.getTimeOrderedEpoch().toString();
+        var decryptedDataAddress = DataAddress.Builder.newInstance().type(UuidCreator.getTimeOrderedEpoch().toString()).build();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of(
                                 "key1", "value1",
@@ -76,8 +76,8 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyTokenValidationFailureThrowsException() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
 
         when(tokenValidationServiceMock.validate(token)).thenReturn(Result.failure(errorMsg));
 
@@ -88,7 +88,7 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyMissingAddressThrowsException() {
-        var token = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of("key1", "value1"))
                 .build();

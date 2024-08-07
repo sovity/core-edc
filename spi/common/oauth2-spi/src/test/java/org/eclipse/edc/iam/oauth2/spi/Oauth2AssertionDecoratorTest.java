@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +44,7 @@ class Oauth2AssertionDecoratorTest {
     @BeforeEach
     void setUp() {
         audience = "test-audience";
-        clientId = UUID.randomUUID().toString();
+        clientId = UuidCreator.getTimeOrderedEpoch().toString();
         var clock = Clock.fixed(now, UTC);
         decorator = new Oauth2AssertionDecorator(audience, clientId, clock, TOKEN_EXPIRATION);
     }

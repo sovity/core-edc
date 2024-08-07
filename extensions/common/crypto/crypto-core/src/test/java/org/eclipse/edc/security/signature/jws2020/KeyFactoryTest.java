@@ -42,7 +42,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -147,7 +147,7 @@ class KeyFactoryTest {
                 return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                         .privateKey((RSAPrivateKey) keyPair.getPrivate())
                         .keyUse(KeyUse.SIGNATURE)
-                        .keyID(UUID.randomUUID().toString())
+                        .keyID(UuidCreator.getTimeOrderedEpoch().toString())
                         .issueTime(new Date())
                         .build();
 
@@ -160,7 +160,7 @@ class KeyFactoryTest {
             try {
                 return new OctetKeyPairGenerator(Curve.Ed25519)
                         .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                        .keyID(UUID.randomUUID().toString()) // give the key a unique ID (optional)
+                        .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID (optional)
                         .issueTime(new Date()) // issued-at timestamp (optional)
                         .generate();
             } catch (JOSEException e) {

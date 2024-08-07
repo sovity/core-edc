@@ -19,7 +19,7 @@ import org.eclipse.edc.spi.types.domain.asset.Asset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -34,7 +34,7 @@ class InMemoryDataAddressResolverTest {
 
     @Test
     void resolveForAsset() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidCreator.getTimeOrderedEpoch().toString();
         var address = createDataAddress();
         var testAsset = createAssetBuilder("foobar", id).dataAddress(address).build();
         resolver.create(testAsset);
@@ -44,7 +44,7 @@ class InMemoryDataAddressResolverTest {
 
     @Test
     void resolveForAsset_assetNull_raisesException() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidCreator.getTimeOrderedEpoch().toString();
         var address = createDataAddress();
         var testAsset = createAssetBuilder("foobar", id).dataAddress(address).build();
         resolver.create(testAsset);
@@ -55,7 +55,7 @@ class InMemoryDataAddressResolverTest {
     @Test
     void resolveForAsset_whenAssetDeleted_raisesException() {
         var address = createDataAddress();
-        var testAsset = createAssetBuilder("foobar", UUID.randomUUID().toString()).dataAddress(address).build();
+        var testAsset = createAssetBuilder("foobar", UuidCreator.getTimeOrderedEpoch().toString()).dataAddress(address).build();
         resolver.create(testAsset);
         resolver.deleteById(testAsset.getId());
 

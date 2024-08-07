@@ -41,7 +41,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -108,7 +108,7 @@ class TransferDataPlaneCoreExtensionTest {
     private static PrivateKey privateKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
                 .generate()
                 .toPrivateKey();
     }

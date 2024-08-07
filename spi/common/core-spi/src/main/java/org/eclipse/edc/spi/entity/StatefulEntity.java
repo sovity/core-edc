@@ -22,7 +22,7 @@ import java.time.Clock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * Base class for state machine persistent entities.
@@ -39,7 +39,7 @@ public abstract class StatefulEntity<T extends StatefulEntity<T>> extends Mutabl
 
     protected StatefulEntity() {
     }
-    
+
     public int getState() {
         return state;
     }
@@ -159,7 +159,7 @@ public abstract class StatefulEntity<T extends StatefulEntity<T>> extends Mutabl
         protected T build() {
             super.build();
             if (entity.id == null) {
-                entity.id = UUID.randomUUID().toString();
+                entity.id = UuidCreator.getTimeOrderedEpoch().toString();
             }
 
             if (entity.stateTimestamp == 0) {

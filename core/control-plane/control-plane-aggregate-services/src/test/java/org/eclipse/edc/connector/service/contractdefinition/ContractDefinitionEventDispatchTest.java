@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.junit.matchers.EventEnvelopeMatcher.isEnvelopeOf;
@@ -57,9 +57,9 @@ public class ContractDefinitionEventDispatchTest {
     void shouldDispatchEventOnContractDefinitionCreationAndDeletion(ContractDefinitionService service, EventRouter eventRouter) {
         eventRouter.register(ContractDefinitionEvent.class, eventSubscriber);
         var contractDefinition = ContractDefinition.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .contractPolicyId(UUID.randomUUID().toString())
-                .accessPolicyId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .build();
 
         service.create(contractDefinition);

@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
@@ -167,7 +167,7 @@ public class DataPlaneInstance {
 
         public DataPlaneInstance build() {
             if (instance.id == null) {
-                instance.id = UUID.randomUUID().toString();
+                instance.id = UuidCreator.getTimeOrderedEpoch().toString();
             }
             Objects.requireNonNull(instance.url, "DataPlaneInstance must have an URL");
 

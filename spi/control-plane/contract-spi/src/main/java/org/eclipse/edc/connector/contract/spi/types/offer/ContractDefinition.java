@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
@@ -140,7 +140,7 @@ public class ContractDefinition extends Entity {
         @Override
         public ContractDefinition build() {
             if (entity.getId() == null) {
-                id(UUID.randomUUID().toString());
+                id(UuidCreator.getTimeOrderedEpoch().toString());
             }
             Objects.requireNonNull(entity.accessPolicyId);
             Objects.requireNonNull(entity.contractPolicyId);

@@ -16,6 +16,7 @@
 package org.eclipse.edc.sql.lease;
 
 
+import com.github.f4b6a3.uuid.UuidCreator;
 import org.eclipse.edc.spi.persistence.LeaseContext;
 import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.transaction.spi.TransactionContext;
@@ -27,7 +28,7 @@ import java.sql.SQLException;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * SQL-based implementation of the LeaseContext.
@@ -89,7 +90,8 @@ public class SqlLeaseContext implements LeaseContext {
             }
 
             // create new lease in DB
-            var id = UUID.randomUUID().toString();
+
+            var id = UuidCreator.getTimeOrderedEpoch().toString();
             var duration = leaseDuration != null ? leaseDuration.toMillis() : DEFAULT_LEASE_DURATION;
             var stmt = statements.getInsertLeaseTemplate();
             queryExecutor.execute(connection, stmt, id, leaseHolder, now, duration);

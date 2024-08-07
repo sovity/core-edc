@@ -35,7 +35,7 @@ import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
@@ -56,7 +56,7 @@ class TokenValidationServiceImplTest {
         key = testKey();
         ruleMock = mock(TokenValidationRule.class);
         var publicKey = (RSAPublicKey) key.toPublicKey();
-        publicKeyId = UUID.randomUUID().toString();
+        publicKeyId = UuidCreator.getTimeOrderedEpoch().toString();
         var resolver = new PublicKeyResolver() {
             @Override
             public @Nullable
@@ -125,7 +125,7 @@ class TokenValidationServiceImplTest {
     private static RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
                 .generate();
     }
 }

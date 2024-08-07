@@ -29,7 +29,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -106,7 +106,7 @@ class CatalogProtocolServiceImplTest {
         var dataService = DataService.Builder.newInstance().build();
         var distribution = Distribution.Builder.newInstance().dataService(dataService).format("any").build();
         return Dataset.Builder.newInstance()
-                .offer(UUID.randomUUID().toString(), Policy.Builder.newInstance().build())
+                .offer(UuidCreator.getTimeOrderedEpoch().toString(), Policy.Builder.newInstance().build())
                 .distribution(distribution)
                 .build();
     }

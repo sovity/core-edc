@@ -48,7 +48,7 @@ import org.mockserver.verify.VerificationTimes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
@@ -112,8 +112,8 @@ class DataPlaneApiIntegrationTest {
     @Test
     void controlApi_should_callDataPlaneManager_if_requestIsValid() {
         var flowRequest = DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();
@@ -135,8 +135,8 @@ class DataPlaneApiIntegrationTest {
     void controlApi_should_returnBadRequest_if_requestIsInValid() {
         var errorMsg = "test error message";
         var flowRequest = DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();
@@ -176,7 +176,7 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnForbidden_if_tokenValidationFails() {
-        var token = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
 
         var validationServerRequest = new HttpRequest().withHeader(AUTHORIZATION, token);
         tokenValidationServer.when(validationServerRequest, once()).respond(new HttpResponse().withStatusCode(400));
@@ -194,8 +194,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnBadRequest_if_requestValidationFails() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -216,8 +216,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnInternalServerError_if_transferFails() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -240,8 +240,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnInternalServerError_if_transferThrows() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -264,7 +264,7 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnDataFromSource_if_transferSuccessful() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
+        var token = UuidCreator.getTimeOrderedEpoch().toString();
         var address = testDestAddress();
         var requestCaptor = ArgumentCaptor.forClass(DataFlowRequest.class);
 

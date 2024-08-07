@@ -27,7 +27,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,7 +67,7 @@ class AssetEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UUID.randomUUID().toString()).payload(it)
+                            .id(UuidCreator.getTimeOrderedEpoch().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

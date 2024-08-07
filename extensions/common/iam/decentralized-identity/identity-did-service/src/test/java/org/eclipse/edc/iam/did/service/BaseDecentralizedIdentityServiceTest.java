@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;
@@ -106,7 +106,7 @@ abstract class BaseDecentralizedIdentityServiceTest {
 
     @Test
     void generateAndVerifyJwtToken_getVerifiedCredentialsFailed() {
-        var errorMsg = UUID.randomUUID().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
         when(credentialsVerifierMock.getVerifiedCredentials(any())).thenReturn(Result.failure(errorMsg));
         when(didResolverRegistryMock.resolve(anyString())).thenReturn(Result.success(createDidDocument(keyPair)));
 

@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,7 +58,7 @@ class HashicorpVaultClientTest {
     void getSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidCreator.getTimeOrderedEpoch().toString();
         var config =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -94,8 +94,8 @@ class HashicorpVaultClientTest {
     void setSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
-        var secretValue = UUID.randomUUID().toString();
+        var vaultToken = UuidCreator.getTimeOrderedEpoch().toString();
+        var secretValue = UuidCreator.getTimeOrderedEpoch().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -133,7 +133,7 @@ class HashicorpVaultClientTest {
     void getHealth() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidCreator.getTimeOrderedEpoch().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -204,7 +204,7 @@ class HashicorpVaultClientTest {
     void destroySecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidCreator.getTimeOrderedEpoch().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)

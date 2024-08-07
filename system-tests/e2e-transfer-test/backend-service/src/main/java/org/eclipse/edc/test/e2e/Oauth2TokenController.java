@@ -29,7 +29,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 
@@ -61,11 +61,11 @@ public class Oauth2TokenController {
         try {
             var key = new RSAKeyGenerator(2048)
                     .keyUse(KeyUse.SIGNATURE)
-                    .keyID(UUID.randomUUID().toString())
+                    .keyID(UuidCreator.getTimeOrderedEpoch().toString())
                     .generate();
 
             var claims = new JWTClaimsSet.Builder().build();
-            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(UUID.randomUUID().toString()).build();
+            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(UuidCreator.getTimeOrderedEpoch().toString()).build();
 
             var jwt = new SignedJWT(header, claims);
             jwt.sign(new RSASSASigner(key.toPrivateKey()));

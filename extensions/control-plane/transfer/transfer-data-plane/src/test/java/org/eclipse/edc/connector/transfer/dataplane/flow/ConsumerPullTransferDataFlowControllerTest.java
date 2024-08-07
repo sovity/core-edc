@@ -23,7 +23,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.transfer.dataplane.spi.TransferDataPlaneConstants.HTTP_PROXY;
@@ -91,17 +91,17 @@ class ConsumerPullTransferDataFlowControllerTest {
     }
 
     private DataAddress dataAddress() {
-        return DataAddress.Builder.newInstance().type(UUID.randomUUID().toString()).build();
+        return DataAddress.Builder.newInstance().type(UuidCreator.getTimeOrderedEpoch().toString()).build();
     }
 
     private DataRequest dataRequest() {
         return DataRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .protocol("protocol")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .connectorAddress("test.connector.address")
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .destinationType(HTTP_PROXY)
                 .build();
     }

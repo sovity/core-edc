@@ -25,7 +25,7 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * Extension that registers an AuthenticationService that uses API Keys
@@ -57,7 +57,7 @@ public class TokenBasedAuthenticationExtension implements ServiceExtension {
         }
 
         if (apiKey == null) {
-            apiKey = context.getSetting(AUTH_SETTING_APIKEY, UUID.randomUUID().toString());
+            apiKey = context.getSetting(AUTH_SETTING_APIKEY, UuidCreator.getTimeOrderedEpoch().toString());
         }
 
         context.registerService(AuthenticationService.class, new TokenBasedAuthenticationService(apiKey));

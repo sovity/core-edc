@@ -44,7 +44,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -64,7 +64,7 @@ import static org.mockito.Mockito.when;
 
 class TransferProcessServiceImplTest {
 
-    private final String id = UUID.randomUUID().toString();
+    private final String id = UuidCreator.getTimeOrderedEpoch().toString();
     private final TransferProcess process1 = transferProcess();
     private final TransferProcess process2 = transferProcess();
     private final QuerySpec query = QuerySpec.Builder.newInstance().limit(5).offset(2).build();
@@ -218,7 +218,7 @@ class TransferProcessServiceImplTest {
 
     private TransferProcess transferProcess() {
         var state = TransferProcessStates.values()[ThreadLocalRandom.current().nextInt(TransferProcessStates.values().length)];
-        return transferProcess(state, UUID.randomUUID().toString());
+        return transferProcess(state, UuidCreator.getTimeOrderedEpoch().toString());
     }
 
     private TransferProcess transferProcess(TransferProcessStates state, String id) {

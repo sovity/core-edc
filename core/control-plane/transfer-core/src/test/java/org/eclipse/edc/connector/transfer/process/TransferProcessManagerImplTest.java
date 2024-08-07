@@ -70,7 +70,7 @@ import org.mockito.ArgumentCaptor;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -782,7 +782,7 @@ class TransferProcessManagerImplTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates inState) {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidCreator.getTimeOrderedEpoch().toString();
         var dataRequest = createDataRequestBuilder()
                 .processId(processId)
                 .protocol("protocol")
@@ -799,9 +799,9 @@ class TransferProcessManagerImplTest {
 
     private DataRequest.Builder createDataRequestBuilder() {
         return DataRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .destinationType(DESTINATION_TYPE);
     }
 

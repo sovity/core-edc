@@ -22,7 +22,7 @@ import org.eclipse.edc.policy.model.Policy;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 public class TestFunctions {
 
@@ -56,7 +56,7 @@ public class TestFunctions {
                 .id("agreementId")
                 .providerId("provider")
                 .consumerId("consumer")
-                .assetId(UUID.randomUUID().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .contractSigningDate(Instant.now().getEpochSecond());
     }

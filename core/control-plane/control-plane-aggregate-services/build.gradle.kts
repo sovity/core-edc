@@ -23,6 +23,8 @@ dependencies {
 
     implementation(libs.opentelemetry.instrumentation.annotations)
 
+    implementation("com.github.f4b6a3:uuid-creator:5.2.0")
+
     testImplementation(project(":core:control-plane:catalog-core"))
     testImplementation(project(":core:control-plane:contract-core"))
     testImplementation(project(":core:control-plane:control-plane-core"))

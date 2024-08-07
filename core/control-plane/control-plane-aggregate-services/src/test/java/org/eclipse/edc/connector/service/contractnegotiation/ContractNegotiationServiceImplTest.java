@@ -37,7 +37,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -252,9 +252,9 @@ class ContractNegotiationServiceImplTest {
     private ContractAgreement createContractAgreement(String agreementId) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(UUID.randomUUID().toString())
-                .consumerId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .providerId(UuidCreator.getTimeOrderedEpoch().toString())
+                .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
@@ -262,14 +262,14 @@ class ContractNegotiationServiceImplTest {
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(UUID.randomUUID().toString())
+                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol");
     }
 
     private ContractOffer createContractOffer() {
         return ContractOffer.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .assetId("test-asset")
                 .build();

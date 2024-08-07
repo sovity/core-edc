@@ -45,7 +45,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -135,7 +135,7 @@ class EndToEndKafkaTransferTest {
     void kafkaToHttpTransfer() {
         PROVIDER.registerDataPlane();
 
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidCreator.getTimeOrderedEpoch().toString();
         createResourcesOnProvider(assetId, kafkaSourceProperty());
 
         var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), httpSink());
@@ -158,7 +158,7 @@ class EndToEndKafkaTransferTest {
 
             PROVIDER.registerDataPlane();
 
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidCreator.getTimeOrderedEpoch().toString();
             createResourcesOnProvider(assetId, kafkaSourceProperty());
 
             var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), kafkaSink());
@@ -201,7 +201,7 @@ class EndToEndKafkaTransferTest {
     private void createResourcesOnProvider(String assetId, Map<String, Object> dataAddressProperties) {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
         var noConstraintPolicyDefinition = PROVIDER.createPolicyDefinition(noConstraintPolicy());
-        PROVIDER.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
+        PROVIDER.createContractDefinition(assetId, UuidCreator.getTimeOrderedEpoch().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
     }
 
     private static JsonObject httpSink() {

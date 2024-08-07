@@ -51,7 +51,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -142,7 +142,7 @@ class ContractNegotiationProtocolServiceImplTest {
         assertThat(result).isFailed().extracting(ServiceFailure::getReason).isEqualTo(BAD_REQUEST);
         verify(validationService).validateInitialOffer(token, contractOffer);
     }
-    
+
     @Test
     void notifyOffered_shouldTransitionToOffered_whenNegotiationFound() {
         var processId = "processId";
@@ -155,21 +155,21 @@ class ContractNegotiationProtocolServiceImplTest {
                 .processId(processId)
                 .build();
         var negotiation = createContractNegotiationRequested();
-        
+
         when(store.findByCorrelationIdAndLease(processId)).thenReturn(StoreResult.success(negotiation));
         when(validationService.validateRequest(token, negotiation)).thenReturn(Result.success());
-        
+
         var result = service.notifyOffered(message, token);
-        
+
         assertThat(result).isSucceeded();
         var updatedNegotiation = result.getContent();
         assertThat(updatedNegotiation.getContractOffers()).hasSize(2);
         assertThat(updatedNegotiation.getLastContractOffer()).isEqualTo(contractOffer);
-        
+
         verify(listener).offered(any());
         verify(transactionContext, atLeastOnce()).execute(any(TransactionContext.ResultTransactionBlock.class));
     }
-    
+
     @Test
     void notifyOffered_shouldReturnFailure_whenNegotiationNotFound() {
         var token = ClaimToken.Builder.newInstance().build();
@@ -180,15 +180,15 @@ class ContractNegotiationProtocolServiceImplTest {
                 .contractOffer(contractOffer)
                 .processId("processId")
                 .build();
-    
+
         when(store.findByCorrelationIdAndLease(any())).thenReturn(StoreResult.notFound("negotiation not found"));
-        
+
         var result = service.notifyOffered(message, token);
-        
+
         assertThat(result).isFailed().extracting(ServiceFailure::getReason).isEqualTo(NOT_FOUND);
         verify(listener, never()).offered(any());
     }
-    
+
     @Test
     void notifyOffered_shouldReturnFailure_whenCounterPartyValidationFails() {
         var processId = "processId";
@@ -201,12 +201,12 @@ class ContractNegotiationProtocolServiceImplTest {
                 .processId(processId)
                 .build();
         var negotiation = createContractNegotiationRequested();
-    
+
         when(store.findByCorrelationIdAndLease(processId)).thenReturn(StoreResult.success(negotiation));
         when(validationService.validateRequest(token, negotiation)).thenReturn(Result.failure("error"));
-        
+
         var result = service.notifyOffered(message, token);
-        
+
         assertThat(result).isFailed().extracting(ServiceFailure::getReason).isEqualTo(BAD_REQUEST);
         verify(listener, never()).offered(any());
     }
@@ -380,46 +380,46 @@ class ContractNegotiationProtocolServiceImplTest {
         verify(store, never()).save(any());
         verifyNoInteractions(listener);
     }
-    
+
     @Test
     void findById_shouldReturnNegotiation_whenValidCounterParty() {
         var id = "negotiationId";
         var token = ClaimToken.Builder.newInstance().build();
         var negotiation = contractNegotiationBuilder().id(id).type(PROVIDER).state(VERIFIED.code()).build();
-        
+
         when(store.findById(id)).thenReturn(negotiation);
         when(validationService.validateRequest(token, negotiation)).thenReturn(Result.success());
-        
+
         var result = service.findById(id, token);
-        
+
         assertThat(result)
                 .isSucceeded()
                 .isEqualTo(negotiation);
     }
-    
+
     @Test
     void findById_shouldReturnNotFound_whenNegotiationNotFound() {
         when(store.findById(any())).thenReturn(null);
-    
+
         var result = service.findById("invalidId", ClaimToken.Builder.newInstance().build());
-        
+
         assertThat(result)
                 .isFailed()
                 .extracting(ServiceFailure::getReason)
                 .isEqualTo(NOT_FOUND);
     }
-    
+
     @Test
     void findById_shouldReturnNotFound_whenCounterPartyUnauthorized() {
         var id = "negotiationId";
         var token = ClaimToken.Builder.newInstance().build();
         var negotiation = contractNegotiationBuilder().id(id).type(PROVIDER).state(VERIFIED.code()).build();
-    
+
         when(store.findById(id)).thenReturn(negotiation);
         when(validationService.validateRequest(token, negotiation)).thenReturn(Result.failure("validation error"));
-    
+
         var result = service.findById(id, token);
-        
+
         assertThat(result)
                 .isFailed()
                 .extracting(ServiceFailure::getReason)
@@ -454,7 +454,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("callbackAddress")

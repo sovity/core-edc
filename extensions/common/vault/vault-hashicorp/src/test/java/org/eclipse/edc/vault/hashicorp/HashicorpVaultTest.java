@@ -19,7 +19,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -70,7 +70,7 @@ class HashicorpVaultTest {
     @Test
     void setSecretSuccess() {
         // prepare
-        var value = UUID.randomUUID().toString();
+        var value = UuidCreator.getTimeOrderedEpoch().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.success(null));
 
         // invoke
@@ -84,7 +84,7 @@ class HashicorpVaultTest {
     @Test
     void setSecretFailure() {
         // prepare
-        var value = UUID.randomUUID().toString();
+        var value = UuidCreator.getTimeOrderedEpoch().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.failure("test-failure"));
 
         // invoke

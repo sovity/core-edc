@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,7 +95,7 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(UUID.randomUUID().toString())
+                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")
@@ -116,9 +116,9 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractAgreement createContractAgreement(String negotiationId) {
         return ContractAgreement.Builder.newInstance()
                 .id(negotiationId)
-                .assetId(UUID.randomUUID().toString())
-                .consumerId(UUID.randomUUID() + "-consumer")
-                .providerId(UUID.randomUUID() + "-provider")
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
+                .consumerId(UuidCreator.getTimeOrderedEpoch() + "-consumer")
+                .providerId(UuidCreator.getTimeOrderedEpoch() + "-provider")
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

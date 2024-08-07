@@ -30,7 +30,7 @@ import org.mockito.ArgumentCaptor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.BODY;
@@ -166,12 +166,12 @@ class ProviderPushTransferDataFlowControllerTest {
 
     private DataRequest createDataRequest(String destinationType, DataAddress dataDestination) {
         DataRequest.Builder builder = DataRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .protocol("test-protocol")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .connectorAddress("test.connector.address")
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .destinationType(destinationType);
 
         if (dataDestination != null) {

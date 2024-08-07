@@ -23,6 +23,7 @@ dependencies {
 
     implementation(project(":core:common:state-machine"))
     implementation(libs.opentelemetry.instrumentation.annotations)
+    implementation("com.github.f4b6a3:uuid-creator:5.2.0")
 
     testImplementation(project(":core:control-plane:control-plane-core"))
     testImplementation(project(":core:control-plane:control-plane-aggregate-services"))

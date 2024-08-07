@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
@@ -56,7 +56,7 @@ class JsonObjectFromContractAgreementMessageTransformerTest {
     private static final String PROCESS_ID = "processId";
     private static final String TIMESTAMP = "1970-01-01T00:00:00Z";
     private static final String DSP = "dsp";
-    public static final String AGREEMENT_ID = UUID.randomUUID().toString();
+    public static final String AGREEMENT_ID = UuidCreator.getTimeOrderedEpoch().toString();
 
     private final JsonBuilderFactory jsonFactory = Json.createBuilderFactory(Map.of());
     private final TransformerContext context = mock(TransformerContext.class);

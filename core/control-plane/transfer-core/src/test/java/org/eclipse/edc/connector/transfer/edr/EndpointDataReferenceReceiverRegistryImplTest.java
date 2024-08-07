@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +45,7 @@ class EndpointDataReferenceReceiverRegistryImplTest {
     private final TypeTransformerRegistry typeTransformerRegistry = mock(TypeTransformerRegistry.class);
 
     private final EndpointDataReferenceReceiverRegistryImpl registry = new EndpointDataReferenceReceiverRegistryImpl(typeTransformerRegistry);
-    
+
     @Test
     void onEvent_success() {
         var address = DataAddress.Builder.newInstance().type("test").build();
@@ -134,9 +134,9 @@ class EndpointDataReferenceReceiverRegistryImplTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("test.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UUID.randomUUID().toString())
-                .id(UUID.randomUUID().toString())
-                .properties(Map.of("test-key", UUID.randomUUID().toString()))
+                .authCode(UuidCreator.getTimeOrderedEpoch().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .properties(Map.of("test-key", UuidCreator.getTimeOrderedEpoch().toString()))
                 .build();
     }
 }

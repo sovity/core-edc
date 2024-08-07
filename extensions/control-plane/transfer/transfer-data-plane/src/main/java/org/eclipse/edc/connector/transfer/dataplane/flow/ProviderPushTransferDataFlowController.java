@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.BODY;
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.MEDIA_TYPE;
@@ -74,7 +74,7 @@ public class ProviderPushTransferDataFlowController implements DataFlowControlle
         extractIfPresent(dataRequest, QUERY_PARAMS, parameterizations);
 
         return DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .processId(dataRequest.getProcessId())
                 .trackable(true)
                 .sourceDataAddress(sourceAddress)

@@ -320,7 +320,10 @@ public class SqlContractNegotiationStore extends AbstractSqlStore implements Con
                 } else {
                     // update agreement
                     var query = statements.getUpdateAgreementTemplate();
-                    queryExecutor.execute(connection, query, contractAgreement.getProviderId(),
+                    queryExecutor.execute(
+                            connection,
+                            query,
+                            contractAgreement.getProviderId(),
                             contractAgreement.getConsumerId(),
                             contractAgreement.getContractSigningDate(),
                             contractAgreement.getAssetId(),

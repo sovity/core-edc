@@ -48,7 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Function;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
@@ -115,7 +115,7 @@ public class DspNegotiationApiController {
         if (claimTokenResult.failed()) {
             return error().processId(id).unauthorized();
         }
-        
+
         return protocolService.findById(id, claimTokenResult.getContent())
                 .map(this::createNegotiationResponse)
                 .orElse(createErrorResponse(id));
@@ -337,12 +337,12 @@ public class DspNegotiationApiController {
         }
         return Objects.equals(expected, actual.getProcessId()) ? Result.success(actual) : Result.failure(format("Invalid process ID. Expected: %s, actual: %s", expected, actual));
     }
-    
+
     private Response createNegotiationResponse(ContractNegotiation negotiation) {
         return transformerRegistry.transform(negotiation, JsonObject.class)
                 .map(transformedJson -> Response.ok().type(MediaType.APPLICATION_JSON).entity(transformedJson).build())
                 .orElse(failure -> {
-                    var errorCode = UUID.randomUUID();
+                    var errorCode = UuidCreator.getTimeOrderedEpoch();
                     monitor.warning(String.format("Error transforming negotiation, error id %s: %s", errorCode, failure.getFailureDetail()));
                     var processId = negotiation.getCorrelationId();
                     return error()

@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Instant;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static java.time.Duration.ofDays;
@@ -167,9 +167,9 @@ class ContractExpiryCheckFunctionEvaluationTest {
     private ContractAgreement createAgreement(String agreementId, Instant signingTime) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(UUID.randomUUID().toString())
-                .consumerId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .providerId(UuidCreator.getTimeOrderedEpoch().toString())
+                .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .contractSigningDate(signingTime.getEpochSecond())
                 .policy(Policy.Builder.newInstance().build())
                 .build();

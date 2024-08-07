@@ -31,7 +31,7 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Optional;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 public class ConsumerPullKeyPairFactory {
 
@@ -53,7 +53,7 @@ public class ConsumerPullKeyPairFactory {
         try {
             return new ECKeyGenerator(Curve.P_256)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                    .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                    .keyID(UuidCreator.getTimeOrderedEpoch().toString()) // give the key a unique ID
                     .generate()
                     .toKeyPair();
         } catch (JOSEException e) {

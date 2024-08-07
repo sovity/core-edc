@@ -31,7 +31,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.types.domain.HttpDataAddress.HTTP_DATA;
@@ -103,8 +103,8 @@ class HttpDataSourceFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress source) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("Test type").build())
                 .build();

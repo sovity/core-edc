@@ -22,7 +22,7 @@ import org.eclipse.edc.jsonld.util.JacksonJsonLd;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;
 
@@ -31,7 +31,7 @@ class TestFunctions {
     private static final ObjectMapper MAPPER = JacksonJsonLd.createObjectMapper();
 
     static KeyPair createKeyPair(JWK jwk) {
-        var id = URI.create("https://org.eclipse.edc/keys/" + UUID.randomUUID());
+        var id = URI.create("https://org.eclipse.edc/keys/" + UuidCreator.getTimeOrderedEpoch());
         var type = URI.create("https://w3id.org/security#JsonWebKey2020");
         return new JwkMethod(id, type, null, jwk);
     }

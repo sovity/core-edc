@@ -38,7 +38,7 @@ import org.mockito.ArgumentMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -141,8 +141,8 @@ class HttpDataSinkFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress destination) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .processId(UuidCreator.getTimeOrderedEpoch().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .destinationDataAddress(destination)
                 .build();

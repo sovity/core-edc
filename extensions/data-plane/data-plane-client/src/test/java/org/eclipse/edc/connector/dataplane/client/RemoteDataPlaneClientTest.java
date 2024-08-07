@@ -40,7 +40,7 @@ import org.mockserver.verify.VerificationTimes;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,7 +156,7 @@ class RemoteDataPlaneClientTest {
 
         // config data plane mock server
         var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(flowRequest));
-        var errorMsg = UUID.randomUUID().toString();
+        var errorMsg = UuidCreator.getTimeOrderedEpoch().toString();
         dataPlaneClientAndServer.when(httpRequest, once()).respond(withResponse(errorMsg));
 
         var result = dataPlaneClient.transfer(flowRequest);

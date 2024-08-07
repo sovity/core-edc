@@ -24,6 +24,8 @@ dependencies {
     implementation(project(":spi:common:transaction-datasource-spi"))
     implementation(project(":extensions:common:sql:sql-core"))
 
+    implementation("com.github.f4b6a3:uuid-creator:5.2.0")
+
     testImplementation(project(":core:common:junit"))
     testImplementation(project(":extensions:common:transaction:transaction-local"))
     testImplementation(testFixtures(project(":extensions:common:sql:sql-lease")))

@@ -32,7 +32,7 @@ import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -436,7 +436,7 @@ class TransferProcessApiControllerTest extends RestControllerTestBase {
 
     @NotNull
     private TransferProcess.Builder createTransferProcess() {
-        return TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString());
+        return TransferProcess.Builder.newInstance().id(UuidCreator.getTimeOrderedEpoch().toString());
     }
 
 }

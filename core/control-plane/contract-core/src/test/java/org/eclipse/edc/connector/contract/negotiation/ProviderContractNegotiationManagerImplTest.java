@@ -48,7 +48,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -247,7 +247,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .type(ContractNegotiation.Type.PROVIDER)
                 .correlationId("processId")
                 .counterPartyId("connectorId")
@@ -259,7 +259,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractAgreement.Builder contractAgreementBuilder() {
         return ContractAgreement.Builder.newInstance()
-                .id(ContractId.create(UUID.randomUUID().toString(), "test-asset-id").toString())
+                .id(ContractId.create(UuidCreator.getTimeOrderedEpoch().toString(), "test-asset-id").toString())
                 .providerId("any")
                 .consumerId("any")
                 .assetId("default")

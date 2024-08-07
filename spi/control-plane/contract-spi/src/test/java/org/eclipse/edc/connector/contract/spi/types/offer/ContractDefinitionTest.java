@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.query.Criterion.criterion;
@@ -31,8 +31,8 @@ class ContractDefinitionTest {
         ObjectMapper mapper = new TypeManager().getMapper();
         var definition = ContractDefinition.Builder.newInstance()
                 .id("1")
-                .accessPolicyId(UUID.randomUUID().toString())
-                .contractPolicyId(UUID.randomUUID().toString())
+                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .assetsSelectorCriterion(criterion("field", "=", "value"))
                 .build();
 

@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,7 +59,7 @@ class HttpDataSourceTest {
 
     @BeforeEach
     public void setUp() {
-        requestId = UUID.randomUUID().toString();
+        requestId = UuidCreator.getTimeOrderedEpoch().toString();
         url = "http://some.test.url/";
     }
 

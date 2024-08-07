@@ -29,7 +29,7 @@ import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
@@ -130,7 +130,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void deprovision() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidCreator.getTimeOrderedEpoch().toString();
         getStore().save(createTransferProcessBuilder(id).state(COMPLETED.code()).build());
 
         baseRequest()
@@ -142,7 +142,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void terminate() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidCreator.getTimeOrderedEpoch().toString();
         getStore().save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
         var requestBody = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(VOCAB, EDC_NAMESPACE))
@@ -214,7 +214,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
                 .id(id)
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidCreator.getTimeOrderedEpoch().toString())
                         .dataDestination(DataAddress.Builder.newInstance()
                                 .type("type")
                                 .build())

@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,8 +38,8 @@ class ConsumerPullDataPlaneProxyTokenDecoratorTest {
     @BeforeEach
     public void setUp() {
         expiration = Date.from(Instant.now().plusSeconds(ThreadLocalRandom.current().nextInt(1, 10)));
-        contractId = UUID.randomUUID().toString();
-        encryptedDataAddress = UUID.randomUUID().toString();
+        contractId = UuidCreator.getTimeOrderedEpoch().toString();
+        encryptedDataAddress = UuidCreator.getTimeOrderedEpoch().toString();
         decorator = new ConsumerPullDataPlaneProxyTokenDecorator(expiration, contractId, encryptedDataAddress);
     }
 

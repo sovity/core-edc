@@ -18,7 +18,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ public final class ContractId {
     }
 
     public static ContractId create(String definitionId, String assetId) {
-        return new ContractId(definitionId, assetId, UUID.randomUUID().toString());
+        return new ContractId(definitionId, assetId, UuidCreator.getTimeOrderedEpoch().toString());
     }
 
     /**

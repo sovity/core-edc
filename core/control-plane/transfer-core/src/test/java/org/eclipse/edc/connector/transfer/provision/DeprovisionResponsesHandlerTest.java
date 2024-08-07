@@ -32,7 +32,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.transfer.spi.types.TransferProcess.Type.CONSUMER;
@@ -169,7 +169,7 @@ class DeprovisionResponsesHandlerTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates inState) {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidCreator.getTimeOrderedEpoch().toString();
         var dataRequest = createDataRequestBuilder()
                 .processId(processId)
                 .protocol("protocol")
@@ -186,9 +186,9 @@ class DeprovisionResponsesHandlerTest {
 
     private DataRequest.Builder createDataRequestBuilder() {
         return DataRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
+                .assetId(UuidCreator.getTimeOrderedEpoch().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("type")
                         .build());
     }

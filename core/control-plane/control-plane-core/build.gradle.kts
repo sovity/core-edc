@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":core:control-plane:control-plane-aggregate-services"))
     implementation(project(":core:common:util"))
 
+    implementation("com.github.f4b6a3:uuid-creator:5.2.0")
+
     testImplementation(testFixtures(project(":spi:common:core-spi")))
     testImplementation(testFixtures(project(":spi:control-plane:contract-spi")))
     testImplementation(testFixtures(project(":spi:control-plane:policy-spi")))

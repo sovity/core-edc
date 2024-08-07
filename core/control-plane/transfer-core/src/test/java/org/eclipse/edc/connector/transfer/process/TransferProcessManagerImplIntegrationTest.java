@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.util.List;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -140,11 +140,11 @@ class TransferProcessManagerImplIntegrationTest {
     }
 
     private TransferProcess.Builder createInitialTransferProcess() {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidCreator.getTimeOrderedEpoch().toString();
         var dataRequest = DataRequest.Builder.newInstance()
                 .id(processId)
                 .destinationType("test-type")
-                .contractId(UUID.randomUUID().toString())
+                .contractId(UuidCreator.getTimeOrderedEpoch().toString())
                 .build();
 
         return TransferProcess.Builder.newInstance()

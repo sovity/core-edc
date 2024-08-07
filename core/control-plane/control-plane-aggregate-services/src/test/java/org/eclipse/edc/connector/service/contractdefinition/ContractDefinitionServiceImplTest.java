@@ -33,7 +33,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -233,9 +233,9 @@ class ContractDefinitionServiceImplTest {
 
     private ContractDefinition createContractDefinition() {
         return ContractDefinition.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .accessPolicyId(UUID.randomUUID().toString())
-                .contractPolicyId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .accessPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
+                .contractPolicyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .build();
     }
 }

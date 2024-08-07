@@ -25,7 +25,7 @@ import org.eclipse.edc.spi.types.domain.Polymorphic;
 import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * A request to transfer data from a source to destination.
@@ -180,7 +180,7 @@ public class DataFlowRequest implements Polymorphic, TraceCarrier {
 
         public DataFlowRequest build() {
             if (request.id == null) {
-                request.id = UUID.randomUUID().toString();
+                request.id = UuidCreator.getTimeOrderedEpoch().toString();
             }
             Objects.requireNonNull(request.processId, "processId");
             Objects.requireNonNull(request.sourceDataAddress, "sourceDataAddress");

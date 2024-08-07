@@ -54,7 +54,7 @@ public class DspCatalogHttpDispatcherExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         messageDispatcher.registerMessage(
                 CatalogRequestMessage.class,
-                new PostDspHttpRequestFactory<>(remoteMessageSerializer, m -> BASE_PATH + CATALOG_REQUEST),
+                new PostDspHttpRequestFactory<>(remoteMessageSerializer, m ->  BASE_PATH + CATALOG_REQUEST),
                 new CatalogRequestHttpRawDelegate()
         );
         messageDispatcher.registerMessage(

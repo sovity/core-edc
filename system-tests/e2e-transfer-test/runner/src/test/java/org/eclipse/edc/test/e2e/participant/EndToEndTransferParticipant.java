@@ -29,7 +29,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.restassured.RestAssured.given;
@@ -150,7 +150,7 @@ public class EndToEndTransferParticipant extends Participant {
     public void registerDataPlane() {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, UUID.randomUUID().toString())
+                .add(ID, UuidCreator.getTimeOrderedEpoch().toString())
                 .add(EDC_NAMESPACE + "url", dataPlaneControl + "/transfer")
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "Kafka")))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "HttpProxy", "Kafka")))
@@ -200,7 +200,7 @@ public class EndToEndTransferParticipant extends Participant {
             }
         };
     }
-    
+
     public Map<String, String> controlPlanePostgresConfiguration() {
         var baseConfiguration = controlPlaneConfiguration();
 

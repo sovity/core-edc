@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 
 /**
  * Base service extension context.
@@ -106,7 +106,7 @@ public class DefaultServiceExtensionContext implements ServiceExtensionContext {
             getMonitor().info("Initialized " + ext.name());
         });
         config = loadConfig();
-        connectorId = getSetting("edc.connector.name", "edc-" + UUID.randomUUID());
+        connectorId = getSetting("edc.connector.name", "edc-" + UuidCreator.getTimeOrderedEpoch());
         participantId = getSetting(PARTICIPANT_ID, ANONYMOUS_PARTICIPANT);
         if (ANONYMOUS_PARTICIPANT.equals(participantId)) {
             getMonitor().warning("The runtime is configured as an anonymous participant. DO NOT DO THIS IN PRODUCTION.");

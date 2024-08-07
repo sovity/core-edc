@@ -15,6 +15,7 @@
 
 package org.eclipse.edc.connector.service.transferprocess;
 
+import com.github.f4b6a3.uuid.UuidCreator;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
@@ -123,7 +124,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
     public ServiceResult<TransferProcess> notifyTerminated(TransferTerminationMessage message, ClaimToken claimToken) {
         return onMessageDo(message, transferProcess -> terminatedAction(message, transferProcess));
     }
-    
+
     @Override
     @WithSpan
     @NotNull
@@ -133,11 +134,11 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
                 .map(ServiceResult::success)
                 .orElse(ServiceResult.notFound(format("No negotiation with id %s found", id))));
     }
-    
+
     @NotNull
     private ServiceResult<TransferProcess> requestedAction(TransferRequestMessage message, ContractId contractId) {
         var assetId = contractId.assetIdPart();
-        
+
         var destination = message.getDataDestination() != null ? message.getDataDestination() :
                 DataAddress.Builder.newInstance().type(HTTP_PROXY).build();
         var dataRequest = DataRequest.Builder.newInstance()
@@ -154,7 +155,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
             return ServiceResult.success(existingTransferProcess);
         }
         var process = TransferProcess.Builder.newInstance()
-                .id(randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
                 .dataRequest(dataRequest)
                 .type(PROVIDER)
                 .clock(clock)
@@ -216,7 +217,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
                 .flatMap(ServiceResult::from)
                 .compose(action));
     }
-    
+
     private boolean validateCounterParty(ClaimToken claimToken, TransferProcess transferProcess) {
         return Optional.ofNullable(negotiationStore.findContractAgreement(transferProcess.getContractId()))
                 .map(agreement -> contractValidationService.validateRequest(claimToken, agreement))

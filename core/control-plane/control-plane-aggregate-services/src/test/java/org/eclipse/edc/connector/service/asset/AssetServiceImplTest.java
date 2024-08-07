@@ -44,7 +44,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.UUID;
+import com.github.f4b6a3.uuid.UuidCreator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -248,14 +248,14 @@ class AssetServiceImplTest {
         var asset = createAsset("assetId");
         when(index.deleteById("assetId")).thenReturn(StoreResult.success(asset));
         var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .counterPartyId(UUID.randomUUID().toString())
+                .id(UuidCreator.getTimeOrderedEpoch().toString())
+                .counterPartyId(UuidCreator.getTimeOrderedEpoch().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol")
                 .contractAgreement(ContractAgreement.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
-                        .providerId(UUID.randomUUID().toString())
-                        .consumerId(UUID.randomUUID().toString())
+                        .id(UuidCreator.getTimeOrderedEpoch().toString())
+                        .providerId(UuidCreator.getTimeOrderedEpoch().toString())
+                        .consumerId(UuidCreator.getTimeOrderedEpoch().toString())
                         .assetId(asset.getId())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
