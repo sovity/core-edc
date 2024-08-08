@@ -16,6 +16,7 @@ package org.eclipse.edc.connector.transfer.dataplane.security;
 
 import org.eclipse.edc.spi.security.PrivateKeyResolver;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -23,7 +24,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.Objects;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

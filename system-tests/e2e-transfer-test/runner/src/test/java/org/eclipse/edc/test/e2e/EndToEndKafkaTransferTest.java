@@ -16,7 +16,6 @@ package org.eclipse.edc.test.e2e;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpMethod;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -30,6 +29,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.annotations.KafkaIntegrationTest;
 import org.eclipse.edc.test.e2e.participant.EndToEndTransferParticipant;
 import org.eclipse.edc.test.e2e.serializers.JacksonDeserializer;

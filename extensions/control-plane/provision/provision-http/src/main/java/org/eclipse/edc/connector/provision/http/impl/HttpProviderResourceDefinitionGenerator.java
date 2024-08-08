@@ -16,13 +16,13 @@
 
 package org.eclipse.edc.connector.provision.http.impl;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.spi.provision.ProviderResourceDefinitionGenerator;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
 import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;

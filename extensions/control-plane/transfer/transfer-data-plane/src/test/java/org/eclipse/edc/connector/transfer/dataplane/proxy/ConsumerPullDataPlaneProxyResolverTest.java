@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.proxy;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstance;
 import org.eclipse.edc.connector.transfer.dataplane.spi.security.DataEncrypter;
@@ -26,6 +25,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 

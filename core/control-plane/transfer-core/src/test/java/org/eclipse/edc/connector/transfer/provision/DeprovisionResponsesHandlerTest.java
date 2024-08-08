@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.connector.transfer.provision;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.TestResourceDefinition;
 import org.eclipse.edc.connector.transfer.TokenTestProvisionResource;
 import org.eclipse.edc.connector.transfer.observe.TransferProcessObservableImpl;
@@ -29,6 +28,7 @@ import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

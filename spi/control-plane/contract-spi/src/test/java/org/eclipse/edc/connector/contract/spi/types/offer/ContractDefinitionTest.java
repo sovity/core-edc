@@ -16,8 +16,8 @@ package org.eclipse.edc.connector.contract.spi.types.offer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

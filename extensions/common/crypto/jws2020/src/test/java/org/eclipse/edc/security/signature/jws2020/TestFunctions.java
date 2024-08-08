@@ -16,10 +16,10 @@ package org.eclipse.edc.security.signature.jws2020;
 
 import com.apicatalog.ld.signature.key.KeyPair;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.jwk.JWK;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.jsonld.util.JacksonJsonLd;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.io.IOException;
 import java.net.URI;

@@ -15,8 +15,8 @@
 
 package org.eclipse.edc.connector.dataplane.api.response;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.spi.response.TransferErrorResponse;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

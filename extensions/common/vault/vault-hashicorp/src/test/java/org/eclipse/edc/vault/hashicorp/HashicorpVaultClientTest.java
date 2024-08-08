@@ -15,12 +15,12 @@
 package org.eclipse.edc.vault.hashicorp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.eclipse.edc.spi.http.EdcHttpClient;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.model.CreateEntryResponsePayload;
 import org.eclipse.edc.vault.hashicorp.model.GetEntryResponsePayload;
 import org.eclipse.edc.vault.hashicorp.model.HealthResponse;

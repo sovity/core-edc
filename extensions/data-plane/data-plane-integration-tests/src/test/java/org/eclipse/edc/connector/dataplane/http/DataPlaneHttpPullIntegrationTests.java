@@ -15,7 +15,6 @@
 
 package org.eclipse.edc.connector.dataplane.http;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.restassured.specification.RequestSpecification;
@@ -24,6 +23,7 @@ import org.eclipse.edc.junit.extensions.EdcExtension;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.HttpDataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;

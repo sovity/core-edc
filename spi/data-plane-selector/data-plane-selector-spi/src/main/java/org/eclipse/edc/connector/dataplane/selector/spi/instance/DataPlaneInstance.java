@@ -16,9 +16,9 @@ package org.eclipse.edc.connector.dataplane.selector.spi.instance;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -16,7 +16,6 @@
 
 package org.eclipse.edc.api.auth.token;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.api.auth.spi.AuthenticationService;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
@@ -25,6 +24,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Extension that registers an AuthenticationService that uses API Keys

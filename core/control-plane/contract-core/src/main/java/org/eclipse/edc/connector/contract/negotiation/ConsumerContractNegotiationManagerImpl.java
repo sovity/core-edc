@@ -18,7 +18,6 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
@@ -30,6 +29,7 @@ import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiat
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequest;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequestMessage;
 import org.eclipse.edc.spi.response.StatusResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.statemachine.StateMachineManager;
 
 import static java.lang.String.format;

@@ -15,13 +15,13 @@
 
 package org.eclipse.edc.boot.system;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ConfigurationExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.List;

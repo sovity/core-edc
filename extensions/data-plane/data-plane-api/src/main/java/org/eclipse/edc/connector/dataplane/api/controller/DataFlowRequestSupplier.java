@@ -14,10 +14,10 @@
 
 package org.eclipse.edc.connector.dataplane.api.controller;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.util.sink.OutputStreamDataSinkFactory;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;

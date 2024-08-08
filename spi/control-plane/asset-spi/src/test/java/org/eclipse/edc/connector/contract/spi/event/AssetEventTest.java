@@ -15,12 +15,12 @@
 package org.eclipse.edc.connector.contract.spi.event;
 
 import com.fasterxml.jackson.databind.jsontype.NamedType;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.asset.spi.event.AssetCreated;
 import org.eclipse.edc.connector.asset.spi.event.AssetDeleted;
 import org.eclipse.edc.connector.asset.spi.event.AssetUpdated;
 import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

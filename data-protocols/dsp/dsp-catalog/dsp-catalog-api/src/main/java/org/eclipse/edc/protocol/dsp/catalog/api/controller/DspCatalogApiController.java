@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.protocol.dsp.catalog.api.controller;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -30,6 +29,7 @@ import org.eclipse.edc.protocol.dsp.api.configuration.error.DspErrorResponse;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.jetbrains.annotations.NotNull;

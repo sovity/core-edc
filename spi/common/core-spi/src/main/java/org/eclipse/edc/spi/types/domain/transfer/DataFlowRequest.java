@@ -18,10 +18,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.Polymorphic;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.net.URL;
 import java.util.Map;

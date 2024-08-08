@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.connector.contract.spi;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;

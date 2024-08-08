@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.core.transform.transformer.from;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonBuilderFactory;
@@ -37,6 +36,7 @@ import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.policy.model.Prohibition;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.policy.model.XoneConstraint;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

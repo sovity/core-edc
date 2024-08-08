@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.iam.did.crypto;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -26,6 +25,7 @@ import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import org.eclipse.edc.iam.did.spi.key.PrivateKeyWrapper;
 import org.eclipse.edc.iam.did.spi.key.PublicKeyWrapper;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.text.ParseException;
 import java.time.Clock;

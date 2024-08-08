@@ -14,12 +14,12 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.proxy;
 
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.connector.transfer.spi.types;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -17,9 +17,9 @@ package org.eclipse.edc.connector.policy.spi;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.entity.Entity;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Objects;
 

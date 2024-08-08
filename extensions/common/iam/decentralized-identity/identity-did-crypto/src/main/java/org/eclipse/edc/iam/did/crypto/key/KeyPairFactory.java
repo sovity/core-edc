@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.iam.did.crypto.key;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
@@ -22,6 +21,7 @@ import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import org.eclipse.edc.iam.did.crypto.CryptoException;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.security.KeyPairGenerator;
 import java.security.SecureRandom;

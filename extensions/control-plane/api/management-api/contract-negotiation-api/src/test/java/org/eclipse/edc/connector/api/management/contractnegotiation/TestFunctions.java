@@ -14,9 +14,9 @@
 
 package org.eclipse.edc.connector.api.management.contractnegotiation;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.api.management.contractnegotiation.model.ContractOfferDescription;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
     public static ContractOfferDescription createOffer(String offerId, String assetId) {

@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.connector.contract.spi.types;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.ContractId;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;

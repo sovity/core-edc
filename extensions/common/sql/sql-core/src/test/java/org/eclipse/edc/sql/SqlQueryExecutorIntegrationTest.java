@@ -15,9 +15,9 @@
 
 package org.eclipse.edc.sql;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlStoreSetupExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;

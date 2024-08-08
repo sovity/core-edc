@@ -14,9 +14,9 @@
 
 package org.eclipse.edc.test.e2e;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.participant.EndToEndTransferParticipant;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;

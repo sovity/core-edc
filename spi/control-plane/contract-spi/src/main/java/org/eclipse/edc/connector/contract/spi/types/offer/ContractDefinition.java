@@ -16,9 +16,9 @@ package org.eclipse.edc.connector.contract.spi.types.offer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.entity.Entity;
 import org.eclipse.edc.spi.query.Criterion;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

@@ -15,9 +15,9 @@
 package org.eclipse.edc.spi.types.domain.transfer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
