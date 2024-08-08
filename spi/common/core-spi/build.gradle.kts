@@ -35,8 +35,6 @@ dependencies {
     testFixturesImplementation(libs.mockito.core)
     testFixturesImplementation(libs.assertj)
     testFixturesRuntimeOnly(libs.junit.jupiter.engine)
-
-    testImplementation("com.github.f4b6a3:uuid-creator:5.2.0")
 }
 
 

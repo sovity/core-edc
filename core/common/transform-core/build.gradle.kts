@@ -25,8 +25,6 @@ dependencies {
 
     api(libs.jakartaJson)
 
-    implementation("com.github.f4b6a3:uuid-creator:5.2.0")
-
     testImplementation(project(":core:common:junit"))
     testImplementation(project(":extensions:common:json-ld"))
 }
