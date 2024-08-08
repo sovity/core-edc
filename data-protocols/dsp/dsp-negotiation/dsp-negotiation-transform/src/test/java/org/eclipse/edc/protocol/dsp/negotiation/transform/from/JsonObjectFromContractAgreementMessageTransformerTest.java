@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.protocol.dsp.negotiation.transform.from;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonBuilderFactory;
 import jakarta.json.JsonObject;
@@ -56,7 +56,7 @@ class JsonObjectFromContractAgreementMessageTransformerTest {
     private static final String PROCESS_ID = "processId";
     private static final String TIMESTAMP = "1970-01-01T00:00:00Z";
     private static final String DSP = "dsp";
-    public static final String AGREEMENT_ID = Generators.timeBasedGenerator().generate().toString();
+    public static final String AGREEMENT_ID = UuidGenerator.INSTANCE.generate().toString();
 
     private final JsonBuilderFactory jsonFactory = Json.createBuilderFactory(Map.of());
     private final TransformerContext context = mock(TransformerContext.class);

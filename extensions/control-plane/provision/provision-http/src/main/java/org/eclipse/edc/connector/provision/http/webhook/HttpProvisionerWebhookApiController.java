@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.provision.http.webhook;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -57,7 +57,7 @@ public class HttpProvisionerWebhookApiController implements HttpProvisionerWebho
         provisionerWebhookRequestValidator.validate(request).orElseThrow(ValidationFailureException::new);
 
         var contentResource = HttpProvisionedContentResource.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .assetId(request.getAssetId())
                 .dataAddress(request.getContentDataAddress())
                 .resourceName(request.getResourceName())

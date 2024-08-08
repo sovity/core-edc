@@ -16,7 +16,7 @@ package org.eclipse.edc.test.e2e;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpMethod;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -135,7 +135,7 @@ class EndToEndKafkaTransferTest {
     void kafkaToHttpTransfer() {
         PROVIDER.registerDataPlane();
 
-        var assetId = Generators.timeBasedGenerator().generate().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, kafkaSourceProperty());
 
         var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), httpSink());
@@ -158,7 +158,7 @@ class EndToEndKafkaTransferTest {
 
             PROVIDER.registerDataPlane();
 
-            var assetId = Generators.timeBasedGenerator().generate().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, kafkaSourceProperty());
 
             var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), kafkaSink());
@@ -201,7 +201,7 @@ class EndToEndKafkaTransferTest {
     private void createResourcesOnProvider(String assetId, Map<String, Object> dataAddressProperties) {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
         var noConstraintPolicyDefinition = PROVIDER.createPolicyDefinition(noConstraintPolicy());
-        PROVIDER.createContractDefinition(assetId, Generators.timeBasedGenerator().generate().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
+        PROVIDER.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
     }
 
     private static JsonObject httpSink() {

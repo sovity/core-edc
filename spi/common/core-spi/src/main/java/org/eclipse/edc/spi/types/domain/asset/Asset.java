@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.entity.Entity;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 
@@ -211,7 +211,7 @@ public class Asset extends Entity {
             super.build();
 
             if (entity.getId() == null) {
-                id(Generators.timeBasedGenerator().generate().toString());
+                id(UuidGenerator.INSTANCE.generate().toString());
             }
 
             return entity;

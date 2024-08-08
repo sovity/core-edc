@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.Objects;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -39,8 +39,8 @@ class ConsumerPullKeyPairFactoryTest {
     @ParameterizedTest(name = "{index} {1}")
     @CsvSource({ "rsa-pubkey.pem, RSA", "ec-pubkey.pem, EC" })
     void fromConfig_success(String keyFileName, String expectedAlgo) throws IOException {
-        var privateKeyAlias = Generators.timeBasedGenerator().generate().toString();
-        var publicKeyAlias = Generators.timeBasedGenerator().generate().toString();
+        var privateKeyAlias = UuidGenerator.INSTANCE.generate().toString();
+        var publicKeyAlias = UuidGenerator.INSTANCE.generate().toString();
         var privateKey = mock(PrivateKey.class);
         var publicKeyPem = loadPemFile(keyFileName);
 
@@ -57,8 +57,8 @@ class ConsumerPullKeyPairFactoryTest {
 
     @Test
     void fromConfig_failedToRetrievePrivateKey() {
-        var privateKeyAlias = Generators.timeBasedGenerator().generate().toString();
-        var publicKeyAlias = Generators.timeBasedGenerator().generate().toString();
+        var privateKeyAlias = UuidGenerator.INSTANCE.generate().toString();
+        var publicKeyAlias = UuidGenerator.INSTANCE.generate().toString();
 
         when(privateKeyResolver.resolvePrivateKey(privateKeyAlias, PrivateKey.class)).thenReturn(null);
         when(vault.resolveSecret(publicKeyAlias)).thenReturn("pem");
@@ -70,8 +70,8 @@ class ConsumerPullKeyPairFactoryTest {
 
     @Test
     void fromConfig_failedToRetrievePublicKey() {
-        var privateKeyAlias = Generators.timeBasedGenerator().generate().toString();
-        var publicKeyAlias = Generators.timeBasedGenerator().generate().toString();
+        var privateKeyAlias = UuidGenerator.INSTANCE.generate().toString();
+        var publicKeyAlias = UuidGenerator.INSTANCE.generate().toString();
 
         when(privateKeyResolver.resolvePrivateKey(privateKeyAlias, PrivateKey.class)).thenReturn(mock(PrivateKey.class));
         when(vault.resolveSecret(publicKeyAlias)).thenReturn(null);

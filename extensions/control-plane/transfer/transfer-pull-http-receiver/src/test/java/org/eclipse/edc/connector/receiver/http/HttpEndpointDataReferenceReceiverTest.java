@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.receiver.http;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import org.eclipse.edc.spi.EdcException;
@@ -123,8 +123,8 @@ public class HttpEndpointDataReferenceReceiverTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("some.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(Generators.timeBasedGenerator().generate().toString())
-                .id(Generators.timeBasedGenerator().generate().toString()).build();
+                .authCode(UuidGenerator.INSTANCE.generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString()).build();
     }
 
     private String receiverUrl() {

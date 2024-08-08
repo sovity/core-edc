@@ -16,7 +16,7 @@
 package org.eclipse.edc.sql.lease;
 
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.persistence.LeaseContext;
 import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.transaction.spi.TransactionContext;
@@ -90,7 +90,7 @@ public class SqlLeaseContext implements LeaseContext {
 
             // create new lease in DB
 
-            var id = Generators.timeBasedGenerator().generate().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var duration = leaseDuration != null ? leaseDuration.toMillis() : DEFAULT_LEASE_DURATION;
             var stmt = statements.getInsertLeaseTemplate();
             queryExecutor.execute(connection, stmt, id, leaseHolder, now, duration);

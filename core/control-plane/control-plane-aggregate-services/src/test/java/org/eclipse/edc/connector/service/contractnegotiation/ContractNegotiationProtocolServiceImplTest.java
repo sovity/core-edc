@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractnegotiation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.observe.ContractNegotiationObservableImpl;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.observe.ContractNegotiationListener;
@@ -454,7 +454,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("callbackAddress")

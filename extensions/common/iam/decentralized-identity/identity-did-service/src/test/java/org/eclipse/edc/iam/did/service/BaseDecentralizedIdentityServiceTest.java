@@ -16,7 +16,7 @@ package org.eclipse.edc.iam.did.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.jwk.JWK;
 import org.eclipse.edc.iam.did.spi.credentials.CredentialsVerifier;
 import org.eclipse.edc.iam.did.spi.document.DidDocument;
@@ -106,7 +106,7 @@ abstract class BaseDecentralizedIdentityServiceTest {
 
     @Test
     void generateAndVerifyJwtToken_getVerifiedCredentialsFailed() {
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         when(credentialsVerifierMock.getVerifiedCredentials(any())).thenReturn(Result.failure(errorMsg));
         when(didResolverRegistryMock.resolve(anyString())).thenReturn(Result.success(createDidDocument(keyPair)));
 

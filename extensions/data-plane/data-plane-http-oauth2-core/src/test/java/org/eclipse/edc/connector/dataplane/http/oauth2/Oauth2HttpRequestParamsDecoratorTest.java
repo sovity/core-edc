@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.oauth2;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParams;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.SharedSecretOauth2CredentialsRequest;
@@ -103,7 +103,7 @@ class Oauth2HttpRequestParamsDecoratorTest {
 
     private DataFlowRequest dummyDataFlowRequest() {
         return DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dummyAddress())
                 .destinationDataAddress(dummyAddress())
                 .properties(emptyMap())

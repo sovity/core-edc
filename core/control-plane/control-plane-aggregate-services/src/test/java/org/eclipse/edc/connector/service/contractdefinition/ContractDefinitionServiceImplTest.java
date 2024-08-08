@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractdefinition;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionListener;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionObservable;
 import org.eclipse.edc.connector.contract.spi.definition.observe.ContractDefinitionObservableImpl;
@@ -233,9 +233,9 @@ class ContractDefinitionServiceImplTest {
 
     private ContractDefinition createContractDefinition() {
         return ContractDefinition.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
-                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 }

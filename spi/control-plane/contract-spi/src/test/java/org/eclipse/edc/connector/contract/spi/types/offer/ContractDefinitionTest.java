@@ -16,7 +16,7 @@ package org.eclipse.edc.connector.contract.spi.types.offer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.junit.jupiter.api.Test;
 
@@ -30,8 +30,8 @@ class ContractDefinitionTest {
         ObjectMapper mapper = new TypeManager().getMapper();
         var definition = ContractDefinition.Builder.newInstance()
                 .id("1")
-                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
-                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
                 .assetsSelectorCriterion(criterion("field", "=", "value"))
                 .build();
 

@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.http;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.restassured.specification.RequestSpecification;
@@ -182,7 +182,7 @@ public class DataPlaneHttpPullIntegrationTests {
 
         Scenario(String method) {
             this.method = method;
-            token = Generators.timeBasedGenerator().generate().toString();
+            token = UuidGenerator.INSTANCE.generate().toString();
             dataplaneRequest = given()
                     .baseUri(DPF_PUBLIC_API_HOST)
                     .basePath(DPF_DATA_PATH)

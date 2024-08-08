@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.provision;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.TestResourceDefinition;
 import org.eclipse.edc.connector.transfer.TokenTestProvisionResource;
 import org.eclipse.edc.connector.transfer.observe.TransferProcessObservableImpl;
@@ -169,7 +169,7 @@ class DeprovisionResponsesHandlerTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates inState) {
-        var processId = Generators.timeBasedGenerator().generate().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var dataRequest = createDataRequestBuilder()
                 .processId(processId)
                 .protocol("protocol")
@@ -186,9 +186,9 @@ class DeprovisionResponsesHandlerTest {
 
     private DataRequest.Builder createDataRequestBuilder() {
         return DataRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .contractId(Generators.timeBasedGenerator().generate().toString())
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("type")
                         .build());
     }

@@ -16,7 +16,7 @@
 
 package org.eclipse.edc.connector.provision.http.impl;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.spi.provision.ProviderResourceDefinitionGenerator;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
 import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
@@ -46,7 +46,7 @@ public class HttpProviderResourceDefinitionGenerator implements ProviderResource
             throw new EdcException("Asset id was null for request: " + dataRequest.getId());
         }
         return HttpProviderResourceDefinition.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .dataAddressType(dataAddressType)
                 .transferProcessId(dataRequest.getProcessId())
                 .assetId(assetId)

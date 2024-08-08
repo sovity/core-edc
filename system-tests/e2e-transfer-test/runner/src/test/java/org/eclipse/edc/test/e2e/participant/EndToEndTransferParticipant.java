@@ -15,7 +15,7 @@
 package org.eclipse.edc.test.e2e.participant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.restassured.common.mapper.TypeRef;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -150,7 +150,7 @@ public class EndToEndTransferParticipant extends Participant {
     public void registerDataPlane() {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, Generators.timeBasedGenerator().generate().toString())
+                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                 .add(EDC_NAMESPACE + "url", dataPlaneControl + "/transfer")
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "Kafka")))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "HttpProxy", "Kafka")))

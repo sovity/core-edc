@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.test.e2e;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -61,11 +61,11 @@ public class Oauth2TokenController {
         try {
             var key = new RSAKeyGenerator(2048)
                     .keyUse(KeyUse.SIGNATURE)
-                    .keyID(Generators.timeBasedGenerator().generate().toString())
+                    .keyID(UuidGenerator.INSTANCE.generate().toString())
                     .generate();
 
             var claims = new JWTClaimsSet.Builder().build();
-            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(Generators.timeBasedGenerator().generate().toString()).build();
+            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(UuidGenerator.INSTANCE.generate().toString()).build();
 
             var jwt = new SignedJWT(header, claims);
             jwt.sign(new RSASSASigner(key.toPrivateKey()));

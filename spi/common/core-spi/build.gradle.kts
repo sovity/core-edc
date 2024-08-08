@@ -23,9 +23,9 @@ dependencies {
     api(libs.edc.runtime.metamodel)
     api(libs.failsafe.core)
     api(project(":spi:common:policy-model"))
-    api(libs.uuid)
 
     implementation(libs.opentelemetry.api)
+    implementation(libs.uuid)
 
     testImplementation(project(":core:common:junit"))
 

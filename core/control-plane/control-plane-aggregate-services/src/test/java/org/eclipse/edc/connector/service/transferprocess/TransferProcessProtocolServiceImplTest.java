@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.service.transferprocess;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
@@ -244,7 +244,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyStarted_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(COMPLETED, Generators.timeBasedGenerator().generate().toString());
+        var transferProcess = transferProcess(COMPLETED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferStartMessage.Builder.newInstance()
                 .protocol("protocol")
@@ -279,7 +279,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyCompleted_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(REQUESTED, Generators.timeBasedGenerator().generate().toString());
+        var transferProcess = transferProcess(REQUESTED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferCompletionMessage.Builder.newInstance()
                 .protocol("protocol")
@@ -316,7 +316,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyTerminated_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(TERMINATED, Generators.timeBasedGenerator().generate().toString());
+        var transferProcess = transferProcess(TERMINATED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferTerminationMessage.Builder.newInstance()
                 .protocol("protocol")

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.api.management.contractagreement;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.restassured.specification.RequestSpecification;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -253,7 +253,7 @@ class ContractAgreementApiControllerTest extends RestControllerTestBase {
                 .id(negotiationId)
                 .consumerId("test-consumer")
                 .providerId("test-provider")
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

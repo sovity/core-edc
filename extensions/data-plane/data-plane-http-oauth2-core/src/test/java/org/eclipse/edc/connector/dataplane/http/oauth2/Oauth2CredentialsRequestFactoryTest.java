@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.oauth2;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -153,7 +153,7 @@ class Oauth2CredentialsRequestFactoryTest {
     private RSAKey generateKeyPair() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate();
     }
 

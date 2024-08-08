@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.contract.spi;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.result.Result;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +44,7 @@ public final class ContractId {
     }
 
     public static ContractId create(String definitionId, String assetId) {
-        return new ContractId(definitionId, assetId, Generators.timeBasedGenerator().generate().toString());
+        return new ContractId(definitionId, assetId, UuidGenerator.INSTANCE.generate().toString());
     }
 
     /**

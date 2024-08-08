@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.defaults.storage.assetindex;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class InMemoryDataAddressResolverTest {
 
     @Test
     void resolveForAsset() {
-        var id = Generators.timeBasedGenerator().generate().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var address = createDataAddress();
         var testAsset = createAssetBuilder("foobar", id).dataAddress(address).build();
         resolver.create(testAsset);
@@ -43,7 +43,7 @@ class InMemoryDataAddressResolverTest {
 
     @Test
     void resolveForAsset_assetNull_raisesException() {
-        var id = Generators.timeBasedGenerator().generate().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var address = createDataAddress();
         var testAsset = createAssetBuilder("foobar", id).dataAddress(address).build();
         resolver.create(testAsset);
@@ -54,7 +54,7 @@ class InMemoryDataAddressResolverTest {
     @Test
     void resolveForAsset_whenAssetDeleted_raisesException() {
         var address = createDataAddress();
-        var testAsset = createAssetBuilder("foobar", Generators.timeBasedGenerator().generate().toString()).dataAddress(address).build();
+        var testAsset = createAssetBuilder("foobar", UuidGenerator.INSTANCE.generate().toString()).dataAddress(address).build();
         resolver.create(testAsset);
         resolver.deleteById(testAsset.getId());
 

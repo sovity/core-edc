@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.service.transferprocess;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
@@ -154,7 +154,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
             return ServiceResult.success(existingTransferProcess);
         }
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .dataRequest(dataRequest)
                 .type(PROVIDER)
                 .clock(clock)

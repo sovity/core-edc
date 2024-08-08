@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.api.controller;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.util.sink.OutputStreamDataSinkFactory;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
@@ -43,13 +43,13 @@ public class DataFlowRequestSupplier implements BiFunction<ContainerRequestConte
     public DataFlowRequest apply(ContainerRequestContextApi contextApi, DataAddress dataAddress) {
         var props = createProps(contextApi);
         return DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dataAddress)
                 .destinationDataAddress(DataAddress.Builder.newInstance()
                         .type(OutputStreamDataSinkFactory.TYPE)
                         .build())
                 .trackable(false)
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .properties(props)
                 .build();
     }

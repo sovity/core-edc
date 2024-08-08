@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.params;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -47,7 +47,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -76,7 +76,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .properties(Map.of(
@@ -105,7 +105,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .baseUrl("http://source")
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -131,7 +131,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();

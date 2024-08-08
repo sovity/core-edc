@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.jwt;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -56,7 +56,7 @@ class TokenValidationServiceImplTest {
         key = testKey();
         ruleMock = mock(TokenValidationRule.class);
         var publicKey = (RSAPublicKey) key.toPublicKey();
-        publicKeyId = Generators.timeBasedGenerator().generate().toString();
+        publicKeyId = UuidGenerator.INSTANCE.generate().toString();
         var resolver = new PublicKeyResolver() {
             @Override
             public @Nullable
@@ -125,7 +125,7 @@ class TokenValidationServiceImplTest {
     private static RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate();
     }
 }

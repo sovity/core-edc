@@ -15,7 +15,7 @@
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -59,7 +59,7 @@ class HttpDataSourceTest {
 
     @BeforeEach
     public void setUp() {
-        requestId = Generators.timeBasedGenerator().generate().toString();
+        requestId = UuidGenerator.INSTANCE.generate().toString();
         url = "http://some.test.url/";
     }
 

@@ -16,7 +16,7 @@ package org.eclipse.edc.connector.dataplane.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.selector.spi.client.DataPlaneSelectorClient;
 import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstance;
 import org.eclipse.edc.connector.dataplane.spi.client.DataPlaneClient;
@@ -156,7 +156,7 @@ class RemoteDataPlaneClientTest {
 
         // config data plane mock server
         var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(flowRequest));
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         dataPlaneClientAndServer.when(httpRequest, once()).respond(withResponse(errorMsg));
 
         var result = dataPlaneClient.transfer(flowRequest);

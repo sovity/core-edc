@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractdefinition;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionCreated;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionDeleted;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionEvent;
@@ -57,9 +57,9 @@ public class ContractDefinitionEventDispatchTest {
     void shouldDispatchEventOnContractDefinitionCreationAndDeletion(ContractDefinitionService service, EventRouter eventRouter) {
         eventRouter.register(ContractDefinitionEvent.class, eventSubscriber);
         var contractDefinition = ContractDefinition.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .contractPolicyId(Generators.timeBasedGenerator().generate().toString())
-                .accessPolicyId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         service.create(contractDefinition);

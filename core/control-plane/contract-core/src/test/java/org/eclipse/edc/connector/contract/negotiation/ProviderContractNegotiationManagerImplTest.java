@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.observe.ContractNegotiationObservableImpl;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.ContractNegotiationPendingGuard;
@@ -247,7 +247,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .type(ContractNegotiation.Type.PROVIDER)
                 .correlationId("processId")
                 .counterPartyId("connectorId")
@@ -259,7 +259,7 @@ class ProviderContractNegotiationManagerImplTest {
 
     private ContractAgreement.Builder contractAgreementBuilder() {
         return ContractAgreement.Builder.newInstance()
-                .id(ContractId.create(Generators.timeBasedGenerator().generate().toString(), "test-asset-id").toString())
+                .id(ContractId.create(UuidGenerator.INSTANCE.generate().toString(), "test-asset-id").toString())
                 .providerId("any")
                 .consumerId("any")
                 .assetId("default")

@@ -17,7 +17,7 @@ package org.eclipse.edc.connector.dataplane.api.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.edc.connector.dataplane.spi.manager.DataPlaneManager;
@@ -112,8 +112,8 @@ class DataPlaneApiIntegrationTest {
     @Test
     void controlApi_should_callDataPlaneManager_if_requestIsValid() {
         var flowRequest = DataFlowRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();
@@ -135,8 +135,8 @@ class DataPlaneApiIntegrationTest {
     void controlApi_should_returnBadRequest_if_requestIsInValid() {
         var errorMsg = "test error message";
         var flowRequest = DataFlowRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();
@@ -176,7 +176,7 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnForbidden_if_tokenValidationFails() {
-        var token = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
 
         var validationServerRequest = new HttpRequest().withHeader(AUTHORIZATION, token);
         tokenValidationServer.when(validationServerRequest, once()).respond(new HttpResponse().withStatusCode(400));
@@ -194,8 +194,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnBadRequest_if_requestValidationFails() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -216,8 +216,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnInternalServerError_if_transferFails() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -240,8 +240,8 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnInternalServerError_if_transferThrows() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         tokenValidationServer.when(new HttpRequest().withHeader(AUTHORIZATION, token), once())
                 .respond(new HttpResponse()
                         .withStatusCode(200)
@@ -264,7 +264,7 @@ class DataPlaneApiIntegrationTest {
 
     @Test
     void publicApi_should_returnDataFromSource_if_transferSuccessful() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var address = testDestAddress();
         var requestCaptor = ArgumentCaptor.forClass(DataFlowRequest.class);
 

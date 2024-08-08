@@ -16,7 +16,7 @@ package org.eclipse.edc.connector.dataplane.selector.spi.instance;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 
@@ -167,7 +167,7 @@ public class DataPlaneInstance {
 
         public DataPlaneInstance build() {
             if (instance.id == null) {
-                instance.id = Generators.timeBasedGenerator().generate().toString();
+                instance.id = UuidGenerator.INSTANCE.generate().toString();
             }
             Objects.requireNonNull(instance.url, "DataPlaneInstance must have an URL");
 

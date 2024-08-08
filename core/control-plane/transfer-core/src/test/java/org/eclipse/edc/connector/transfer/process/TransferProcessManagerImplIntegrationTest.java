@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.process;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.defaults.storage.transferprocess.InMemoryTransferProcessStore;
 import org.eclipse.edc.connector.policy.spi.store.PolicyArchive;
 import org.eclipse.edc.connector.transfer.TestProvisionedDataDestinationResource;
@@ -140,11 +140,11 @@ class TransferProcessManagerImplIntegrationTest {
     }
 
     private TransferProcess.Builder createInitialTransferProcess() {
-        var processId = Generators.timeBasedGenerator().generate().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var dataRequest = DataRequest.Builder.newInstance()
                 .id(processId)
                 .destinationType("test-type")
-                .contractId(Generators.timeBasedGenerator().generate().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         return TransferProcess.Builder.newInstance()

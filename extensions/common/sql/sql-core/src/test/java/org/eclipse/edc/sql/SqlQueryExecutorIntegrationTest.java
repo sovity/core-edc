@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.sql;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.sql.testfixtures.PostgresqlStoreSetupExtension;
@@ -109,7 +109,7 @@ public class SqlQueryExecutorIntegrationTest {
 
     @NotNull
     private KeyValue insertRow(Connection connection) {
-        var keyValue = new KeyValue(Generators.timeBasedGenerator().generate().toString(), Generators.timeBasedGenerator().generate().toString());
+        var keyValue = new KeyValue(UuidGenerator.INSTANCE.generate().toString(), UuidGenerator.INSTANCE.generate().toString());
         executor.execute(connection, format("INSERT INTO %s (k, v) values (?, ?)", table), keyValue.key, keyValue.value);
         return keyValue;
     }

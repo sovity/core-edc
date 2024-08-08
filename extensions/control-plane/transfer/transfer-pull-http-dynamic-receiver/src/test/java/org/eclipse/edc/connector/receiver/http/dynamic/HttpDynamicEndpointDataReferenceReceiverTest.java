@@ -15,7 +15,7 @@
 package org.eclipse.edc.connector.receiver.http.dynamic;
 
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import dev.failsafe.RetryPolicy;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
@@ -217,8 +217,8 @@ public class HttpDynamicEndpointDataReferenceReceiverTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("some.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(Generators.timeBasedGenerator().generate().toString())
-                .id(Generators.timeBasedGenerator().generate().toString());
+                .authCode(UuidGenerator.INSTANCE.generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString());
     }
 
     private String receiverUrl() {

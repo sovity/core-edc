@@ -16,7 +16,7 @@ package org.eclipse.edc.connector.contract.spi.types.offer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.entity.Entity;
 import org.eclipse.edc.spi.query.Criterion;
 import org.jetbrains.annotations.NotNull;
@@ -140,7 +140,7 @@ public class ContractDefinition extends Entity {
         @Override
         public ContractDefinition build() {
             if (entity.getId() == null) {
-                id(Generators.timeBasedGenerator().generate().toString());
+                id(UuidGenerator.INSTANCE.generate().toString());
             }
             Objects.requireNonNull(entity.accessPolicyId);
             Objects.requireNonNull(entity.contractPolicyId);

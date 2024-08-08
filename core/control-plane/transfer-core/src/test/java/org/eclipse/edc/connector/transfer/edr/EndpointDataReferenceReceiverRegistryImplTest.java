@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.edr;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.spi.edr.EndpointDataReferenceReceiver;
 import org.eclipse.edc.connector.transfer.spi.event.TransferProcessStarted;
 import org.eclipse.edc.spi.EdcException;
@@ -134,9 +134,9 @@ class EndpointDataReferenceReceiverRegistryImplTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("test.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(Generators.timeBasedGenerator().generate().toString())
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .properties(Map.of("test-key", Generators.timeBasedGenerator().generate().toString()))
+                .authCode(UuidGenerator.INSTANCE.generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .properties(Map.of("test-key", UuidGenerator.INSTANCE.generate().toString()))
                 .build();
     }
 }

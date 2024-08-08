@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.iam.did.crypto;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -61,7 +61,7 @@ public class JwtUtils {
                 .subject(subject)
                 .audience(audience)
                 .expirationTime(Date.from(clock.instant().plus(10, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.SECONDS)))
-                .jwtID(Generators.timeBasedGenerator().generate().toString())
+                .jwtID(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         var signer = privateKey.signer();

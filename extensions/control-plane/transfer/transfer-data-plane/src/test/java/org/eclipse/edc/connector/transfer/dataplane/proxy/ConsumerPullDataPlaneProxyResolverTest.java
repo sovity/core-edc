@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.proxy;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstance;
 import org.eclipse.edc.connector.transfer.dataplane.spi.security.DataEncrypter;
@@ -52,7 +52,7 @@ class ConsumerPullDataPlaneProxyResolverTest {
     private final ConsumerPullDataPlaneProxyResolver resolver = new ConsumerPullDataPlaneProxyResolver(dataEncrypter, TYPE_MANAGER, tokenGenerationService, tokenExpirationDateFunction);
 
     private static DataAddress dataAddress() {
-        return DataAddress.Builder.newInstance().type(Generators.timeBasedGenerator().generate().toString()).build();
+        return DataAddress.Builder.newInstance().type(UuidGenerator.INSTANCE.generate().toString()).build();
     }
 
     @Test
@@ -64,7 +64,7 @@ class ConsumerPullDataPlaneProxyResolverTest {
         var token = "token-test";
         var request = dataRequest();
         var instance = DataPlaneInstance.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .url("http://some.test.url")
                 .property("publicApiUrl", proxyUrl)
                 .build();
@@ -96,7 +96,7 @@ class ConsumerPullDataPlaneProxyResolverTest {
     @Test
     void verifyToDataAddressReturnsFailureIfMissingPublicApiUrl() {
         var instance = DataPlaneInstance.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .url("http://some.test.url")
                 .build();
 
@@ -111,7 +111,7 @@ class ConsumerPullDataPlaneProxyResolverTest {
         var address = dataAddress();
         var errorMsg = "error test";
         var instance = DataPlaneInstance.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .url("http://some.test.url")
                 .property("publicApiUrl", "test.proxy.url")
                 .build();
@@ -132,7 +132,7 @@ class ConsumerPullDataPlaneProxyResolverTest {
         var request = dataRequest();
         var expiration = Date.from(Instant.now().plusSeconds(100));
         var instance = DataPlaneInstance.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .url("http://some.test.url")
                 .property("publicApiUrl", "test.proxy.url")
                 .build();
@@ -149,12 +149,12 @@ class ConsumerPullDataPlaneProxyResolverTest {
 
     private DataRequest dataRequest() {
         return DataRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .protocol("protocol")
-                .contractId(Generators.timeBasedGenerator().generate().toString())
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .connectorAddress("test.connector.address")
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .destinationType(HTTP_PROXY)
                 .build();
     }

@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.boot.system;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ConfigurationExtension;
@@ -106,7 +106,7 @@ public class DefaultServiceExtensionContext implements ServiceExtensionContext {
             getMonitor().info("Initialized " + ext.name());
         });
         config = loadConfig();
-        connectorId = getSetting("edc.connector.name", "edc-" + Generators.timeBasedGenerator().generate());
+        connectorId = getSetting("edc.connector.name", "edc-" + UuidGenerator.INSTANCE.generate());
         participantId = getSetting(PARTICIPANT_ID, ANONYMOUS_PARTICIPANT);
         if (ANONYMOUS_PARTICIPANT.equals(participantId)) {
             getMonitor().warning("The runtime is configured as an anonymous participant. DO NOT DO THIS IN PRODUCTION.");

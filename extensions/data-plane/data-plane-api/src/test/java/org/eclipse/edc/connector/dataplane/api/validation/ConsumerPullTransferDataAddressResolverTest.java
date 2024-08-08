@@ -16,7 +16,7 @@ package org.eclipse.edc.connector.dataplane.api.validation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
@@ -68,7 +68,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifySuccessTokenValidation() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();
@@ -87,7 +87,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifyFailedResultReturnedIfServerResponseIsUnsuccessful() throws JsonProcessingException {
-        var token = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();

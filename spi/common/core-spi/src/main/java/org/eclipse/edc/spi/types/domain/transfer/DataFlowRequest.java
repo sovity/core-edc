@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.Polymorphic;
@@ -180,7 +180,7 @@ public class DataFlowRequest implements Polymorphic, TraceCarrier {
 
         public DataFlowRequest build() {
             if (request.id == null) {
-                request.id = Generators.timeBasedGenerator().generate().toString();
+                request.id = UuidGenerator.INSTANCE.generate().toString();
             }
             Objects.requireNonNull(request.processId, "processId");
             Objects.requireNonNull(request.sourceDataAddress, "sourceDataAddress");

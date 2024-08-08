@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractnegotiation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
@@ -252,9 +252,9 @@ class ContractNegotiationServiceImplTest {
     private ContractAgreement createContractAgreement(String agreementId) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(Generators.timeBasedGenerator().generate().toString())
-                .consumerId(Generators.timeBasedGenerator().generate().toString())
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .providerId(UuidGenerator.INSTANCE.generate().toString())
+                .consumerId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
@@ -262,14 +262,14 @@ class ContractNegotiationServiceImplTest {
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol");
     }
 
     private ContractOffer createContractOffer() {
         return ContractOffer.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .assetId("test-asset")
                 .build();

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.selector.transformer;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
@@ -83,7 +83,7 @@ class JsonObjectToDataPlaneInstanceTransformerTest {
     void transform_withProperties() {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, Generators.timeBasedGenerator().generate().toString())
+                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                 .add(EDC_NAMESPACE + "url", "http://localhost/control/transfer")
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "Kafka")))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(List.of("HttpData", "HttpProvision", "HttpProxy", "Kafka")))

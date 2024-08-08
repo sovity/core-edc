@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.statemachine.retry;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ class SimpleRetryProcessTest {
 
     @Test
     void shouldProcess() {
-        var entity = TestEntity.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         Supplier<Boolean> process = mock(Supplier.class);
         when(process.get()).thenReturn(true);
         var configuration = new EntityRetryProcessConfiguration(2, () -> () -> 2L);

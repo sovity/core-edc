@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.iam.did.crypto.key;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
@@ -66,7 +66,7 @@ public class KeyPairFactory {
         try {
             return new RSAKeyGenerator(4096)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                    .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID (optional)
+                    .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                     .issueTime(new Date()) // issued-at timestamp (optional)
                     .generate();
         } catch (JOSEException e) {

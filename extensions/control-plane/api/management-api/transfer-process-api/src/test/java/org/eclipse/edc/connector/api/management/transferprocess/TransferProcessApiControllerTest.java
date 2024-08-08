@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.api.management.transferprocess;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.api.model.IdResponse;
@@ -436,7 +436,7 @@ class TransferProcessApiControllerTest extends RestControllerTestBase {
 
     @NotNull
     private TransferProcess.Builder createTransferProcess() {
-        return TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString());
+        return TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString());
     }
 
 }

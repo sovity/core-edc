@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.test.e2e.managementapi;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
@@ -95,7 +95,7 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")
@@ -116,9 +116,9 @@ public class ContractAgreementApiEndToEndTest extends BaseManagementApiEndToEndT
     private ContractAgreement createContractAgreement(String negotiationId) {
         return ContractAgreement.Builder.newInstance()
                 .id(negotiationId)
-                .assetId(Generators.timeBasedGenerator().generate().toString())
-                .consumerId(Generators.timeBasedGenerator().generate() + "-consumer")
-                .providerId(Generators.timeBasedGenerator().generate() + "-provider")
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
+                .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

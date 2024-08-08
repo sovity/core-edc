@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.flow;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.spi.client.DataPlaneClient;
 import org.eclipse.edc.connector.transfer.spi.callback.ControlPlaneApiUrl;
 import org.eclipse.edc.connector.transfer.spi.flow.DataFlowController;
@@ -74,7 +74,7 @@ public class ProviderPushTransferDataFlowController implements DataFlowControlle
         extractIfPresent(dataRequest, QUERY_PARAMS, parameterizations);
 
         return DataFlowRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .processId(dataRequest.getProcessId())
                 .trackable(true)
                 .sourceDataAddress(sourceAddress)

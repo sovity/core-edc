@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.defaults.storage.contractnegotiation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
@@ -48,7 +48,7 @@ public class InMemoryContractNegotiationStore implements ContractNegotiationStor
     private final InMemoryStatefulEntityStore<ContractNegotiation> store;
 
     public InMemoryContractNegotiationStore() {
-        this(Generators.timeBasedGenerator().generate().toString(), Clock.systemUTC(), new HashMap<>());
+        this(UuidGenerator.INSTANCE.generate().toString(), Clock.systemUTC(), new HashMap<>());
     }
 
     public InMemoryContractNegotiationStore(String leaseHolder, Clock clock, Map<String, Lease> leases) {

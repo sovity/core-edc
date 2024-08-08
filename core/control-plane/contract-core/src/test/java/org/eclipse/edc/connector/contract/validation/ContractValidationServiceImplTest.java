@@ -17,7 +17,7 @@
 
 package org.eclipse.edc.connector.contract.validation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.policy.PolicyEquality;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.offer.ContractDefinitionResolver;
@@ -518,6 +518,6 @@ class ContractValidationServiceImplTest {
                 .providerId(PROVIDER_ID)
                 .consumerId(CONSUMER_ID)
                 .policy(Policy.Builder.newInstance().build())
-                .assetId(Generators.timeBasedGenerator().generate().toString());
+                .assetId(UuidGenerator.INSTANCE.generate().toString());
     }
 }

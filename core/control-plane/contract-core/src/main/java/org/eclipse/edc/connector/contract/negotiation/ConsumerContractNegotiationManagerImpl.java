@@ -18,7 +18,7 @@
 
 package org.eclipse.edc.connector.contract.negotiation;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.edc.connector.contract.spi.ContractId;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
@@ -80,7 +80,7 @@ public class ConsumerContractNegotiationManagerImpl extends AbstractContractNego
     @WithSpan
     @Override
     public StatusResult<ContractNegotiation> initiate(ContractRequest request) {
-        var id = Generators.timeBasedGenerator().generate().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id)
                 .correlationId(id)

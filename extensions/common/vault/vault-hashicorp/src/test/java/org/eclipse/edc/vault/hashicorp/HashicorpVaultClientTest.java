@@ -15,7 +15,7 @@
 package org.eclipse.edc.vault.hashicorp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -58,7 +58,7 @@ class HashicorpVaultClientTest {
     void getSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = Generators.timeBasedGenerator().generate().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var config =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -94,8 +94,8 @@ class HashicorpVaultClientTest {
     void setSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = Generators.timeBasedGenerator().generate().toString();
-        var secretValue = Generators.timeBasedGenerator().generate().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
+        var secretValue = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -133,7 +133,7 @@ class HashicorpVaultClientTest {
     void getHealth() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = Generators.timeBasedGenerator().generate().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -204,7 +204,7 @@ class HashicorpVaultClientTest {
     void destroySecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = Generators.timeBasedGenerator().generate().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)

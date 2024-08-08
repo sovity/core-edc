@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.security;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
@@ -53,7 +53,7 @@ public class ConsumerPullKeyPairFactory {
         try {
             return new ECKeyGenerator(Curve.P_256)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                    .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID
+                    .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                     .generate()
                     .toKeyPair();
         } catch (JOSEException e) {

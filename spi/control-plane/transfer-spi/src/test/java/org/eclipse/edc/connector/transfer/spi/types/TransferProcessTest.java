@@ -15,7 +15,7 @@
 package org.eclipse.edc.connector.transfer.spi.types;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class TransferProcessTest {
     void verifyDeserialization() throws IOException {
         var mapper = new ObjectMapper();
 
-        var process = TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         var writer = new StringWriter();
         mapper.writeValue(writer, process);
 
@@ -58,7 +58,7 @@ class TransferProcessTest {
     void verifyCopy() {
         var process = TransferProcess.Builder
                 .newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .type(TransferProcess.Type.PROVIDER)
                 .createdAt(3)
                 .updatedAt(1234)
@@ -84,7 +84,7 @@ class TransferProcessTest {
 
     @Test
     void verifyConsumerTransitions() {
-        var process = TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).type(CONSUMER).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).type(CONSUMER).build();
 
         process.transitionProvisioning(ResourceManifest.Builder.newInstance().build());
         process.transitionProvisioned();
@@ -104,7 +104,7 @@ class TransferProcessTest {
 
     @Test
     void verifyProviderTransitions() {
-        var process = TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).type(TransferProcess.Type.PROVIDER).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).type(TransferProcess.Type.PROVIDER).build();
 
         process.transitionProvisioning(ResourceManifest.Builder.newInstance().build());
         process.transitionProvisioned();
@@ -126,7 +126,7 @@ class TransferProcessTest {
     @EnumSource(value = TransferProcessStates.class, mode = EXCLUDE, names = { "COMPLETED", "TERMINATED", "DEPROVISIONING", "DEPROVISIONING_REQUESTED", "DEPROVISIONED" })
     void verifyTerminating_validStates(TransferProcessStates state) {
         var transferProcess = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .state(state.code())
                 .build();
 
@@ -139,7 +139,7 @@ class TransferProcessTest {
     @EnumSource(value = TransferProcessStates.class, mode = INCLUDE, names = { "COMPLETED", "TERMINATED" })
     void verifyTerminating_invalidStates(TransferProcessStates state) {
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .state(state.code())
                 .build();
 
@@ -153,7 +153,7 @@ class TransferProcessTest {
                 .build();
 
         var notCompleted = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .resourceManifest(manifest)
                 .build();
 
@@ -176,7 +176,7 @@ class TransferProcessTest {
 
     @Test
     void verifyResourceToProvisionWhenEmptyResources() {
-        var process = TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
 
         assertThat(process.getResourcesToProvision()).isEmpty();
     }
@@ -188,7 +188,7 @@ class TransferProcessTest {
                 .build();
 
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .resourceManifest(manifest)
                 .build();
 
@@ -213,7 +213,7 @@ class TransferProcessTest {
                 .build();
 
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .resourceManifest(manifest)
                 .provisionedResourceSet(provisionedResourceSet)
                 .build();
@@ -223,7 +223,7 @@ class TransferProcessTest {
 
     @Test
     void verifyResourceToDeprovisionWhenEmptyResources() {
-        var process = TransferProcess.Builder.newInstance().id(Generators.timeBasedGenerator().generate().toString()).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
 
         assertThat(process.getResourcesToDeprovision()).isEmpty();
     }
@@ -236,7 +236,7 @@ class TransferProcessTest {
                 .build();
 
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .provisionedResourceSet(set)
                 .deprovisionedResources(List.of(DeprovisionedResource.Builder.newInstance().provisionedResourceId("1").build()))
                 .build();
@@ -250,7 +250,7 @@ class TransferProcessTest {
         var emptyManifest = ResourceManifest.Builder.newInstance().definitions(emptyList()).build();
         var emptyResources = ProvisionedResourceSet.Builder.newInstance().resources(emptyList()).build();
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString()).resourceManifest(emptyManifest).provisionedResourceSet(emptyResources)
+                .id(UuidGenerator.INSTANCE.generate().toString()).resourceManifest(emptyManifest).provisionedResourceSet(emptyResources)
                 .build();
 
         var provisioningComplete = process.provisioningComplete();
@@ -263,7 +263,7 @@ class TransferProcessTest {
     void provisionComplete_noResources() {
         var emptyManifest = ResourceManifest.Builder.newInstance().definitions(emptyList()).build();
         var process = TransferProcess.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString()).resourceManifest(emptyManifest).provisionedResourceSet(null)
+                .id(UuidGenerator.INSTANCE.generate().toString()).resourceManifest(emptyManifest).provisionedResourceSet(null)
                 .build();
 
         var provisioningComplete = process.provisioningComplete();

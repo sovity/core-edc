@@ -16,7 +16,7 @@ package org.eclipse.edc.security.signature.jws2020;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
@@ -147,7 +147,7 @@ class KeyFactoryTest {
                 return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                         .privateKey((RSAPrivateKey) keyPair.getPrivate())
                         .keyUse(KeyUse.SIGNATURE)
-                        .keyID(Generators.timeBasedGenerator().generate().toString())
+                        .keyID(UuidGenerator.INSTANCE.generate().toString())
                         .issueTime(new Date())
                         .build();
 
@@ -160,7 +160,7 @@ class KeyFactoryTest {
             try {
                 return new OctetKeyPairGenerator(Curve.Ed25519)
                         .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                        .keyID(Generators.timeBasedGenerator().generate().toString()) // give the key a unique ID (optional)
+                        .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                         .issueTime(new Date()) // issued-at timestamp (optional)
                         .generate();
             } catch (JOSEException e) {

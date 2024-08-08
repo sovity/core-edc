@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
@@ -68,7 +68,7 @@ public class DataPlaneHttpExtensionTest {
         destinationServer.when(request()).respond(HttpResponse.response().withStatusCode(200));
 
         var request = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(destination)
                 .traceContext(emptyMap())
@@ -95,7 +95,7 @@ public class DataPlaneHttpExtensionTest {
         destinationServer.when(request()).respond(HttpResponse.response().withStatusCode(200));
 
         var request = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(destination)
                 .traceContext(emptyMap())

@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.api.response;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.spi.response.TransferErrorResponse;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ class ResponseFunctionsTest {
 
     @Test
     void verifyValidationErrors() {
-        var errorMessages = List.of(Generators.timeBasedGenerator().generate().toString(), Generators.timeBasedGenerator().generate().toString());
+        var errorMessages = List.of(UuidGenerator.INSTANCE.generate().toString(), UuidGenerator.INSTANCE.generate().toString());
         var response = validationErrors(errorMessages);
         assertThat(response.getStatusInfo()).isEqualTo(BAD_REQUEST);
 
@@ -45,7 +45,7 @@ class ResponseFunctionsTest {
 
     @Test
     void verifySuccess() {
-        var data = Generators.timeBasedGenerator().generate().toString();
+        var data = UuidGenerator.INSTANCE.generate().toString();
         var response = success(data);
         assertThat(response.getStatusInfo()).isEqualTo(OK);
         assertThat(response.getEntity()).asInstanceOf(STRING).isEqualTo(data);

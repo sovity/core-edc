@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.contractagreement;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
@@ -98,9 +98,9 @@ class ContractAgreementServiceImplTest {
     private ContractAgreement createContractAgreement(String agreementId) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(Generators.timeBasedGenerator().generate().toString())
-                .consumerId(Generators.timeBasedGenerator().generate().toString())
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .providerId(UuidGenerator.INSTANCE.generate().toString())
+                .consumerId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }

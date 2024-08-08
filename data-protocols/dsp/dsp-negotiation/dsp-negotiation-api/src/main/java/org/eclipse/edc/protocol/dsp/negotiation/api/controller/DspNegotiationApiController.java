@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.protocol.dsp.negotiation.api.controller;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -342,7 +342,7 @@ public class DspNegotiationApiController {
         return transformerRegistry.transform(negotiation, JsonObject.class)
                 .map(transformedJson -> Response.ok().type(MediaType.APPLICATION_JSON).entity(transformedJson).build())
                 .orElse(failure -> {
-                    var errorCode = Generators.timeBasedGenerator().generate();
+                    var errorCode = UuidGenerator.INSTANCE.generate();
                     monitor.warning(String.format("Error transforming negotiation, error id %s: %s", errorCode, failure.getFailureDetail()));
                     var processId = negotiation.getCorrelationId();
                     return error()

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.test.e2e.managementapi;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStore;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
 import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
@@ -68,10 +68,10 @@ public class CatalogApiEndToEndTest extends BaseManagementApiEndToEndTest {
         var policyDefinitionStore = controlPlane.getContext().getService(PolicyDefinitionStore.class);
         var contractDefinitionStore = controlPlane.getContext().getService(ContractDefinitionStore.class);
 
-        var policyId = Generators.timeBasedGenerator().generate().toString();
+        var policyId = UuidGenerator.INSTANCE.generate().toString();
 
         var cd = ContractDefinition.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .contractPolicyId(policyId)
                 .accessPolicyId(policyId)
                 .build();

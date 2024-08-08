@@ -18,7 +18,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.params.HttpRequestFactory;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParams;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
@@ -102,8 +102,8 @@ class HttpDataSourceFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress source) {
         return DataFlowRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("Test type").build())
                 .build();

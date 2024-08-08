@@ -18,7 +18,7 @@ import com.apicatalog.jsonld.loader.SchemeRouter;
 import com.apicatalog.ld.DocumentError;
 import com.apicatalog.ld.signature.SigningError;
 import com.apicatalog.vc.Vc;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
@@ -89,7 +89,7 @@ class IssuerTests {
         var jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                 .privateKey((RSAPrivateKey) keyPair.getPrivate())
                 .keyUse(KeyUse.SIGNATURE)
-                .keyID(Generators.timeBasedGenerator().generate().toString())
+                .keyID(UuidGenerator.INSTANCE.generate().toString())
                 .issueTime(new Date())
                 .build();
         var keypair = createKeyPair(jwk);

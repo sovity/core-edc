@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.util.sink;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +63,7 @@ class OutputStreamDataSinkFactoryTest {
 
     private static DataFlowRequest createDataFlowRequest(String destAddressType) {
         return DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance()
                         .type("")
                         .build())

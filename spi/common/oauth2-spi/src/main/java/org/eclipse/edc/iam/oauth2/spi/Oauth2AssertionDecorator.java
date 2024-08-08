@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.iam.oauth2.spi;
 
-import com.fasterxml.uuid.Generators;
 import org.eclipse.edc.jwt.spi.JwtDecorator;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class Oauth2AssertionDecorator implements JwtDecorator {
                 AUDIENCE, List.of(audience),
                 ISSUER, clientId,
                 SUBJECT, clientId,
-                JWT_ID, Generators.timeBasedGenerator().generate().toString(),
+                JWT_ID, UuidGenerator.INSTANCE.generate().toString(),
                 ISSUED_AT, Date.from(clock.instant()),
                 EXPIRATION_TIME, Date.from(clock.instant().plusSeconds(validity))
         );

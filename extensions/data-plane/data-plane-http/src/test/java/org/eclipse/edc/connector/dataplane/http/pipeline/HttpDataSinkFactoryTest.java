@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.pipeline;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import io.netty.handler.codec.http.HttpMethod;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -141,8 +141,8 @@ class HttpDataSinkFactoryTest {
 
     private DataFlowRequest createRequest(DataAddress destination) {
         return DataFlowRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .destinationDataAddress(destination)
                 .build();

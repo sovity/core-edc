@@ -15,7 +15,7 @@
 package org.eclipse.edc.connector.contract.spi.event;
 
 import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionCreated;
 import org.eclipse.edc.connector.contract.spi.event.contractdefinition.ContractDefinitionDeleted;
 import org.eclipse.edc.connector.contract.spi.event.contractnegotiation.ContractNegotiationAccepted;
@@ -90,7 +90,7 @@ class ContractEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(Generators.timeBasedGenerator().generate().toString()).payload(it)
+                            .id(UuidGenerator.INSTANCE.generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

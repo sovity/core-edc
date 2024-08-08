@@ -15,7 +15,7 @@
 package org.eclipse.edc.test.e2e.managementapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -130,7 +130,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void deprovision() {
-        var id = Generators.timeBasedGenerator().generate().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(COMPLETED.code()).build());
 
         baseRequest()
@@ -142,7 +142,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void terminate() {
-        var id = Generators.timeBasedGenerator().generate().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
         var requestBody = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(VOCAB, EDC_NAMESPACE))
@@ -214,7 +214,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
                 .id(id)
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(Generators.timeBasedGenerator().generate().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
                         .dataDestination(DataAddress.Builder.newInstance()
                                 .type("type")
                                 .build())

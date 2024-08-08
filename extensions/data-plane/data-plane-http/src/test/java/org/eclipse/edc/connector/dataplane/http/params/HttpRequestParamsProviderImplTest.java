@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.params;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.security.Vault;
@@ -168,7 +168,7 @@ class HttpRequestParamsProviderImplTest {
         return DataFlowRequest.Builder.newInstance()
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .sourceDataAddress(source)
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 

@@ -15,7 +15,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.flow;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.spi.client.DataPlaneClient;
 import org.eclipse.edc.connector.transfer.spi.callback.ControlPlaneApiUrl;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
@@ -166,12 +166,12 @@ class ProviderPushTransferDataFlowControllerTest {
 
     private DataRequest createDataRequest(String destinationType, DataAddress dataDestination) {
         DataRequest.Builder builder = DataRequest.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .protocol("test-protocol")
-                .contractId(Generators.timeBasedGenerator().generate().toString())
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .connectorAddress("test.connector.address")
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .destinationType(destinationType);
 
         if (dataDestination != null) {

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.vault.hashicorp;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +69,7 @@ class HashicorpVaultTest {
     @Test
     void setSecretSuccess() {
         // prepare
-        var value = Generators.timeBasedGenerator().generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.success(null));
 
         // invoke
@@ -83,7 +83,7 @@ class HashicorpVaultTest {
     @Test
     void setSecretFailure() {
         // prepare
-        var value = Generators.timeBasedGenerator().generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.failure("test-failure"));
 
         // invoke

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.catalog;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.catalog.spi.CatalogRequestMessage;
 import org.eclipse.edc.catalog.spi.DataService;
 import org.eclipse.edc.catalog.spi.DataServiceRegistry;
@@ -106,7 +106,7 @@ class CatalogProtocolServiceImplTest {
         var dataService = DataService.Builder.newInstance().build();
         var distribution = Distribution.Builder.newInstance().dataService(dataService).format("any").build();
         return Dataset.Builder.newInstance()
-                .offer(Generators.timeBasedGenerator().generate().toString(), Policy.Builder.newInstance().build())
+                .offer(UuidGenerator.INSTANCE.generate().toString(), Policy.Builder.newInstance().build())
                 .distribution(distribution)
                 .build();
     }

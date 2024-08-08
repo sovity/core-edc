@@ -16,7 +16,7 @@
 package org.eclipse.edc.spi.entity;
 
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 
 import java.time.Clock;
@@ -159,7 +159,7 @@ public abstract class StatefulEntity<T extends StatefulEntity<T>> extends Mutabl
         protected T build() {
             super.build();
             if (entity.id == null) {
-                entity.id = Generators.timeBasedGenerator().generate().toString();
+                entity.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             if (entity.stateTimestamp == 0) {

@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.transfer.dataplane.api;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.transfer.dataplane.spi.security.DataEncrypter;
 import org.eclipse.edc.jwt.spi.TokenValidationService;
 import org.eclipse.edc.spi.iam.ClaimToken;
@@ -53,9 +53,9 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyValidateSuccess() {
-        var token = Generators.timeBasedGenerator().generate().toString();
-        var encryptedDataAddress = Generators.timeBasedGenerator().generate().toString();
-        var decryptedDataAddress = DataAddress.Builder.newInstance().type(Generators.timeBasedGenerator().generate().toString()).build();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var encryptedDataAddress = UuidGenerator.INSTANCE.generate().toString();
+        var decryptedDataAddress = DataAddress.Builder.newInstance().type(UuidGenerator.INSTANCE.generate().toString()).build();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of(
                                 "key1", "value1",
@@ -76,8 +76,8 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyTokenValidationFailureThrowsException() {
-        var token = Generators.timeBasedGenerator().generate().toString();
-        var errorMsg = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
 
         when(tokenValidationServiceMock.validate(token)).thenReturn(Result.failure(errorMsg));
 
@@ -88,7 +88,7 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyMissingAddressThrowsException() {
-        var token = Generators.timeBasedGenerator().generate().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of("key1", "value1"))
                 .build();

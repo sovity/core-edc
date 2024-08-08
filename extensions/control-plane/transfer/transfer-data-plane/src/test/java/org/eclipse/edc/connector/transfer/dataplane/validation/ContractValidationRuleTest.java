@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.time.ZoneOffset.UTC;
 import static java.util.Collections.emptyMap;
@@ -48,7 +48,7 @@ class ContractValidationRuleTest {
 
     @Test
     void shouldSucceedIfContractIsStillValid() {
-        var contractId = Generators.timeBasedGenerator().generate().toString();
+        var contractId = UuidGenerator.INSTANCE.generate().toString();
         var contractAgreement = createContractAgreement(contractId);
         when(contractNegotiationStore.findContractAgreement(contractId)).thenReturn(contractAgreement);
         var claimToken = ClaimToken.Builder.newInstance().claim(CONTRACT_ID, contractId).build();
@@ -80,7 +80,7 @@ class ContractValidationRuleTest {
     private ContractAgreement createContractAgreement(String contractId) {
         return ContractAgreement.Builder.newInstance()
                 .id(contractId)
-                .assetId(Generators.timeBasedGenerator().generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .consumerId("consumer-agent-id")
                 .providerId("provider-agent-id")

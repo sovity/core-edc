@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.http.params;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.types.TypeManager;
@@ -40,7 +40,7 @@ class HttpRequestParamsProviderImplSinkTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dummyAddress())
                 .destinationDataAddress(destination)
                 .build();
@@ -62,7 +62,7 @@ class HttpRequestParamsProviderImplSinkTest {
                 .baseUrl("http://destination")
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(Generators.timeBasedGenerator().generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dummyAddress())
                 .destinationDataAddress(destination)
                 .build();

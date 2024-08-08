@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.service.asset;
 
-import com.fasterxml.uuid.Generators;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.assertj.core.api.Assertions;
 import org.eclipse.edc.connector.asset.spi.observe.AssetObservable;
 import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiationStore;
@@ -248,14 +248,14 @@ class AssetServiceImplTest {
         var asset = createAsset("assetId");
         when(index.deleteById("assetId")).thenReturn(StoreResult.success(asset));
         var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                .id(Generators.timeBasedGenerator().generate().toString())
-                .counterPartyId(Generators.timeBasedGenerator().generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol")
                 .contractAgreement(ContractAgreement.Builder.newInstance()
-                        .id(Generators.timeBasedGenerator().generate().toString())
-                        .providerId(Generators.timeBasedGenerator().generate().toString())
-                        .consumerId(Generators.timeBasedGenerator().generate().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
+                        .providerId(UuidGenerator.INSTANCE.generate().toString())
+                        .consumerId(UuidGenerator.INSTANCE.generate().toString())
                         .assetId(asset.getId())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
