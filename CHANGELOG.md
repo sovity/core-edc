@@ -4,13 +4,23 @@
 
 ### Overview
 
-#### Requirements
+Change the type of UUID
 
-#### Implementation
+#### Changes
+
+- Database performance improvement
+
+#### Details
+
+See the [fork's documentation](docs/developer/fork/0.2.1.X.md#switch-to-uuidv7): `Switch to UUID v7`
 
 #### Compatibility
 
+No incompatibilities are expected.
+
 #### Resolution plan
+
+Either update to a newer version of the EDC where the problem creating too many leases doesn't happen or propose this change to the core EDC.
 
 ## [0.2.1.3] - 2024-06-05
 
