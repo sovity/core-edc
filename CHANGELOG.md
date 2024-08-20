@@ -4,6 +4,19 @@
 
 ### Overview
 
+#### Changes
+
+#### Details
+
+#### Compatibility
+
+#### Resolution plan
+
+
+## [0.2.1.4] - 2024-08-20
+
+### Overview
+
 Change the type of UUID
 
 #### Changes
