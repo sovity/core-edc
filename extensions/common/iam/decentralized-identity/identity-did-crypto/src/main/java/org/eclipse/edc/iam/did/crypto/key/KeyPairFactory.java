@@ -21,6 +21,7 @@ import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 import org.eclipse.edc.iam.did.crypto.CryptoException;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
@@ -28,7 +29,6 @@ import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Convenience class that generates an Elliptic Curve Keypair according to the SECP256K1 spec.
@@ -66,7 +66,7 @@ public class KeyPairFactory {
         try {
             return new RSAKeyGenerator(4096)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                    .keyID(UUID.randomUUID().toString()) // give the key a unique ID (optional)
+                    .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                     .issueTime(new Date()) // issued-at timestamp (optional)
                     .generate();
         } catch (JOSEException e) {

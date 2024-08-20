@@ -26,10 +26,10 @@ import org.eclipse.edc.spi.agent.ParticipantAgent;
 import org.eclipse.edc.spi.agent.ParticipantAgentService;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.query.QuerySpec;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -106,7 +106,7 @@ class CatalogProtocolServiceImplTest {
         var dataService = DataService.Builder.newInstance().build();
         var distribution = Distribution.Builder.newInstance().dataService(dataService).format("any").build();
         return Dataset.Builder.newInstance()
-                .offer(UUID.randomUUID().toString(), Policy.Builder.newInstance().build())
+                .offer(UuidGenerator.INSTANCE.generate().toString(), Policy.Builder.newInstance().build())
                 .distribution(distribution)
                 .build();
     }

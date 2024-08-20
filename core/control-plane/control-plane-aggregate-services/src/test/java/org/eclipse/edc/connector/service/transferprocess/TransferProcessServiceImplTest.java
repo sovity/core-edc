@@ -35,6 +35,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -64,7 +64,7 @@ import static org.mockito.Mockito.when;
 
 class TransferProcessServiceImplTest {
 
-    private final String id = UUID.randomUUID().toString();
+    private final String id = UuidGenerator.INSTANCE.generate().toString();
     private final TransferProcess process1 = transferProcess();
     private final TransferProcess process2 = transferProcess();
     private final QuerySpec query = QuerySpec.Builder.newInstance().limit(5).offset(2).build();
@@ -218,7 +218,7 @@ class TransferProcessServiceImplTest {
 
     private TransferProcess transferProcess() {
         var state = TransferProcessStates.values()[ThreadLocalRandom.current().nextInt(TransferProcessStates.values().length)];
-        return transferProcess(state, UUID.randomUUID().toString());
+        return transferProcess(state, UuidGenerator.INSTANCE.generate().toString());
     }
 
     private TransferProcess transferProcess(TransferProcessStates state, String id) {

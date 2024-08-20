@@ -34,11 +34,11 @@ import org.eclipse.edc.service.spi.result.ServiceResult;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.telemetry.Telemetry;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation.Type.PROVIDER;
@@ -52,10 +52,13 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     private final Monitor monitor;
     private final Telemetry telemetry;
 
-    public ContractNegotiationProtocolServiceImpl(ContractNegotiationStore store,
-                                                  TransactionContext transactionContext,
-                                                  ContractValidationService validationService, ContractNegotiationObservable observable,
-                                                  Monitor monitor, Telemetry telemetry) {
+    public ContractNegotiationProtocolServiceImpl(
+            ContractNegotiationStore store,
+            TransactionContext transactionContext,
+            ContractValidationService validationService,
+            ContractNegotiationObservable observable,
+            Monitor monitor,
+            Telemetry telemetry) {
         this.store = store;
         this.transactionContext = transactionContext;
         this.validationService = validationService;
@@ -153,7 +156,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
                     observable.invokeForEach(l -> l.terminated(negotiation));
                 }));
     }
-    
+
     @Override
     @WithSpan
     @NotNull
@@ -167,7 +170,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @NotNull
     private ServiceResult<ContractNegotiation> createNegotiation(ContractRequestMessage message, ValidatedConsumerOffer validatedOffer) {
         var negotiation = ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .correlationId(message.getProcessId())
                 .counterPartyId(validatedOffer.getConsumerIdentity())
                 .counterPartyAddress(message.getCallbackAddress())
@@ -215,7 +218,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
             return ServiceResult.success(negotiation);
         }
     }
-    
+
     private ContractNegotiation validateGetRequest(ClaimToken claimToken, ContractNegotiation negotiation) {
         var result = validationService.validateRequest(claimToken, negotiation);
         if (result.failed()) {

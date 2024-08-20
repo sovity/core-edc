@@ -25,6 +25,7 @@ import org.eclipse.edc.junit.annotations.ApiTest;
 import org.eclipse.edc.service.spi.result.ServiceResult;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
@@ -32,7 +33,6 @@ import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -436,7 +436,7 @@ class TransferProcessApiControllerTest extends RestControllerTestBase {
 
     @NotNull
     private TransferProcess.Builder createTransferProcess() {
-        return TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString());
+        return TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString());
     }
 
 }

@@ -22,12 +22,12 @@ import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +45,7 @@ class EndpointDataReferenceReceiverRegistryImplTest {
     private final TypeTransformerRegistry typeTransformerRegistry = mock(TypeTransformerRegistry.class);
 
     private final EndpointDataReferenceReceiverRegistryImpl registry = new EndpointDataReferenceReceiverRegistryImpl(typeTransformerRegistry);
-    
+
     @Test
     void onEvent_success() {
         var address = DataAddress.Builder.newInstance().type("test").build();
@@ -134,9 +134,9 @@ class EndpointDataReferenceReceiverRegistryImplTest {
         return EndpointDataReference.Builder.newInstance()
                 .endpoint("test.endpoint.url")
                 .authKey("test-authkey")
-                .authCode(UUID.randomUUID().toString())
-                .id(UUID.randomUUID().toString())
-                .properties(Map.of("test-key", UUID.randomUUID().toString()))
+                .authCode(UuidGenerator.INSTANCE.generate().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .properties(Map.of("test-key", UuidGenerator.INSTANCE.generate().toString()))
                 .build();
     }
 }

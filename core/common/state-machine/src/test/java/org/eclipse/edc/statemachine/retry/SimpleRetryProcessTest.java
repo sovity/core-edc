@@ -15,10 +15,10 @@
 package org.eclipse.edc.statemachine.retry;
 
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +30,7 @@ class SimpleRetryProcessTest {
 
     @Test
     void shouldProcess() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         Supplier<Boolean> process = mock(Supplier.class);
         when(process.get()).thenReturn(true);
         var configuration = new EntityRetryProcessConfiguration(2, () -> () -> 2L);

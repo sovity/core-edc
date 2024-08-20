@@ -20,6 +20,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.eclipse.edc.spi.http.EdcHttpClient;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.model.CreateEntryResponsePayload;
 import org.eclipse.edc.vault.hashicorp.model.GetEntryResponsePayload;
 import org.eclipse.edc.vault.hashicorp.model.HealthResponse;
@@ -29,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,7 +58,7 @@ class HashicorpVaultClientTest {
     void getSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var config =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -94,8 +94,8 @@ class HashicorpVaultClientTest {
     void setSecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
-        var secretValue = UUID.randomUUID().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
+        var secretValue = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -133,7 +133,7 @@ class HashicorpVaultClientTest {
     void getHealth() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)
@@ -204,7 +204,7 @@ class HashicorpVaultClientTest {
     void destroySecretValue() throws IOException {
         // prepare
         var vaultUrl = "https://mock.url";
-        var vaultToken = UUID.randomUUID().toString();
+        var vaultToken = UuidGenerator.INSTANCE.generate().toString();
         var hashicorpVaultClientConfig =
                 HashicorpVaultClientConfig.Builder.newInstance()
                         .vaultUrl(vaultUrl)

@@ -16,6 +16,7 @@ package org.eclipse.edc.test.e2e;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.participant.EndToEndTransferParticipant;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.json.Json.createObjectBuilder;
@@ -59,7 +59,7 @@ public abstract class AbstractEndToEndTransfer {
     @Test
     void httpPull_dataTransfer() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressProperties());
         var dynamicReceiverProps = CONSUMER.dynamicReceiverPrivateProperties();
 
@@ -76,7 +76,7 @@ public abstract class AbstractEndToEndTransfer {
         await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of(), equalTo("some information")));
 
         // pull the data with additional query parameter
-        var msg = UUID.randomUUID().toString();
+        var msg = UuidGenerator.INSTANCE.generate().toString();
         await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), equalTo(msg)));
 
         assertThat(CONSUMER.getAllDataReferences(transferProcessId))
@@ -86,7 +86,7 @@ public abstract class AbstractEndToEndTransfer {
     @Test
     void httpPull_withExpiredContract_fixedInForcePeriod() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         var now = Instant.now();
 
         // contract was valid from t-10d to t-5d, so "now" it is expired
@@ -103,7 +103,7 @@ public abstract class AbstractEndToEndTransfer {
     @Test
     void httpPull_withExpiredContract_durationInForcePeriod() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         var now = Instant.now();
         // contract was valid from t-10d to t-5d, so "now" it is expired
         var contractPolicy = inForcePolicy("gteq", now.minus(ofDays(10)), "lteq", "contractAgreement+1s");
@@ -119,7 +119,7 @@ public abstract class AbstractEndToEndTransfer {
     @Test
     void httpPullDataTransferProvisioner() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, noConstraintPolicy(), Map.of(
                 "name", "transfer-test",
                 "baseUrl", PROVIDER.backendService() + "/api/provider/data",
@@ -140,7 +140,7 @@ public abstract class AbstractEndToEndTransfer {
     @Test
     void httpPushDataTransfer() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressProperties());
         var destination = httpDataAddress(CONSUMER.backendService() + "/api/consumer/store");
 
@@ -163,7 +163,7 @@ public abstract class AbstractEndToEndTransfer {
     @DisplayName("Provider pushes data to Consumer, Provider needs to authenticate the data request through an oauth2 server")
     void httpPushDataTransfer_oauth2Provisioning() {
         registerDataPlanes();
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressOauth2Properties());
         var destination = httpDataAddress(CONSUMER.backendService() + "/api/consumer/store");
 
@@ -231,7 +231,7 @@ public abstract class AbstractEndToEndTransfer {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
         var accessPolicyId = PROVIDER.createPolicyDefinition(noConstraintPolicy());
         var contractPolicyId = PROVIDER.createPolicyDefinition(contractPolicy);
-        PROVIDER.createContractDefinition(assetId, UUID.randomUUID().toString(), accessPolicyId, contractPolicyId);
+        PROVIDER.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), accessPolicyId, contractPolicyId);
     }
 
     private JsonObject inForcePolicy(String operatorStart, Object startDate, String operatorEnd, Object endDate) {

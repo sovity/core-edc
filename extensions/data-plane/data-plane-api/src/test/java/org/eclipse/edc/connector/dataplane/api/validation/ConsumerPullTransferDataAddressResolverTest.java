@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,8 +29,6 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.MediaType;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getFreePort;
@@ -69,7 +68,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifySuccessTokenValidation() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();
@@ -88,7 +87,7 @@ class ConsumerPullTransferDataAddressResolverTest {
 
     @Test
     void verifyFailedResultReturnedIfServerResponseIsUnsuccessful() throws JsonProcessingException {
-        var token = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var address = DataAddress.Builder.newInstance()
                 .type("test-type")
                 .build();

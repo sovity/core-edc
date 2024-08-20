@@ -29,6 +29,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.annotations.KafkaIntegrationTest;
 import org.eclipse.edc.test.e2e.participant.EndToEndTransferParticipant;
 import org.eclipse.edc.test.e2e.serializers.JacksonDeserializer;
@@ -45,7 +46,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -135,7 +135,7 @@ class EndToEndKafkaTransferTest {
     void kafkaToHttpTransfer() {
         PROVIDER.registerDataPlane();
 
-        var assetId = UUID.randomUUID().toString();
+        var assetId = UuidGenerator.INSTANCE.generate().toString();
         createResourcesOnProvider(assetId, kafkaSourceProperty());
 
         var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), httpSink());
@@ -158,7 +158,7 @@ class EndToEndKafkaTransferTest {
 
             PROVIDER.registerDataPlane();
 
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, kafkaSourceProperty());
 
             var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), kafkaSink());
@@ -201,7 +201,7 @@ class EndToEndKafkaTransferTest {
     private void createResourcesOnProvider(String assetId, Map<String, Object> dataAddressProperties) {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
         var noConstraintPolicyDefinition = PROVIDER.createPolicyDefinition(noConstraintPolicy());
-        PROVIDER.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
+        PROVIDER.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyDefinition, noConstraintPolicyDefinition);
     }
 
     private static JsonObject httpSink() {

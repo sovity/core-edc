@@ -27,6 +27,7 @@ import org.eclipse.edc.jwt.spi.TokenValidationRule;
 import org.eclipse.edc.jwt.spi.TokenValidationService;
 import org.eclipse.edc.spi.iam.PublicKeyResolver;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,6 @@ import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
@@ -56,7 +56,7 @@ class TokenValidationServiceImplTest {
         key = testKey();
         ruleMock = mock(TokenValidationRule.class);
         var publicKey = (RSAPublicKey) key.toPublicKey();
-        publicKeyId = UUID.randomUUID().toString();
+        publicKeyId = UuidGenerator.INSTANCE.generate().toString();
         var resolver = new PublicKeyResolver() {
             @Override
             public @Nullable
@@ -125,7 +125,7 @@ class TokenValidationServiceImplTest {
     private static RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate();
     }
 }

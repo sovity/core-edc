@@ -21,6 +21,7 @@ import org.eclipse.edc.spi.persistence.Lease;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +29,6 @@ import java.time.Clock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -42,7 +42,7 @@ public class InMemoryTransferProcessStore implements TransferProcessStore {
     private final InMemoryStatefulEntityStore<TransferProcess> store;
 
     public InMemoryTransferProcessStore() {
-        this(UUID.randomUUID().toString(), Clock.systemUTC(), new HashMap<>());
+        this(UuidGenerator.INSTANCE.generate().toString(), Clock.systemUTC(), new HashMap<>());
     }
 
     public InMemoryTransferProcessStore(String leaserId, Clock clock, Map<String, Lease> leases) {

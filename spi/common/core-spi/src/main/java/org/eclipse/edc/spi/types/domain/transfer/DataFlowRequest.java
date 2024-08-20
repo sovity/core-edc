@@ -21,11 +21,11 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.Polymorphic;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * A request to transfer data from a source to destination.
@@ -180,7 +180,7 @@ public class DataFlowRequest implements Polymorphic, TraceCarrier {
 
         public DataFlowRequest build() {
             if (request.id == null) {
-                request.id = UUID.randomUUID().toString();
+                request.id = UuidGenerator.INSTANCE.generate().toString();
             }
             Objects.requireNonNull(request.processId, "processId");
             Objects.requireNonNull(request.sourceDataAddress, "sourceDataAddress");

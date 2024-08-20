@@ -20,13 +20,13 @@ import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 import org.eclipse.edc.web.spi.exception.NotAuthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -53,9 +53,9 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyValidateSuccess() {
-        var token = UUID.randomUUID().toString();
-        var encryptedDataAddress = UUID.randomUUID().toString();
-        var decryptedDataAddress = DataAddress.Builder.newInstance().type(UUID.randomUUID().toString()).build();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var encryptedDataAddress = UuidGenerator.INSTANCE.generate().toString();
+        var decryptedDataAddress = DataAddress.Builder.newInstance().type(UuidGenerator.INSTANCE.generate().toString()).build();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of(
                                 "key1", "value1",
@@ -76,8 +76,8 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyTokenValidationFailureThrowsException() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
 
         when(tokenValidationServiceMock.validate(token)).thenReturn(Result.failure(errorMsg));
 
@@ -88,7 +88,7 @@ class ConsumerPullTransferTokenValidationApiControllerTest {
 
     @Test
     void verifyMissingAddressThrowsException() {
-        var token = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         var claims = ClaimToken.Builder.newInstance()
                 .claims(Map.of("key1", "value1"))
                 .build();

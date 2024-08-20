@@ -40,6 +40,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.ArgumentCaptor;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -193,7 +193,7 @@ class TransferProcessProtocolServiceImplTest {
         verify(store, never()).save(any());
         verifyNoInteractions(listener);
     }
-    
+
     @Test
     void notifyRequested_missingDestination_shouldInitiateTransfer() {
         var message = TransferRequestMessage.Builder.newInstance()
@@ -204,9 +204,9 @@ class TransferProcessProtocolServiceImplTest {
                 .build();
         when(negotiationStore.findContractAgreement(any())).thenReturn(contractAgreement());
         when(validationService.validateAgreement(any(), any())).thenReturn(Result.success(null));
-        
+
         var result = service.notifyRequested(message, claimToken());
-        
+
         assertThat(result).isSucceeded().satisfies(tp -> {
             assertThat(tp.getCorrelationId()).isEqualTo("transferProcessId");
             assertThat(tp.getConnectorAddress()).isEqualTo("http://any");
@@ -244,7 +244,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyStarted_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(COMPLETED, UUID.randomUUID().toString());
+        var transferProcess = transferProcess(COMPLETED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferStartMessage.Builder.newInstance()
                 .protocol("protocol")
@@ -279,7 +279,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyCompleted_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(REQUESTED, UUID.randomUUID().toString());
+        var transferProcess = transferProcess(REQUESTED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferCompletionMessage.Builder.newInstance()
                 .protocol("protocol")
@@ -316,7 +316,7 @@ class TransferProcessProtocolServiceImplTest {
 
     @Test
     void notifyTerminated_shouldReturnConflict_whenStatusIsNotValid() {
-        var transferProcess = transferProcess(TERMINATED, UUID.randomUUID().toString());
+        var transferProcess = transferProcess(TERMINATED, UuidGenerator.INSTANCE.generate().toString());
         when(store.findByCorrelationIdAndLease("correlationId")).thenReturn(StoreResult.success(transferProcess));
         var message = TransferTerminationMessage.Builder.newInstance()
                 .protocol("protocol")
@@ -332,20 +332,20 @@ class TransferProcessProtocolServiceImplTest {
         verify(store, never()).save(any());
         verifyNoInteractions(listener);
     }
-    
+
     @Test
     void findById_shouldReturnTransferProcess_whenValidCounterParty() {
         var processId = "transferProcessId";
         var transferProcess = transferProcess(INITIAL, processId);
         var token = claimToken();
         var agreement = contractAgreement();
-    
+
         when(store.findById(processId)).thenReturn(transferProcess);
         when(negotiationStore.findContractAgreement(any())).thenReturn(agreement);
         when(validationService.validateRequest(token, agreement)).thenReturn(Result.success());
-    
+
         var result = service.findById(processId, token);
-    
+
         assertThat(result)
                 .isSucceeded()
                 .isEqualTo(transferProcess);
@@ -354,26 +354,26 @@ class TransferProcessProtocolServiceImplTest {
     @Test
     void findById_shouldReturnNotFound_whenNegotiationNotFound() {
         when(store.findById(any())).thenReturn(null);
-        
+
         var result = service.findById("invalidId", ClaimToken.Builder.newInstance().build());
-        
+
         assertThat(result)
                 .isFailed()
                 .extracting(ServiceFailure::getReason)
                 .isEqualTo(NOT_FOUND);
     }
-    
+
     @Test
     void findById_shouldReturnNotFound_whenCounterPartyUnauthorized() {
         var processId = "transferProcessId";
         var transferProcess = transferProcess(INITIAL, processId);
         var token = claimToken();
         var agreement = contractAgreement();
-        
+
         when(store.findById(processId)).thenReturn(transferProcess);
         when(negotiationStore.findContractAgreement(any())).thenReturn(agreement);
         when(validationService.validateRequest(token, agreement)).thenReturn(Result.failure("error"));
-        
+
         var result = service.findById(processId, token);
 
         assertThat(result)
@@ -417,7 +417,7 @@ class TransferProcessProtocolServiceImplTest {
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
-    
+
     private DataRequest dataRequest() {
         return DataRequest.Builder.newInstance()
                 .contractId("contractId")

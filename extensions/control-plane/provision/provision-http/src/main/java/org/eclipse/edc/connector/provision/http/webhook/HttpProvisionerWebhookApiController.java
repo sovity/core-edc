@@ -25,6 +25,7 @@ import org.eclipse.edc.connector.spi.transferprocess.TransferProcessService;
 import org.eclipse.edc.connector.transfer.spi.types.DeprovisionedResource;
 import org.eclipse.edc.connector.transfer.spi.types.ProvisionResponse;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.ValidationResult;
 import org.eclipse.edc.validator.spi.Validator;
 import org.eclipse.edc.validator.spi.Violation;
@@ -33,7 +34,6 @@ import org.eclipse.edc.web.spi.exception.ValidationFailureException;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
@@ -57,7 +57,7 @@ public class HttpProvisionerWebhookApiController implements HttpProvisionerWebho
         provisionerWebhookRequestValidator.validate(request).orElseThrow(ValidationFailureException::new);
 
         var contentResource = HttpProvisionedContentResource.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .assetId(request.getAssetId())
                 .dataAddress(request.getContentDataAddress())
                 .resourceName(request.getResourceName())

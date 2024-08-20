@@ -19,10 +19,10 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.HttpDataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -47,7 +47,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -76,7 +76,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .properties(Map.of(
@@ -105,7 +105,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .baseUrl("http://source")
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();
@@ -131,7 +131,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyAddress())
                 .build();

@@ -39,10 +39,10 @@ import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
 import java.util.function.Function;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
@@ -101,7 +101,7 @@ public class DspTransferProcessApiController {
         if (claimTokenResult.failed()) {
             return error().processId(id).unauthorized();
         }
-    
+
         return protocolService.findById(id, claimTokenResult.getContent())
                 .map(this::createTransferProcessResponse)
                 .orElse(createErrorResponse(id));
@@ -127,7 +127,7 @@ public class DspTransferProcessApiController {
         if (transferProcessResult.failed()) {
             return error().from(transferProcessResult.getFailure());
         }
-        
+
         return createTransferProcessResponse(transferProcessResult.getContent());
     }
 
@@ -270,12 +270,12 @@ public class DspTransferProcessApiController {
         }
         return Result.success(message);
     }
-    
+
     private Response createTransferProcessResponse(TransferProcess transferProcess) {
         return registry.transform(transferProcess, JsonObject.class)
                 .map(transformedJson -> Response.ok().type(MediaType.APPLICATION_JSON).entity(transformedJson).build())
                 .orElse(failure -> {
-                    var errorCode = UUID.randomUUID();
+                    var errorCode = UuidGenerator.INSTANCE.generate();
                     monitor.warning(String.format("Error transforming transfer process, error id %s: %s", errorCode, failure.getFailureDetail()));
                     return error().processId(transferProcess.getCorrelationId()).message(String.format("Error code %s", errorCode)).internalServerError();
                 });

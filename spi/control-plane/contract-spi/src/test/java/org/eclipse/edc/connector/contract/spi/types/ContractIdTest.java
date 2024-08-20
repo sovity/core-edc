@@ -15,10 +15,10 @@
 package org.eclipse.edc.connector.contract.spi.types;
 
 import org.eclipse.edc.connector.contract.spi.ContractId;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;
-import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ class ContractIdTest {
 
     @Test
     void parseId_shouldNotDecodePartsIfTheyArentBase64() {
-        var result = ContractId.parseId("not:base64:" + UUID.randomUUID());
+        var result = ContractId.parseId("not:base64:" + UuidGenerator.INSTANCE.generate());
 
         assertThat(result).isSucceeded().satisfies(it -> {
             assertThat(it.definitionPart()).isEqualTo("not");

@@ -36,13 +36,13 @@ import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.policy.model.Prohibition;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.policy.model.XoneConstraint;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VALUE;
@@ -106,7 +106,7 @@ public class JsonObjectFromPolicyTransformer extends AbstractJsonLdTransformer<P
         public JsonObject visitXoneConstraint(XoneConstraint xoneConstraint) {
             return visitMultiplicityConstraint(ODRL_XONE_CONSTRAINT_ATTRIBUTE, xoneConstraint);
         }
-    
+
         private JsonObject visitMultiplicityConstraint(String operandType, MultiplicityConstraint multiplicityConstraint) {
             var constraintsBuilder = jsonFactory.createArrayBuilder();
             for (var constraint : multiplicityConstraint.getConstraints()) {
@@ -151,7 +151,7 @@ public class JsonObjectFromPolicyTransformer extends AbstractJsonLdTransformer<P
             policy.getObligations().forEach(duty -> obligationsBuilder.add(duty.accept(this)));
 
             var builder = jsonFactory.createObjectBuilder()
-                    .add(ID, randomUUID().toString())
+                    .add(ID, UuidGenerator.INSTANCE.generate().toString())
                     .add(TYPE, OdrlNamespace.ODRL_SCHEMA + getTypeAsString(policy.getType()))
                     .add(ODRL_PERMISSION_ATTRIBUTE, permissionsBuilder)
                     .add(ODRL_PROHIBITION_ATTRIBUTE, prohibitionsBuilder)
@@ -187,7 +187,7 @@ public class JsonObjectFromPolicyTransformer extends AbstractJsonLdTransformer<P
         @Override
         public JsonObject visitDuty(Duty duty) {
             var obligationBuilder = visitRule(duty);
-            
+
             if (duty.getConsequence() != null) {
                 var consequence = visitDuty(duty.getConsequence());
                 obligationBuilder.add(ODRL_CONSEQUENCE_ATTRIBUTE, consequence);

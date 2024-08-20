@@ -16,10 +16,10 @@ package org.eclipse.edc.connector.dataplane.util.sink;
 
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,7 +63,7 @@ class OutputStreamDataSinkFactoryTest {
 
     private static DataFlowRequest createDataFlowRequest(String destAddressType) {
         return DataFlowRequest.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance()
                         .type("")
                         .build())

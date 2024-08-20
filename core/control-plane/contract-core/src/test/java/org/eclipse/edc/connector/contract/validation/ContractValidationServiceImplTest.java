@@ -37,6 +37,7 @@ import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.time.Instant.MIN;
 import static java.util.Collections.emptyMap;
@@ -360,43 +360,43 @@ class ContractValidationServiceImplTest {
 
         verify(agentService).createFor(eq(token));
     }
-    
+
     @Test
     void validateRequest_shouldReturnSuccess_whenRequestingPartyProvider() {
         var token = ClaimToken.Builder.newInstance().build();
         var agreement = createContractAgreement().build();
         var participantAgent = new ParticipantAgent(Map.of(), Map.of(PARTICIPANT_IDENTITY, PROVIDER_ID));
-    
+
         when(agentService.createFor(token)).thenReturn(participantAgent);
-        
+
         var result = validationService.validateRequest(token, agreement);
-        
+
         assertThat(result).isSucceeded();
     }
-    
+
     @Test
     void validateRequest_shouldReturnSuccess_whenRequestingPartyConsumer() {
         var token = ClaimToken.Builder.newInstance().build();
         var agreement = createContractAgreement().build();
         var participantAgent = new ParticipantAgent(Map.of(), Map.of(PARTICIPANT_IDENTITY, CONSUMER_ID));
-    
+
         when(agentService.createFor(token)).thenReturn(participantAgent);
-    
+
         var result = validationService.validateRequest(token, agreement);
-    
+
         assertThat(result).isSucceeded();
     }
-    
+
     @Test
     void validateRequest_shouldReturnFailure_whenRequestingPartyUnauthorized() {
         var token = ClaimToken.Builder.newInstance().build();
         var agreement = createContractAgreement().build();
         var participantAgent = new ParticipantAgent(Map.of(), Map.of(PARTICIPANT_IDENTITY, "invalid"));
-    
+
         when(agentService.createFor(token)).thenReturn(participantAgent);
-    
+
         var result = validationService.validateRequest(token, agreement);
-    
+
         assertThat(result).isFailed();
     }
 
@@ -518,6 +518,6 @@ class ContractValidationServiceImplTest {
                 .providerId(PROVIDER_ID)
                 .consumerId(CONSUMER_ID)
                 .policy(Policy.Builder.newInstance().build())
-                .assetId(UUID.randomUUID().toString());
+                .assetId(UuidGenerator.INSTANCE.generate().toString());
     }
 }

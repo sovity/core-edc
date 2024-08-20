@@ -15,9 +15,8 @@
 package org.eclipse.edc.connector.transfer.spi.types;
 
 import org.eclipse.edc.spi.types.domain.asset.Asset;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -26,7 +25,7 @@ class DataRequestTest {
 
     @Test
     void verifyNoDestination() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var asset = Asset.Builder.newInstance().build();
 
         assertThrows(IllegalArgumentException.class, () -> DataRequest.Builder.newInstance().id(id).assetId(asset.getId()).build());

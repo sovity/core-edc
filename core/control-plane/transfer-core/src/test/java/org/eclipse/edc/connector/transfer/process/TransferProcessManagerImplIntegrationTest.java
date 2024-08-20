@@ -34,13 +34,13 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.retry.ExponentialWaitStrategy;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -140,11 +140,11 @@ class TransferProcessManagerImplIntegrationTest {
     }
 
     private TransferProcess.Builder createInitialTransferProcess() {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var dataRequest = DataRequest.Builder.newInstance()
                 .id(processId)
                 .destinationType("test-type")
-                .contractId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         return TransferProcess.Builder.newInstance()

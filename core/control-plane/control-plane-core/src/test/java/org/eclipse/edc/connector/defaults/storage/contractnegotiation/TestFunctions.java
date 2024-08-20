@@ -19,10 +19,10 @@ import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiation;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractOffer;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 public class TestFunctions {
 
@@ -56,7 +56,7 @@ public class TestFunctions {
                 .id("agreementId")
                 .providerId("provider")
                 .consumerId("consumer")
-                .assetId(UUID.randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .contractSigningDate(Instant.now().getEpochSecond());
     }

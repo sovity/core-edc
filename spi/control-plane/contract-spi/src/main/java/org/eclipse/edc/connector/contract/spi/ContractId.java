@@ -15,10 +15,10 @@
 package org.eclipse.edc.connector.contract.spi;
 
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
-import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -44,7 +44,7 @@ public final class ContractId {
     }
 
     public static ContractId create(String definitionId, String assetId) {
-        return new ContractId(definitionId, assetId, UUID.randomUUID().toString());
+        return new ContractId(definitionId, assetId, UuidGenerator.INSTANCE.generate().toString());
     }
 
     /**

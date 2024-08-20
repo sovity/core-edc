@@ -25,6 +25,7 @@ import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import org.eclipse.edc.iam.did.spi.key.PrivateKeyWrapper;
 import org.eclipse.edc.iam.did.spi.key.PublicKeyWrapper;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.text.ParseException;
 import java.time.Clock;
@@ -32,7 +33,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.ISSUER;
@@ -61,7 +61,7 @@ public class JwtUtils {
                 .subject(subject)
                 .audience(audience)
                 .expirationTime(Date.from(clock.instant().plus(10, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.SECONDS)))
-                .jwtID(UUID.randomUUID().toString())
+                .jwtID(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         var signer = privateKey.signer();

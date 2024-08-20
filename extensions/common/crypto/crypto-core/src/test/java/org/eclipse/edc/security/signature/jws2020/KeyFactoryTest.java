@@ -24,6 +24,7 @@ import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +43,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -147,7 +147,7 @@ class KeyFactoryTest {
                 return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                         .privateKey((RSAPrivateKey) keyPair.getPrivate())
                         .keyUse(KeyUse.SIGNATURE)
-                        .keyID(UUID.randomUUID().toString())
+                        .keyID(UuidGenerator.INSTANCE.generate().toString())
                         .issueTime(new Date())
                         .build();
 
@@ -160,7 +160,7 @@ class KeyFactoryTest {
             try {
                 return new OctetKeyPairGenerator(Curve.Ed25519)
                         .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                        .keyID(UUID.randomUUID().toString()) // give the key a unique ID (optional)
+                        .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                         .issueTime(new Date()) // issued-at timestamp (optional)
                         .generate();
             } catch (JOSEException e) {

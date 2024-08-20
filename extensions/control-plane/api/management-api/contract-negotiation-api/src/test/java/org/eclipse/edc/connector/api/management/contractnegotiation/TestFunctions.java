@@ -16,8 +16,7 @@ package org.eclipse.edc.connector.api.management.contractnegotiation;
 
 import org.eclipse.edc.connector.api.management.contractnegotiation.model.ContractOfferDescription;
 import org.eclipse.edc.policy.model.Policy;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
     public static ContractOfferDescription createOffer(String offerId, String assetId) {
@@ -30,17 +29,17 @@ public class TestFunctions {
 
     public static ContractOfferDescription createOffer(Policy policy) {
         return ContractOfferDescription.Builder.newInstance()
-                .offerId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .offerId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(policy)
                 .build();
     }
 
     public static ContractOfferDescription createOffer(String offerId) {
-        return createOffer(offerId, UUID.randomUUID().toString());
+        return createOffer(offerId, UuidGenerator.INSTANCE.generate().toString());
     }
 
     public static ContractOfferDescription createOffer() {
-        return createOffer(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        return createOffer(UuidGenerator.INSTANCE.generate().toString(), UuidGenerator.INSTANCE.generate().toString());
     }
 }

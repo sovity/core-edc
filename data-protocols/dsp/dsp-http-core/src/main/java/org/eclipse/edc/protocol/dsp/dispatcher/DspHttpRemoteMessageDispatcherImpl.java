@@ -46,7 +46,9 @@ import static org.eclipse.edc.spi.http.FallbackFactories.retryWhenStatusNot2xxOr
 public class DspHttpRemoteMessageDispatcherImpl implements DspHttpRemoteMessageDispatcher {
 
     private final Map<Class<? extends RemoteMessage>, Handlers<?, ?>> handlers = new HashMap<>();
+
     private final Map<Class<? extends RemoteMessage>, PolicyScope<? extends RemoteMessage>> policyScopes = new HashMap<>();
+
     private final EdcHttpClient httpClient;
     private final IdentityService identityService;
     private final PolicyEngine policyEngine;

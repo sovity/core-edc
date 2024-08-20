@@ -25,6 +25,7 @@ dependencies {
     api(project(":spi:common:policy-model"))
 
     implementation(libs.opentelemetry.api)
+    implementation(libs.uuid)
 
     testImplementation(project(":core:common:junit"))
 

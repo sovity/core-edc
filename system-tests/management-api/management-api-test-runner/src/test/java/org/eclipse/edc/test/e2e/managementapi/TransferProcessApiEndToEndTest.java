@@ -26,10 +26,10 @@ import org.eclipse.edc.jsonld.util.JacksonJsonLd;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
@@ -130,7 +130,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void deprovision() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(COMPLETED.code()).build());
 
         baseRequest()
@@ -142,7 +142,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
 
     @Test
     void terminate() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         getStore().save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
         var requestBody = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(VOCAB, EDC_NAMESPACE))
@@ -214,7 +214,7 @@ public class TransferProcessApiEndToEndTest extends BaseManagementApiEndToEndTes
                 .id(id)
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
                         .dataDestination(DataAddress.Builder.newInstance()
                                 .type("type")
                                 .build())

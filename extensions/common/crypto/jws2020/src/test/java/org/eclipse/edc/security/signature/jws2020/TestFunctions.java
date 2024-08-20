@@ -19,10 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWK;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.jsonld.util.JacksonJsonLd;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.UUID;
 
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;
 
@@ -31,7 +31,7 @@ class TestFunctions {
     private static final ObjectMapper MAPPER = JacksonJsonLd.createObjectMapper();
 
     static KeyPair createKeyPair(JWK jwk) {
-        var id = URI.create("https://org.eclipse.edc/keys/" + UUID.randomUUID());
+        var id = URI.create("https://org.eclipse.edc/keys/" + UuidGenerator.INSTANCE.generate());
         var type = URI.create("https://w3id.org/security#JsonWebKey2020");
         return new JwkMethod(id, type, null, jwk);
     }

@@ -70,7 +70,6 @@ allprojects {
             println(sourceSets["main"].runtimeClasspath.asPath)
         }
     }
-
 }
 
 subprojects {

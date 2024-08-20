@@ -25,13 +25,13 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.security.PrivateKeyResolver;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Optional;
-import java.util.UUID;
 
 public class ConsumerPullKeyPairFactory {
 
@@ -53,7 +53,7 @@ public class ConsumerPullKeyPairFactory {
         try {
             return new ECKeyGenerator(Curve.P_256)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                    .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                    .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                     .generate()
                     .toKeyPair();
         } catch (JOSEException e) {

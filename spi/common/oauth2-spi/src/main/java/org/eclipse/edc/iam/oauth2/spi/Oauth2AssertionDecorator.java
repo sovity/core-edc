@@ -15,13 +15,13 @@
 package org.eclipse.edc.iam.oauth2.spi;
 
 import org.eclipse.edc.jwt.spi.JwtDecorator;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.AUDIENCE;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
@@ -55,7 +55,7 @@ public class Oauth2AssertionDecorator implements JwtDecorator {
                 AUDIENCE, List.of(audience),
                 ISSUER, clientId,
                 SUBJECT, clientId,
-                JWT_ID, UUID.randomUUID().toString(),
+                JWT_ID, UuidGenerator.INSTANCE.generate().toString(),
                 ISSUED_AT, Date.from(clock.instant()),
                 EXPIRATION_TIME, Date.from(clock.instant().plusSeconds(validity))
         );

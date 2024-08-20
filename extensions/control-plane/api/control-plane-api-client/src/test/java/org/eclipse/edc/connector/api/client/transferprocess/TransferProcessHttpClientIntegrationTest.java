@@ -35,13 +35,13 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.net.URL;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
@@ -137,7 +137,7 @@ public class TransferProcessHttpClientIntegrationTest {
                 .state(TransferProcessStates.STARTED.code())
                 .type(TransferProcess.Type.PROVIDER)
                 .dataRequest(DataRequest.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
                         .destinationType("file")
                         .protocol("any")
                         .connectorAddress("http://an/address")
@@ -147,7 +147,7 @@ public class TransferProcessHttpClientIntegrationTest {
 
     private DataFlowRequest createDataFlowRequest(String processId, URL callbackAddress) {
         return DataFlowRequest.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .processId(processId)
                 .callbackAddress(callbackAddress)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("file").build())

@@ -27,6 +27,7 @@ import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.HttpDataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -133,8 +133,8 @@ public class DataPlaneHttpToHttpIntegrationTests {
 
     @Test
     void transfer_success(TypeManager typeManager) {
-        var body = UUID.randomUUID().toString();
-        var processId = UUID.randomUUID().toString();
+        var body = UuidGenerator.INSTANCE.generate().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         httpSourceMockServer.when(getRequest(), once())
                 .respond(successfulResponse(body));
 
@@ -166,8 +166,8 @@ public class DataPlaneHttpToHttpIntegrationTests {
     @Test
     void transfer_WithSourceQueryParams_Success(TypeManager typeManager) {
         // HTTP Source Request & Response
-        var body = UUID.randomUUID().toString();
-        var processId = UUID.randomUUID().toString();
+        var body = UuidGenerator.INSTANCE.generate().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var queryParams = Map.of(
                 "param1", "any value",
                 "param2", "any other value"
@@ -207,7 +207,7 @@ public class DataPlaneHttpToHttpIntegrationTests {
     @Test
     void transfer_invalidInput_failure(TypeManager typeManager) {
         // Request without processId to initiate transfer.
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var invalidRequest = transferRequestPayload(processId, typeManager).remove("processId");
 
         // Act & Assert
@@ -223,7 +223,7 @@ public class DataPlaneHttpToHttpIntegrationTests {
 
     @Test
     void transfer_sourceNotAvailable_noInteractionWithSink(TypeManager typeManager) {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         // HTTP Source Request & Error Response
         httpSourceMockServer.when(getRequest())
                 .error(withDropConnection());
@@ -249,13 +249,13 @@ public class DataPlaneHttpToHttpIntegrationTests {
      */
     @Test
     void transfer_sourceTemporaryDropConnection_success(TypeManager typeManager) {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         // First two calls to HTTP Source returns a failure response.
         httpSourceMockServer.when(getRequest(), exactly(2))
                 .error(withDropConnection());
 
         // Next call to HTTP Source returns a valid response.
-        var body = UUID.randomUUID().toString();
+        var body = UuidGenerator.INSTANCE.generate().toString();
         httpSourceMockServer.when(getRequest(), once())
                 .respond(successfulResponse(body));
 

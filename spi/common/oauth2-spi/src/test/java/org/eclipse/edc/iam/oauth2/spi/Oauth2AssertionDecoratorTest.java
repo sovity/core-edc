@@ -14,13 +14,13 @@
 
 package org.eclipse.edc.iam.oauth2.spi;
 
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +44,7 @@ class Oauth2AssertionDecoratorTest {
     @BeforeEach
     void setUp() {
         audience = "test-audience";
-        clientId = UUID.randomUUID().toString();
+        clientId = UuidGenerator.INSTANCE.generate().toString();
         var clock = Clock.fixed(now, UTC);
         decorator = new Oauth2AssertionDecorator(audience, clientId, clock, TOKEN_EXPIRATION);
     }

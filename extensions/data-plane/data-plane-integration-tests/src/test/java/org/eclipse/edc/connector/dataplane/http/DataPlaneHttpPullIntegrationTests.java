@@ -23,6 +23,7 @@ import org.eclipse.edc.junit.extensions.EdcExtension;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.HttpDataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +43,6 @@ import org.mockserver.model.MediaType;
 import org.mockserver.verify.VerificationTimes;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -182,7 +182,7 @@ public class DataPlaneHttpPullIntegrationTests {
 
         Scenario(String method) {
             this.method = method;
-            token = UUID.randomUUID().toString();
+            token = UuidGenerator.INSTANCE.generate().toString();
             dataplaneRequest = given()
                     .baseUri(DPF_PUBLIC_API_HOST)
                     .basePath(DPF_DATA_PATH)

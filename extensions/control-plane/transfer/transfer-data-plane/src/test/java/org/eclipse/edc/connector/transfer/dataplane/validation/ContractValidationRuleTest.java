@@ -18,12 +18,12 @@ import org.eclipse.edc.connector.contract.spi.negotiation.store.ContractNegotiat
 import org.eclipse.edc.connector.contract.spi.types.agreement.ContractAgreement;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.iam.ClaimToken;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 import static java.util.Collections.emptyMap;
@@ -48,7 +48,7 @@ class ContractValidationRuleTest {
 
     @Test
     void shouldSucceedIfContractIsStillValid() {
-        var contractId = UUID.randomUUID().toString();
+        var contractId = UuidGenerator.INSTANCE.generate().toString();
         var contractAgreement = createContractAgreement(contractId);
         when(contractNegotiationStore.findContractAgreement(contractId)).thenReturn(contractAgreement);
         var claimToken = ClaimToken.Builder.newInstance().claim(CONTRACT_ID, contractId).build();
@@ -80,7 +80,7 @@ class ContractValidationRuleTest {
     private ContractAgreement createContractAgreement(String contractId) {
         return ContractAgreement.Builder.newInstance()
                 .id(contractId)
-                .assetId(UUID.randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .consumerId("consumer-agent-id")
                 .providerId("provider-agent-id")
