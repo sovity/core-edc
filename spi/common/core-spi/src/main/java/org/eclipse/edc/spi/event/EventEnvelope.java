@@ -15,7 +15,6 @@
 package org.eclipse.edc.spi.event;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**

@@ -18,6 +18,7 @@ package org.eclipse.edc.vault.hashicorp;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.junit.extensions.EdcExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,6 @@ import org.testcontainers.vault.VaultContainer;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;

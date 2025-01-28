@@ -15,10 +15,10 @@
 package org.eclipse.edc.connector.controlplane.contract.spi.types;
 
 import org.eclipse.edc.connector.controlplane.contract.spi.ContractOfferId;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;

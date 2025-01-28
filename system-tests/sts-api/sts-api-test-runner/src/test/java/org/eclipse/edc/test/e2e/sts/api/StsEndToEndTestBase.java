@@ -19,11 +19,11 @@ import org.eclipse.edc.iam.identitytrust.sts.spi.model.StsClient;
 import org.eclipse.edc.iam.identitytrust.sts.spi.store.StsClientStore;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.text.ParseException;
 import java.util.Map;
 import java.util.Objects;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.iam.identitytrust.sts.spi.store.fixtures.TestFunctions.createClient;
 

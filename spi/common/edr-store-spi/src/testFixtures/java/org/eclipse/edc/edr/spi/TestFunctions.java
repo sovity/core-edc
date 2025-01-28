@@ -17,7 +17,6 @@ package org.eclipse.edc.edr.spi;
 
 import org.eclipse.edc.edr.spi.types.EndpointDataReferenceEntry;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {

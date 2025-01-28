@@ -17,11 +17,11 @@ package org.eclipse.edc.statemachine.retry;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.response.ResponseFailure;
 import org.eclipse.edc.spi.response.StatusResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 

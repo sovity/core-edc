@@ -26,6 +26,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.TokenDecorator;
 import org.eclipse.edc.token.spi.TokenGenerationService;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,6 @@ import org.mockito.Mockito;
 
 import java.sql.Date;
 import java.time.Instant;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
 import static org.assertj.core.api.Assertions.assertThat;

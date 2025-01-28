@@ -22,10 +22,10 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.jetbrains.annotations.NotNull;
 
+import javax.net.SocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import javax.net.SocketFactory;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;

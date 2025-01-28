@@ -17,12 +17,12 @@ package org.eclipse.edc.transaction.local;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.transaction.spi.local.LocalTransactionResource;
 
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
 
 /**
  * Wraps a DataSource so that it can be enlisted in a local transaction context.

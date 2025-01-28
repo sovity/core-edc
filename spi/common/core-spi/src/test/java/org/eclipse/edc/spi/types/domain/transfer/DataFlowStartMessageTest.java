@@ -17,11 +17,11 @@ package org.eclipse.edc.spi.types.domain.transfer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.edc.json.JacksonTypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

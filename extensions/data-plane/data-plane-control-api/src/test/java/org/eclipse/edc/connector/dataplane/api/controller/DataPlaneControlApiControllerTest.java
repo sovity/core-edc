@@ -24,12 +24,12 @@ import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static org.eclipse.edc.spi.response.ResponseStatus.FATAL_ERROR;

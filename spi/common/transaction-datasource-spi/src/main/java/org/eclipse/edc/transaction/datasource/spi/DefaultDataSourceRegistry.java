@@ -14,9 +14,9 @@
 
 package org.eclipse.edc.transaction.datasource.spi;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import javax.sql.DataSource;
 
 /**
  * Default datasource registry without additional transaction manager logic

@@ -15,13 +15,13 @@
 package org.eclipse.edc.connector.controlplane.transfer.dataplane.proxy;
 
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
