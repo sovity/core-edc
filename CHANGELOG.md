@@ -14,7 +14,7 @@
     * The code to support it got removed
   * Fix security flaw in logging
     * Already fixed since `0.5`
-    
+* Fix file separator usage in `IdentityTrustTransformExtension`
 
 #### Details
 

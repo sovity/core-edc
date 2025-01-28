@@ -35,7 +35,6 @@ import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +42,7 @@ import static java.lang.String.format;
 import static org.eclipse.edc.iam.identitytrust.spi.DcpConstants.DCP_CONTEXT_URL;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 
-@Extension(value = IdentityTrustTransformExtension.NAME, categories = { "iam", "transform", "jsonld" })
+@Extension(value = IdentityTrustTransformExtension.NAME, categories = {"iam", "transform", "jsonld"})
 public class IdentityTrustTransformExtension implements ServiceExtension {
     public static final String NAME = "Identity And Trust Transform Extension";
 
@@ -57,15 +56,15 @@ public class IdentityTrustTransformExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        getResourceUri("document" + File.separator + "credentials.v2.jsonld")
+        getResourceUri("document/credentials.v2.jsonld")
                 .onSuccess(uri -> jsonLdService.registerCachedDocument("https://www.w3.org/2018/credentials/v2", uri))
                 .onFailure(failure -> context.getMonitor().warning("Failed to register cached json-ld document: " + failure.getFailureDetail()));
 
-        getResourceUri("document" + File.separator + "credentials.v1.jsonld")
+        getResourceUri("document/credentials.v1.jsonld")
                 .onSuccess(uri -> jsonLdService.registerCachedDocument("https://www.w3.org/2018/credentials/v1", uri))
                 .onFailure(failure -> context.getMonitor().warning("Failed to register cached json-ld document: " + failure.getFailureDetail()));
 
-        getResourceUri("document" + File.separator + "dcp.v08.jsonld")
+        getResourceUri("document/dcp.v08.jsonld")
                 .onSuccess(uri -> jsonLdService.registerCachedDocument(DCP_CONTEXT_URL, uri))
                 .onFailure(failure -> context.getMonitor().warning("Failed to register cached json-ld document: " + failure.getFailureDetail()));
 
