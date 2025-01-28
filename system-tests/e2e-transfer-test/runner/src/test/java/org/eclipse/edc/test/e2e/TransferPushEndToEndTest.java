@@ -27,7 +27,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.json.Json.createObjectBuilder;
@@ -51,7 +51,7 @@ class TransferPushEndToEndTest {
         @Test
         void httpPushDataTransfer() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressProperties());
             var destination = httpDataAddress(CONSUMER.backendService() + "/api/consumer/store");
 
@@ -73,7 +73,7 @@ class TransferPushEndToEndTest {
         @Test
         void httpToHttp_oauth2Provisioning() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddressProperties = Map.<String, Object>of(
                     "type", "HttpData",
                     "baseUrl", PROVIDER.backendService() + "/api/provider/oauth2data",

@@ -20,7 +20,7 @@ import org.eclipse.edc.json.JacksonTypeManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.query.Criterion.criterion;
@@ -32,8 +32,8 @@ class ContractDefinitionTest {
         var mapper = new JacksonTypeManager().getMapper();
         var definition = ContractDefinition.Builder.newInstance()
                 .id("1")
-                .accessPolicyId(UUID.randomUUID().toString())
-                .contractPolicyId(UUID.randomUUID().toString())
+                .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
                 .assetsSelectorCriterion(criterion("field", "=", "value"))
                 .privateProperties(Map.of("key1", "value2"))
                 .build();

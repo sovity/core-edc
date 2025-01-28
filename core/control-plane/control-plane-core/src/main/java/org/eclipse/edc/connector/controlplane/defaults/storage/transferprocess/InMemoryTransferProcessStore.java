@@ -23,7 +23,7 @@ import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Clock;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -35,7 +35,7 @@ import static org.eclipse.edc.spi.query.Criterion.criterion;
 public class InMemoryTransferProcessStore extends InMemoryStatefulEntityStore<TransferProcess> implements TransferProcessStore {
 
     public InMemoryTransferProcessStore(Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {
-        this(UUID.randomUUID().toString(), clock, criterionOperatorRegistry);
+        this(UuidGenerator.INSTANCE.generate().toString(), clock, criterionOperatorRegistry);
     }
 
     public InMemoryTransferProcessStore(String leaserId, Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {

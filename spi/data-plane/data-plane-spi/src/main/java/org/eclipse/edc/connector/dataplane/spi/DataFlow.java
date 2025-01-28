@@ -26,7 +26,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.connector.dataplane.spi.DataFlowStates.COMPLETED;
 import static org.eclipse.edc.connector.dataplane.spi.DataFlowStates.FAILED;
@@ -154,7 +154,7 @@ public class DataFlow extends StatefulEntity<DataFlow> {
             super.build();
 
             if (entity.id == null) {
-                entity.id = UUID.randomUUID().toString();
+                entity.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             return entity;

@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.security.PrivateKey;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.iam.identitytrust.core.DcpDefaultServicesExtension.STS_PRIVATE_KEY_ALIAS;
@@ -52,7 +52,7 @@ class DcpDefaultServicesExtensionTest {
     private static PrivateKey privateKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate()
                 .toPrivateKey();
     }
@@ -65,7 +65,7 @@ class DcpDefaultServicesExtensionTest {
 
     @Test
     void verify_defaultService(ServiceExtensionContext context, DcpDefaultServicesExtension ext) {
-        var publicKeyId = "did:web:" + UUID.randomUUID() + "#key-id";
+        var publicKeyId = "did:web:" + UuidGenerator.INSTANCE.generate() + "#key-id";
         var privateKeyAlias = "private";
         Monitor mockedMonitor = mock();
         context.registerService(Monitor.class, mockedMonitor);

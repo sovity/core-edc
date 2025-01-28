@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,7 +64,7 @@ class HashicorpVaultClientTest {
 
     private static final String VAULT_URL = "https://mock.url";
     private static final String HEALTH_PATH = "sys/health";
-    private static final String VAULT_TOKEN = UUID.randomUUID().toString();
+    private static final String VAULT_TOKEN = UuidGenerator.INSTANCE.generate().toString();
     private static final long VAULT_TOKEN_TTL = 5L;
     private static final long RENEW_BUFFER = 4L;
     private static final String CUSTOM_SECRET_PATH = "v1/test/secret";
@@ -407,7 +407,7 @@ class HashicorpVaultClientTest {
                     .request(new Request.Builder().url("http://any").build())
                     .build();
             var call = mock(Call.class);
-            var secretValue = UUID.randomUUID().toString();
+            var secretValue = UuidGenerator.INSTANCE.generate().toString();
 
             when(httpClient.execute(any(Request.class))).thenReturn(response);
             when(call.execute()).thenReturn(response);

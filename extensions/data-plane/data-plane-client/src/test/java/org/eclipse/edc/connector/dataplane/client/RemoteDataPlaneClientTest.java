@@ -37,7 +37,7 @@ import org.mockserver.model.MediaType;
 import org.mockserver.verify.VerificationTimes;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.http.client.testfixtures.HttpTestUtils.testHttpClient;
@@ -102,7 +102,7 @@ class RemoteDataPlaneClientTest {
         var flowRequest = createDataFlowRequest();
 
         var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(flowRequest));
-        var errorMsg = UUID.randomUUID().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         dataPlane.when(httpRequest, once()).respond(withResponse(errorMsg));
 
         var result = dataPlaneClient.start(flowRequest);

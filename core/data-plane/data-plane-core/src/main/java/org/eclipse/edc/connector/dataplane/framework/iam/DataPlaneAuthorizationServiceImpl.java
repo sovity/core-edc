@@ -28,7 +28,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 
 import java.time.Clock;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.Collectors.toMap;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -102,7 +102,7 @@ public class DataPlaneAuthorizationServiceImpl implements DataPlaneAuthorization
 
     private TokenParameters createTokenParams(DataFlowStartMessage message) {
         return TokenParameters.Builder.newInstance()
-                .claims(JwtRegisteredClaimNames.JWT_ID, UUID.randomUUID().toString())
+                .claims(JwtRegisteredClaimNames.JWT_ID, UuidGenerator.INSTANCE.generate().toString())
                 .claims(JwtRegisteredClaimNames.AUDIENCE, message.getParticipantId())
                 .claims(JwtRegisteredClaimNames.ISSUER, ownParticipantId)
                 .claims(JwtRegisteredClaimNames.SUBJECT, ownParticipantId)

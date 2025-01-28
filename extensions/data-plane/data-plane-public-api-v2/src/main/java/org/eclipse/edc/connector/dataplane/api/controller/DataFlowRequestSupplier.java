@@ -23,7 +23,7 @@ import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.BiFunction;
 
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.BODY;
@@ -61,13 +61,13 @@ public class DataFlowRequestSupplier implements BiFunction<ContainerRequestConte
     public DataFlowStartMessage apply(ContainerRequestContextApi contextApi, DataAddress dataAddress) {
         var props = createProps(contextApi);
         return DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dataAddress)
                 .flowType(FlowType.PULL) // if a request hits the public DP API, we can assume a PULL transfer
                 .destinationDataAddress(DataAddress.Builder.newInstance()
                         .type(AsyncStreamingDataSink.TYPE)
                         .build())
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .properties(props)
                 .build();
     }

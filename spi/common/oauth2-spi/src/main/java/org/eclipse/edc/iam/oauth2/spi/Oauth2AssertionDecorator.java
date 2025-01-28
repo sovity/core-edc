@@ -20,7 +20,7 @@ import org.eclipse.edc.token.spi.TokenDecorator;
 import java.time.Clock;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.AUDIENCE;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
@@ -49,7 +49,7 @@ public class Oauth2AssertionDecorator implements TokenDecorator {
         return tokenParameters.claims(AUDIENCE, List.of(audience))
                 .claims(ISSUER, clientId)
                 .claims(SUBJECT, clientId)
-                .claims(JWT_ID, UUID.randomUUID().toString())
+                .claims(JWT_ID, UuidGenerator.INSTANCE.generate().toString())
                 .claims(ISSUED_AT, Date.from(clock.instant()))
                 .claims(EXPIRATION_TIME, Date.from(clock.instant().plusSeconds(validity)));
     }

@@ -36,7 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 
 import static java.util.stream.IntStream.range;
@@ -951,7 +951,7 @@ public abstract class TransferProcessStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(createTransferProcess(id));
 
             var result = getTransferProcessStore().findByIdAndLease(id);
@@ -969,7 +969,7 @@ public abstract class TransferProcessStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(createTransferProcess(id));
             leaseEntity(id, "other owner");
 
@@ -983,8 +983,8 @@ public abstract class TransferProcessStoreTestBase {
     class FindByCorrelationIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
-            var correlationId = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
+            var correlationId = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(TestFunctions.createTransferProcessBuilder(id).correlationId(correlationId).build());
 
             var result = getTransferProcessStore().findByCorrelationIdAndLease(correlationId);
@@ -1002,8 +1002,8 @@ public abstract class TransferProcessStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
-            var correlationId = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
+            var correlationId = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(TestFunctions.createTransferProcessBuilder(id).correlationId(correlationId).build());
             leaseEntity(id, "other owner");
 

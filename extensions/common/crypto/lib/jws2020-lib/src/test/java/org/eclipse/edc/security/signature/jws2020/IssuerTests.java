@@ -44,7 +44,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -101,7 +101,7 @@ class IssuerTests {
         var jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                 .privateKey((RSAPrivateKey) keyPair.getPrivate())
                 .keyUse(KeyUse.SIGNATURE)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(UuidGenerator.INSTANCE.generate().toString())
                 .issueTime(new Date())
                 .build();
         var keypair = createKeyPair(jwk);

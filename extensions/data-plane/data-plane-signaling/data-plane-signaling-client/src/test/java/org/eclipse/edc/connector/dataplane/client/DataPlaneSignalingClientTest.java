@@ -57,7 +57,7 @@ import org.mockserver.verify.VerificationTimes;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.http.client.testfixtures.HttpTestUtils.testHttpClient;
@@ -153,7 +153,7 @@ class DataPlaneSignalingClientTest {
                     .orElseThrow((e) -> new EdcException(e.getFailureDetail()));
 
             var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(expected));
-            var errorMsg = UUID.randomUUID().toString();
+            var errorMsg = UuidGenerator.INSTANCE.generate().toString();
             dataPlane.when(httpRequest).respond(withResponse(errorMsg));
 
             var result = dataPlaneClient.start(flowRequest);

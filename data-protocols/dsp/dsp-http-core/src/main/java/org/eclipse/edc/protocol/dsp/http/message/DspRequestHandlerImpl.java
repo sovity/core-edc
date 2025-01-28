@@ -29,7 +29,7 @@ import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.protocol.dsp.http.spi.error.DspErrorResponse.type;
 import static org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP;
@@ -66,7 +66,7 @@ public class DspRequestHandlerImpl implements DspRequestHandler {
 
         var transformation = transformerRegistry.transform(resource, JsonObject.class);
         if (transformation.failed()) {
-            var errorCode = UUID.randomUUID();
+            var errorCode = UuidGenerator.INSTANCE.generate();
             monitor.warning("Error transforming %s, error id %s: %s".formatted(request.getResultClass().getSimpleName(), errorCode, transformation.getFailureDetail()));
             return type(request.getErrorType()).processId(request.getId()).message(String.format("Error code %s", errorCode)).internalServerError();
         }
@@ -118,7 +118,7 @@ public class DspRequestHandlerImpl implements DspRequestHandler {
 
         var outputTransformation = transformerRegistry.transform(resource, JsonObject.class);
         if (outputTransformation.failed()) {
-            var errorCode = UUID.randomUUID();
+            var errorCode = UuidGenerator.INSTANCE.generate();
             monitor.warning("Error transforming %s, error id %s: %s".formatted(request.getResultClass().getSimpleName(), errorCode, outputTransformation.getFailureDetail()));
             return type(request.getErrorType()).message("Error code %s".formatted(errorCode)).internalServerError();
         }

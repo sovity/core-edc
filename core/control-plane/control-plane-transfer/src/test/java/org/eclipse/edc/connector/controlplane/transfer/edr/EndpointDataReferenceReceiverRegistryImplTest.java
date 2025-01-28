@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +57,7 @@ class EndpointDataReferenceReceiverRegistryImplTest {
                 .authCode("authCode")
                 .id("id")
                 .contractId("contract-id")
-                .properties(Map.of("test-key", UUID.randomUUID().toString()))
+                .properties(Map.of("test-key", UuidGenerator.INSTANCE.generate().toString()))
                 .build();
     }
 

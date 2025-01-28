@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -53,7 +53,7 @@ class AsyncStatusResultRetryProcessTest {
     @Test
     void shouldExecuteOnSuccess() {
         when(process.get()).thenReturn(CompletableFuture.completedFuture(StatusResult.success("content")));
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         var result = retryProcess.onSuccess(onSuccess).execute("any");
@@ -66,7 +66,7 @@ class AsyncStatusResultRetryProcessTest {
     @Test
     void shouldExecuteOnSuccessResult() {
         when(process.get()).thenReturn(CompletableFuture.completedFuture(StatusResult.success("content")));
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         var result = retryProcess.onSuccessResult(onSuccessResult).execute("any");
@@ -79,7 +79,7 @@ class AsyncStatusResultRetryProcessTest {
     @Test
     void shouldReloadEntityIfConfigured() {
         when(process.get()).thenReturn(CompletableFuture.completedFuture(StatusResult.success("content")));
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
         var reloadedEntity = TestEntity.Builder.newInstance().id(entity.getId()).clock(clock).state(10).build();
 
@@ -94,7 +94,7 @@ class AsyncStatusResultRetryProcessTest {
     void shouldExecuteOnFatalError() {
         CompletableFuture<StatusResult<String>> statusResult = CompletableFuture.completedFuture(StatusResult.failure(FATAL_ERROR));
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onSuccess((e, r) -> {}).onFatalError(onFatalError).execute("any");
@@ -106,7 +106,7 @@ class AsyncStatusResultRetryProcessTest {
     void shouldExecuteOnRetryExhausted_whenFailureAndRetriesHaveBeenExhausted() {
         CompletableFuture<StatusResult<String>> statusResult = CompletableFuture.failedFuture(new EdcException("error"));
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onSuccess((e, r) -> {}).onRetryExhausted(onRetryExhausted).execute("any");
@@ -118,7 +118,7 @@ class AsyncStatusResultRetryProcessTest {
     void shouldExecuteOnRetry_whenFailureAndRetriesHaveNotBeenExhausted() {
         CompletableFuture<StatusResult<String>> statusResult = CompletableFuture.failedFuture(new EdcException("error"));
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).stateCount(retryLimit).stateTimestamp(millis - 2L).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).stateCount(retryLimit).stateTimestamp(millis - 2L).build();
         var retryProcess = new AsyncStatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onSuccess((e, r) -> {}).onFailure(onFailure).execute("any");

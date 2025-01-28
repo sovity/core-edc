@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static java.util.stream.IntStream.range;
@@ -116,7 +116,7 @@ public class EmbeddedDataPlaneSelectorServiceTest {
 
         @Test
         void shouldDelete() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             var instance = createInstanceBuilder(instanceId).build();
             when(store.deleteById(any())).thenReturn(StoreResult.success(instance));
 
@@ -127,7 +127,7 @@ public class EmbeddedDataPlaneSelectorServiceTest {
 
         @Test
         void shouldReturnNotFound_whenInstanceIsNotFound() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(store.deleteById(any())).thenReturn(StoreResult.notFound("not found"));
 
             var result = service.delete(instanceId);
@@ -180,7 +180,7 @@ public class EmbeddedDataPlaneSelectorServiceTest {
             var instance = DataPlaneInstance.Builder.newInstance().url("http://any").build();
             when(store.findByIdAndLease(any())).thenReturn(StoreResult.success(instance));
 
-            var result = service.unregister(UUID.randomUUID().toString());
+            var result = service.unregister(UuidGenerator.INSTANCE.generate().toString());
 
             assertThat(result).isSucceeded();
             verify(store).save(argThat(it -> it.getState() == UNREGISTERED.code()));
@@ -190,7 +190,7 @@ public class EmbeddedDataPlaneSelectorServiceTest {
         void shouldFail_whenLeaseFails() {
             when(store.findByIdAndLease(any())).thenReturn(StoreResult.alreadyLeased("already leased"));
 
-            var result = service.unregister(UUID.randomUUID().toString());
+            var result = service.unregister(UuidGenerator.INSTANCE.generate().toString());
 
             assertThat(result).isFailed().extracting(ServiceFailure::getReason).isEqualTo(CONFLICT);
             verify(store, never()).save(any());

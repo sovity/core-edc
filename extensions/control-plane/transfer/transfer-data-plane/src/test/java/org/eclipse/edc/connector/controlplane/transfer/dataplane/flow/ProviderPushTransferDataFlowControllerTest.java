@@ -34,7 +34,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.transfer.dataplane.spi.TransferDataPlaneConstants.HTTP_PROXY;
@@ -224,10 +224,10 @@ class ProviderPushTransferDataFlowControllerTest {
 
     private TransferProcess.Builder transferProcessBuilder(String destinationType) {
         return TransferProcess.Builder.newInstance()
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .protocol("test-protocol")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("test.connector.address")
                 .dataDestination(DataAddress.Builder.newInstance().type(destinationType).build());
     }

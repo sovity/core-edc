@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import javax.validation.constraints.NotNull;
 
 import static java.lang.String.format;
@@ -120,7 +120,7 @@ public class TransferStreamingEndToEndTest {
                     .withPath("/api/service");
             destinationServer.when(request).respond(response());
 
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, contractExpiresIn("10s"), kafkaSourceProperty());
 
             var destination = httpSink(destinationServer.getLocalPort(), "/api/service");
@@ -155,7 +155,7 @@ public class TransferStreamingEndToEndTest {
             try (var consumer = createKafkaConsumer()) {
                 consumer.subscribe(List.of(SINK_TOPIC));
 
-                var assetId = UUID.randomUUID().toString();
+                var assetId = UuidGenerator.INSTANCE.generate().toString();
                 createResourcesOnProvider(assetId, contractExpiresIn("10s"), kafkaSourceProperty());
 
                 var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), kafkaSink(), "Kafka-PUSH");
@@ -171,7 +171,7 @@ public class TransferStreamingEndToEndTest {
             try (var consumer = createKafkaConsumer()) {
                 consumer.subscribe(List.of(SINK_TOPIC));
 
-                var assetId = UUID.randomUUID().toString();
+                var assetId = UuidGenerator.INSTANCE.generate().toString();
                 createResourcesOnProvider(assetId, noConstraintPolicy(), kafkaSourceProperty());
 
                 var transferProcessId = CONSUMER.requestAsset(PROVIDER, assetId, noPrivateProperty(), kafkaSink(), "Kafka-PUSH");

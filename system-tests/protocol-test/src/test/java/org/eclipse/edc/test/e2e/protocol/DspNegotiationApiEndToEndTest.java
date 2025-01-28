@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -60,12 +60,12 @@ public class DspNegotiationApiEndToEndTest {
 
     @Test
     void shouldExposeVersion2024_1() {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id).counterPartyId("any").counterPartyAddress("any").protocol("any").state(REQUESTED.code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .contractOffer(ContractOffer.Builder.newInstance()
-                        .id(UUID.randomUUID().toString()).assetId(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString()).assetId(UuidGenerator.INSTANCE.generate().toString())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
                 .build();

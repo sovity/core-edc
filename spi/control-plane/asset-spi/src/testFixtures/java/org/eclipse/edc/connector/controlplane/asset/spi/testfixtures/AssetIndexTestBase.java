@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -55,7 +55,7 @@ public abstract class AssetIndexTestBase {
 
     @NotNull
     protected Asset createAsset(String name) {
-        return createAsset(name, UUID.randomUUID().toString());
+        return createAsset(name, UuidGenerator.INSTANCE.generate().toString());
     }
 
     @NotNull
@@ -130,7 +130,7 @@ public abstract class AssetIndexTestBase {
 
         @Test
         void shouldFail_whenAssetAlreadyExists() {
-            var asset = createAsset("test-asset", UUID.randomUUID().toString());
+            var asset = createAsset("test-asset", UuidGenerator.INSTANCE.generate().toString());
             var assetIndex = getAssetIndex();
             assetIndex.create(asset);
 
@@ -473,7 +473,7 @@ public abstract class AssetIndexTestBase {
     class FindById {
         @Test
         void shouldReturnAsset() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = getAsset(id);
             getAssetIndex().create(asset);
 

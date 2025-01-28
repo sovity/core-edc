@@ -26,14 +26,14 @@ import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
 
 import java.util.Date;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 class KeyFunctions {
     public static RSAKey createRsa(int len) {
         try {
             return new RSAKeyGenerator(len)
                     .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                    .keyID(UUID.randomUUID().toString()) // give the key a unique ID (optional)
+                    .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                     .issueTime(new Date()) // issued-at timestamp (optional)
                     .generate();
         } catch (JOSEException e) {
@@ -44,7 +44,7 @@ class KeyFunctions {
     public static JWK createOkp(Curve curve) {
         try {
             return new OctetKeyPairGenerator(curve)
-                    .keyID(UUID.randomUUID().toString())
+                    .keyID(UuidGenerator.INSTANCE.generate().toString())
                     .generate();
         } catch (JOSEException e) {
             throw new RuntimeException(e);

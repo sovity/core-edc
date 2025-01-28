@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 
@@ -71,7 +71,7 @@ public class TestFunctions {
 
     @NotNull
     public static TransferProcess initialTransferProcess() {
-        return createTransferProcessBuilder(UUID.randomUUID().toString()).correlationId("clientid").build();
+        return createTransferProcessBuilder(UuidGenerator.INSTANCE.generate().toString()).correlationId("clientid").build();
     }
 
     @JsonTypeName("dataspaceconnector:testresourcedef")

@@ -32,7 +32,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
@@ -75,7 +75,7 @@ class DataPlanePublicApiControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnForbidden_if_tokenValidationFails() {
-        var token = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         when(dataAddressResolver.resolve(any())).thenReturn(Result.failure("token is not value"));
 
         baseRequest()
@@ -91,8 +91,8 @@ class DataPlanePublicApiControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnInternalServerError_if_transferFails() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         when(dataAddressResolver.resolve(any())).thenReturn(Result.success(testDestAddress()));
         when(pipelineService.transfer(any(), any()))
                 .thenReturn(completedFuture(StreamResult.error(errorMsg)));
@@ -109,8 +109,8 @@ class DataPlanePublicApiControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnInternalServerError_if_transferThrows() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         when(dataAddressResolver.resolve(any())).thenReturn(Result.success(testDestAddress()));
         when(pipelineService.transfer(any(DataFlowStartMessage.class), any()))
                 .thenReturn(failedFuture(new RuntimeException(errorMsg)));
@@ -134,7 +134,7 @@ class DataPlanePublicApiControllerTest extends RestControllerTestBase {
         });
 
         var responseBody = baseRequest()
-                .header(AUTHORIZATION, UUID.randomUUID().toString())
+                .header(AUTHORIZATION, UuidGenerator.INSTANCE.generate().toString())
                 .when()
                 .post("/any?foo=bar")
                 .then()

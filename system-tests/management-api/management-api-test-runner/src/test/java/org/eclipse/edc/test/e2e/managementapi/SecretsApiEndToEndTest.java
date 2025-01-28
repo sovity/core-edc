@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static jakarta.json.Json.createObjectBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +46,7 @@ public class SecretsApiEndToEndTest {
 
         @Test
         void getSecretById(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var value = "secret-value";
             vault.storeSecret(id, value);
 
@@ -62,7 +62,7 @@ public class SecretsApiEndToEndTest {
 
         @Test
         void createSecret_shouldBeStored(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var value = "secret-value";
             var secretJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
@@ -105,7 +105,7 @@ public class SecretsApiEndToEndTest {
 
         @Test
         void updateSecret(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var newValue = "new-value";
             vault.storeSecret(id, "secret-value");
 

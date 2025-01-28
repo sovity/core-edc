@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
@@ -38,7 +38,7 @@ class ConsumerPullDataPlaneProxyTokenDecoratorTest {
     @BeforeEach
     public void setUp() {
         expiration = Date.from(Instant.now().plusSeconds(ThreadLocalRandom.current().nextInt(1, 10)));
-        encryptedDataAddress = UUID.randomUUID().toString();
+        encryptedDataAddress = UuidGenerator.INSTANCE.generate().toString();
         decorator = new ConsumerPullDataPlaneProxyTokenDecorator(expiration, encryptedDataAddress);
     }
 

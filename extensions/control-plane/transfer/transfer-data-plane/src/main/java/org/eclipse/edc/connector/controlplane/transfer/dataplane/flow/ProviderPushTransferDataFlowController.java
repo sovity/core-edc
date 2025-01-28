@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toSet;
@@ -65,7 +65,7 @@ public class ProviderPushTransferDataFlowController implements DataFlowControlle
     @Override
     public @NotNull StatusResult<DataFlowResponse> start(TransferProcess transferProcess, Policy policy) {
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .processId(transferProcess.getId())
                 .sourceDataAddress(transferProcess.getContentDataAddress())
                 .destinationDataAddress(transferProcess.getDataDestination())
