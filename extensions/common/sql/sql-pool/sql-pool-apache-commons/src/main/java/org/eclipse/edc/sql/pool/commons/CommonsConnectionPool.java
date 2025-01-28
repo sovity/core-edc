@@ -25,11 +25,11 @@ import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.sql.pool.ConnectionPool;
 import org.jetbrains.annotations.NotNull;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
+import javax.sql.DataSource;
 
 public final class CommonsConnectionPool implements ConnectionPool, AutoCloseable {
     private final GenericObjectPool<Connection> connectionObjectPool;

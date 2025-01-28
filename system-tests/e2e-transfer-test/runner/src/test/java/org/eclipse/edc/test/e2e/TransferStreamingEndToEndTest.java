@@ -40,12 +40,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import javax.validation.constraints.NotNull;
 
 import static java.lang.String.format;
 import static java.time.Duration.ZERO;

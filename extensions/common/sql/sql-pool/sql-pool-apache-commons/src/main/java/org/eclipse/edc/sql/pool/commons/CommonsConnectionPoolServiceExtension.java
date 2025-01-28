@@ -30,7 +30,6 @@ import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +38,7 @@ import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import javax.sql.DataSource;
 
 import static java.util.Optional.ofNullable;
 

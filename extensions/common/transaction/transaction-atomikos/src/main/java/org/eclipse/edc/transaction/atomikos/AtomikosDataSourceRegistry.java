@@ -20,11 +20,11 @@ import com.atomikos.jdbc.internal.AbstractDataSourceBean;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import javax.sql.DataSource;
 
 /**
  * A DataSource registry backed by Atomikos data source beans. On creation, data source beans will automatically register as resources with the transaction manager domain.
