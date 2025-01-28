@@ -26,6 +26,7 @@ import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.AUTHORIZATION;
@@ -152,7 +152,7 @@ public class DataPlaneHttpIntegrationTests {
         @Test
         void transfer_pull_withSourceQueryParamsAndPath_success(TypeManager typeManager) {
             // prepare data source and validation servers
-            var token = UUID.randomUUID().toString();
+            var token = UuidGenerator.INSTANCE.generate().toString();
             var responseBody = "some info";
             var queryParams = Map.of(
                     "param1", "foo",
@@ -185,7 +185,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_invalidInput_failure(TypeManager typeManager) {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var invalidRequest = transferRequestPayload(processId, typeManager).remove("processId");
 
             given()
@@ -229,8 +229,8 @@ public class DataPlaneHttpIntegrationTests {
     class Push {
         @Test
         void transfer_toHttpSink_success(TypeManager typeManager) {
-            var body = UUID.randomUUID().toString();
-            var processId = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest(HTTP_API_PATH), once()).respond(successfulResponse(body, APPLICATION_JSON));
 
             // HTTP Sink Request & Response
@@ -248,8 +248,8 @@ public class DataPlaneHttpIntegrationTests {
         @Test
         void transfer_toHttpSink_withSourceQueryParams_success(TypeManager typeManager) {
             // HTTP Source Request & Response
-            var body = UUID.randomUUID().toString();
-            var processId = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var queryParams = Map.of(
                     "param1", "any value",
                     "param2", "any other value"
@@ -271,7 +271,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_sourceNotAvailable_noInteractionWithSink(TypeManager typeManager) {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             // HTTP Source Request & Error Response
             httpSourceMockServer.when(getRequest(HTTP_API_PATH)).error(withDropConnection());
 
@@ -289,12 +289,12 @@ public class DataPlaneHttpIntegrationTests {
          */
         @Test
         void transfer_toHttpSink_sourceTemporaryDropConnection_success(TypeManager typeManager) {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             // First two calls to HTTP Source returns a failure response.
             httpSourceMockServer.when(getRequest(HTTP_API_PATH), exactly(2)).error(withDropConnection());
 
             // Next call to HTTP Source returns a valid response.
-            var body = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest(HTTP_API_PATH), once()).respond(successfulResponse(body, PLAIN_TEXT_UTF_8));
 
             // HTTP Sink Request & Response

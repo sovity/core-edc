@@ -29,6 +29,7 @@ import org.eclipse.edc.security.token.jwt.CryptoConverter;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,6 @@ import org.mockserver.verify.VerificationTimes;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -207,7 +207,7 @@ public class DataPlanePublicApiEndToEndTest extends AbstractDataPlaneTest {
      * @return The EDR in the form of a serialized JWT.
      */
     private String createEdr() {
-        var tokenId = UUID.randomUUID().toString();
+        var tokenId = UuidGenerator.INSTANCE.generate().toString();
         // create JWT representing the EDR
         var jwt = createJwt(tokenId);
 

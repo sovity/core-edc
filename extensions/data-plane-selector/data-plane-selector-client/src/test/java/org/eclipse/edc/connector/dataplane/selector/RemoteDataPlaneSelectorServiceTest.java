@@ -26,6 +26,7 @@ import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.TypeTransformerRegistryImpl;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.transform.transformer.edc.from.JsonObjectFromDataAddressTransformer;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.eclipse.edc.http.client.testfixtures.HttpTestUtils.testHttpClient;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -107,7 +107,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
     class Unregister {
         @Test
         void shouldUnregister() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.unregister(any())).thenReturn(ServiceResult.success());
 
             var result = service.unregister(instanceId);
@@ -118,7 +118,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
 
         @Test
         void shouldFail_whenServiceFails() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.unregister(any())).thenReturn(ServiceResult.conflict("conflict"));
 
             var result = service.unregister(instanceId);
@@ -132,7 +132,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
 
         @Test
         void shouldDelete() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.delete(any())).thenReturn(ServiceResult.success());
 
             var result = service.delete(instanceId);
@@ -143,7 +143,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
 
         @Test
         void shouldFail_whenNotFound() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.delete(any())).thenReturn(ServiceResult.notFound("not found"));
 
             var result = service.delete(instanceId);
@@ -156,7 +156,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
     class FindById {
         @Test
         void shouldReturnInstanceById() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             var instance = DataPlaneInstance.Builder.newInstance().url("http://any").build();
             when(serverService.findById(any())).thenReturn(ServiceResult.success(instance));
 
@@ -169,7 +169,7 @@ class RemoteDataPlaneSelectorServiceTest extends RestControllerTestBase {
 
         @Test
         void shouldReturnNotFound_whenInstanceDoesNotExist() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.findById(any())).thenReturn(ServiceResult.notFound("not found"));
 
             var result = service.findById(instanceId);

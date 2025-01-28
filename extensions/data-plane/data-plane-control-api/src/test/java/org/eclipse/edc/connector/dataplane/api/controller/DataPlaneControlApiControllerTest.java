@@ -24,12 +24,12 @@ import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.eclipse.edc.spi.response.ResponseStatus.FATAL_ERROR;
@@ -48,8 +48,8 @@ class DataPlaneControlApiControllerTest extends RestControllerTestBase {
     @Test
     void should_callDataPlaneManager_if_requestIsValid() {
         var flowRequest = DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();
@@ -70,8 +70,8 @@ class DataPlaneControlApiControllerTest extends RestControllerTestBase {
     void should_returnBadRequest_if_requestIsInValid() {
         var errorMsg = "test error message";
         var flowRequest = DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(testDestAddress())
                 .destinationDataAddress(testDestAddress())
                 .build();

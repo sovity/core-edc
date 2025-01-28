@@ -54,6 +54,7 @@ import org.eclipse.edc.spi.protocol.ProtocolWebhook;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -61,7 +62,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
@@ -110,7 +110,7 @@ public class TransferProcessEventDispatchTest {
                                                            IdentityService identityService) {
 
         var token = ClaimToken.Builder.newInstance().build();
-        var tokenRepresentation = TokenRepresentation.Builder.newInstance().token(UUID.randomUUID().toString()).build();
+        var tokenRepresentation = TokenRepresentation.Builder.newInstance().token(UuidGenerator.INSTANCE.generate().toString()).build();
 
         when(identityService.verifyJwtToken(any(), any())).thenReturn(Result.success(token));
 

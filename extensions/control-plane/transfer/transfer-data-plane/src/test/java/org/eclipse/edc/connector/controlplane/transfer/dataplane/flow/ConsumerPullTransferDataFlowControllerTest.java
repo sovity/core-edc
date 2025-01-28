@@ -23,9 +23,8 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.result.Failure;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.transfer.dataplane.spi.TransferDataPlaneConstants.HTTP_PROXY;
@@ -144,10 +143,10 @@ class ConsumerPullTransferDataFlowControllerTest {
 
     private TransferProcess.Builder transferProcessBuilder(String destinationType) {
         return TransferProcess.Builder.newInstance()
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .protocol("protocol")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("test.connector.address")
                 .dataDestination(DataAddress.Builder.newInstance().type(destinationType).build());
     }
@@ -160,7 +159,7 @@ class ConsumerPullTransferDataFlowControllerTest {
     }
 
     private DataAddress dataAddress() {
-        return DataAddress.Builder.newInstance().type(UUID.randomUUID().toString()).build();
+        return DataAddress.Builder.newInstance().type(UuidGenerator.INSTANCE.generate().toString()).build();
     }
 
 }

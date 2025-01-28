@@ -17,12 +17,12 @@ package org.eclipse.edc.spi.entity;
 
 
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Base class for state machine persistent entities.
@@ -159,7 +159,7 @@ public abstract class StatefulEntity<T extends StatefulEntity<T>> extends Mutabl
         protected T build() {
             super.build();
             if (entity.id == null) {
-                entity.id = UUID.randomUUID().toString();
+                entity.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             if (entity.stateTimestamp == 0) {

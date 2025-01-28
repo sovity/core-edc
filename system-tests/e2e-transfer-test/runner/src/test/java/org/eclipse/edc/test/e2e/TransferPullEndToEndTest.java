@@ -30,6 +30,7 @@ import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.event.EventEnvelope;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +48,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.time.Duration.ofDays;
@@ -92,7 +92,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withCallbacks() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressProperties());
             var dynamicReceiverProps = CONSUMER.dynamicReceiverPrivateProperties();
 
@@ -121,7 +121,7 @@ class TransferPullEndToEndTest {
             await().atMost(timeout).untilAsserted(() -> assertThat(events.get(transferProcessId)).isNotNull());
 
             var event = events.get(transferProcessId);
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(event.getDataAddress(), Map.of("message", msg), equalTo(msg)));
 
         }
@@ -129,7 +129,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withEdrCache() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, PolicyFixtures.contractExpiresIn("10s"), httpDataAddressProperties());
             var dynamicReceiverProps = CONSUMER.dynamicReceiverPrivateProperties();
 
@@ -146,7 +146,7 @@ class TransferPullEndToEndTest {
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
 
             // Do the transfer
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), equalTo(msg)));
 
             // checks that the EDR is gone once the contract expires
@@ -159,7 +159,7 @@ class TransferPullEndToEndTest {
         @Test
         void suspendAndResume_httpPull_dataTransfer_withEdrCache() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, noConstraintPolicy(), httpDataAddressProperties());
 
             var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -171,7 +171,7 @@ class TransferPullEndToEndTest {
 
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), equalTo(msg)));
 
             CONSUMER.suspendTransfer(transferProcessId, "supension");
@@ -188,7 +188,7 @@ class TransferPullEndToEndTest {
             // check that transfer is available again
             awaitTransferToBeInState(transferProcessId, STARTED);
             var secondEdr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
-            var secondMessage = UUID.randomUUID().toString();
+            var secondMessage = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(secondEdr, Map.of("message", secondMessage), equalTo(secondMessage)));
 
         }
@@ -196,7 +196,7 @@ class TransferPullEndToEndTest {
         @Test
         void pullFromHttp_httpProvision() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, noConstraintPolicy(), Map.of(
                     "name", "transfer-test",
                     "baseUrl", PROVIDER.backendService() + "/api/provider/data",
@@ -223,7 +223,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenContractExpires_fixedInForcePeriod() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
 
             // contract was valid from t-10d to t-5d, so "now" it is expired
@@ -243,7 +243,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenContractExpires_durationInForcePeriod() {
             seedVaults();
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", "contractAgreement+1s");

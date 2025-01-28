@@ -26,10 +26,10 @@ import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -61,11 +61,11 @@ public class Oauth2TokenController {
         try {
             var key = new RSAKeyGenerator(2048)
                     .keyUse(KeyUse.SIGNATURE)
-                    .keyID(UUID.randomUUID().toString())
+                    .keyID(UuidGenerator.INSTANCE.generate().toString())
                     .generate();
 
             var claims = new JWTClaimsSet.Builder().build();
-            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(UUID.randomUUID().toString()).build();
+            var header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(UuidGenerator.INSTANCE.generate().toString()).build();
 
             var jwt = new SignedJWT(header, claims);
             jwt.sign(new RSASSASigner(key.toPrivateKey()));

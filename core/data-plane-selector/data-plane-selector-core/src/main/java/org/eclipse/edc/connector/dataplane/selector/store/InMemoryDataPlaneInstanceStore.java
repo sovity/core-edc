@@ -18,10 +18,10 @@ import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstan
 import org.eclipse.edc.connector.dataplane.selector.spi.store.DataPlaneInstanceStore;
 import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 
 import java.time.Clock;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 public class InMemoryDataPlaneInstanceStore extends InMemoryStatefulEntityStore<DataPlaneInstance> implements DataPlaneInstanceStore {
 
     public InMemoryDataPlaneInstanceStore(Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {
-        this(UUID.randomUUID().toString(), clock, criterionOperatorRegistry);
+        this(UuidGenerator.INSTANCE.generate().toString(), clock, criterionOperatorRegistry);
     }
 
     public InMemoryDataPlaneInstanceStore(String owner, Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {

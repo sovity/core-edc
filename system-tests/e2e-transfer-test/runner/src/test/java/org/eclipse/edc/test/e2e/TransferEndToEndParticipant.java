@@ -19,6 +19,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.hamcrest.Matcher;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -92,7 +92,7 @@ public class TransferEndToEndParticipant extends Participant {
     public void registerDataPlane(String url, Set<String> sources, Set<String> destinations, Set<String> transferTypes) {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, UUID.randomUUID().toString())
+                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                 .add(EDC_NAMESPACE + "url", url)
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(sources))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(destinations))

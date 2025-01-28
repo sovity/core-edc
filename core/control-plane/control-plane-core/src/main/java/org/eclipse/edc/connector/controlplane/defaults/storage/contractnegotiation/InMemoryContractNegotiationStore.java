@@ -22,6 +22,7 @@ import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.spi.query.QueryResolver;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 import org.eclipse.edc.store.ReflectionBasedQueryResolver;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Clock;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
@@ -43,7 +43,7 @@ public class InMemoryContractNegotiationStore extends InMemoryStatefulEntityStor
     private final QueryResolver<ContractAgreement> agreementQueryResolver;
 
     public InMemoryContractNegotiationStore(Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {
-        this(UUID.randomUUID().toString(), clock, criterionOperatorRegistry);
+        this(UuidGenerator.INSTANCE.generate().toString(), clock, criterionOperatorRegistry);
     }
 
     public InMemoryContractNegotiationStore(String leaseHolder, Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {

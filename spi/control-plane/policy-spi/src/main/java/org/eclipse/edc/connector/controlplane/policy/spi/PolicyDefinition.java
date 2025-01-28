@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.entity.Entity;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -119,7 +119,7 @@ public class PolicyDefinition extends Entity {
 
         public PolicyDefinition build() {
             if (entity.id == null) {
-                entity.id = UUID.randomUUID().toString();
+                entity.id = UuidGenerator.INSTANCE.generate().toString();
             }
             Objects.requireNonNull(entity.policy, "Policy cannot be null!");
             return super.build();

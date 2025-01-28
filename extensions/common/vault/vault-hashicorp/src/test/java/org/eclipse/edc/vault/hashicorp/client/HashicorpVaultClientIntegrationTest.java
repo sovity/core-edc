@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.monitor.ConsoleMonitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
@@ -27,7 +28,6 @@ import org.testcontainers.vault.VaultContainer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +40,7 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 class HashicorpVaultClientIntegrationTest {
     @Container
     static final VaultContainer<?> VAULT_CONTAINER = new VaultContainer<>("vault:1.9.6")
-            .withVaultToken(UUID.randomUUID().toString());
+            .withVaultToken(UuidGenerator.INSTANCE.generate().toString());
 
     private static final String HTTP_URL_FORMAT = "http://%s:%s";
     private static final String HEALTH_CHECK_PATH = "/health/path";

@@ -15,11 +15,11 @@
 package org.eclipse.edc.connector.controlplane.transfer.spi.types;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -29,7 +29,7 @@ class ProvisionedResourceTest {
     void verifyDeserialization() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        TestProvisionedResource process = TestProvisionedResource.Builder.newInstance().id(UUID.randomUUID().toString()).transferProcessId("123").resourceDefinitionId("1").build();
+        TestProvisionedResource process = TestProvisionedResource.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).transferProcessId("123").resourceDefinitionId("1").build();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, process);
 

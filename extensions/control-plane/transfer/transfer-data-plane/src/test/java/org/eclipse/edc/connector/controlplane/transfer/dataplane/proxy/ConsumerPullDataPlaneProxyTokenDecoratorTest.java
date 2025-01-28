@@ -15,13 +15,13 @@
 package org.eclipse.edc.connector.controlplane.transfer.dataplane.proxy;
 
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
@@ -38,7 +38,7 @@ class ConsumerPullDataPlaneProxyTokenDecoratorTest {
     @BeforeEach
     public void setUp() {
         expiration = Date.from(Instant.now().plusSeconds(ThreadLocalRandom.current().nextInt(1, 10)));
-        encryptedDataAddress = UUID.randomUUID().toString();
+        encryptedDataAddress = UuidGenerator.INSTANCE.generate().toString();
         decorator = new ConsumerPullDataPlaneProxyTokenDecorator(expiration, encryptedDataAddress);
     }
 

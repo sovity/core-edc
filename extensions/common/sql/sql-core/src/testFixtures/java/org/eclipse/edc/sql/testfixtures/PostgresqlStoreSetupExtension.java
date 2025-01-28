@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.sql.testfixtures;
 
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.DriverManagerConnectionFactory;
 import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.sql.SqlQueryExecutor;
@@ -35,7 +36,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -55,7 +55,7 @@ public class PostgresqlStoreSetupExtension implements BeforeEachCallback, Before
     private final QueryExecutor queryExecutor = new SqlQueryExecutor();
     private final TransactionContext transactionContext = new NoopTransactionContext();
     private final DataSourceRegistry dataSourceRegistry = new DefaultDataSourceRegistry();
-    private final String datasourceName = UUID.randomUUID().toString();
+    private final String datasourceName = UuidGenerator.INSTANCE.generate().toString();
     private String jdbcUrlPrefix;
 
     public String getDatasourceName() {

@@ -30,6 +30,7 @@ import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +40,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
@@ -66,8 +66,8 @@ public class TransferProcessApiEndToEndTest {
 
         @Test
         void getAll(ManagementEndToEndTestContext context, TransferProcessStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcess(id1));
             store.save(createTransferProcess(id2));
 
@@ -111,10 +111,10 @@ public class TransferProcessApiEndToEndTest {
 
         @Test
         void create(ManagementEndToEndTestContext context, TransferProcessStore transferProcessStore, ContractNegotiationStore contractNegotiationStore) {
-            var assetId = UUID.randomUUID().toString();
-            var contractId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
+            var contractId = UuidGenerator.INSTANCE.generate().toString();
             var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyId("counterPartyId")
                     .counterPartyAddress("http://counterparty")
                     .protocol("dataspace-protocol-http")
@@ -155,7 +155,7 @@ public class TransferProcessApiEndToEndTest {
 
         @Test
         void deprovision(ManagementEndToEndTestContext context, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(COMPLETED.code()).build());
 
             context.baseRequest()
@@ -167,7 +167,7 @@ public class TransferProcessApiEndToEndTest {
 
         @Test
         void terminate(ManagementEndToEndTestContext context, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(VOCAB, EDC_NAMESPACE))
@@ -275,7 +275,7 @@ public class TransferProcessApiEndToEndTest {
             return TransferProcess.Builder.newInstance()
                     .id(id)
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
-                    .correlationId(UUID.randomUUID().toString())
+                    .correlationId(UuidGenerator.INSTANCE.generate().toString())
                     .dataDestination(DataAddress.Builder.newInstance()
                             .type("type")
                             .build())

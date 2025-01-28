@@ -27,12 +27,12 @@ import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -768,7 +768,7 @@ public abstract class PolicyDefinitionStoreTestBase {
     protected abstract PolicyDefinitionStore getPolicyDefinitionStore();
 
     private String getRandomId() {
-        return UUID.randomUUID().toString();
+        return UuidGenerator.INSTANCE.generate().toString();
     }
 
     private PolicyDefinition createPolicyDef(String id, String target) {
