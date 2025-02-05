@@ -80,3 +80,4 @@ jobs:
         with:
           target_branch: "main"
           base_version: ${{ needs.Prepare-Release.outputs.edc-version }}
+
