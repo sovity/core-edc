@@ -16,9 +16,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-build
-      - uses: ./.github/actions/run-tests
+      - uses: actions/checkout@v4
 
       - name: Debug
         run: echo ${{ github.ref }} ; echo ${GITHUB_REF}
