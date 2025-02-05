@@ -57,6 +57,8 @@ allprojects {
         configFile = rootProject.file("resources/edc-checkstyle-config.xml")
         configDirectory.set(rootProject.file("resources"))
     }
+
+    tasks.withType<Javadoc>().forEach { it.enabled = false }
 }
 
 subprojects {
@@ -69,7 +71,7 @@ subprojects {
                 url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
                 credentials {
                     username = "sovity"
-                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
+                    password = project.findProperty("azure.test.token") as String? ?: System.getenv("AZURE_TOKEN")
                 }
             }
 
