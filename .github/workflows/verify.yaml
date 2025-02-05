@@ -47,7 +47,7 @@ jobs:
       - uses: eclipse-edc/.github/.github/actions/setup-build@main
 
       - name: Run unit tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@2023-12-12
+        uses: sovity/core-edc-github/.github/actions/run-tests@fork/0.7.2.x
         with:
           command: ./gradlew test jacocoTestReport
 
