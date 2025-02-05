@@ -1,8 +1,36 @@
 # Changelog
 
-## [0.7.2.1] - UNRELEASED
+## [0.7.2.X] - UNRELEASED
 
 ### Overview
+
+#### Changes
+
+#### Details
+
+#### Compatibility
+
+#### Resolution plan
+
+---
+
+## [0.7.2.2] - 2025-02-05
+
+### Overview
+
+* Re-publishing of `0.7.2.1` with proper releasing process.
+
+#### Compatibility
+
+No breaking change expected.
+
+---
+
+## [0.7.2.1] - 2025-02-05
+
+### Overview
+
+Migration from the previous fork and first fix.
 
 #### Changes
 
@@ -21,6 +49,8 @@
 * Disabled tests that failed because of outdated certificates.
 
 #### Compatibility
+
+No breaking change expected.
 
 #### Resolution plan
 
