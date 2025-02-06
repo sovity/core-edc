@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Run Javadoc
         run: ./gradlew javadoc
@@ -44,7 +44,7 @@ jobs:
       JACOCO: true
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Run unit tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -64,7 +64,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Postgresql Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
       - name: End to End Integration Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
         with:
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Component Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       - name: Component Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -150,3 +150,38 @@ jobs:
           path: artifacts
       - name: CodeCov
         uses: codecov/codecov-action@v4
+
+  build-gradle-project:
+    when:
+      - API-Tests
+      - Component-Tests
+      - End-To-End-Tests
+      - Postgresql-Integration-Tests
+      - Unit-Tests
+    
+    name: Publish artefacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Gradle: Publish to Production"
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
+      - name: "Gradle: Publish to Test"
+        if: ${{ startsWith(github.ref, 'refs/heads/sovity/') }}
+        run: |
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureTestRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}

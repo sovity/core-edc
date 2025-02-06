@@ -7,6 +7,6 @@ on:
 
 jobs:
   trigger-workflow:
-    uses: eclipse-edc/.github/.github/workflows/stale-bot.yml@main
+    uses: sovity/core-edc-github/.github/workflows/stale-bot.yml@sovity-0.7.2.x-main
     secrets:
       envGH: ${{ secrets.GITHUB_TOKEN }}

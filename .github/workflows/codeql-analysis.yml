@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
