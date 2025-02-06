@@ -44,12 +44,15 @@ The artifacts are released under the same group id as the original EDC: `org.ecl
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 ## Contributing
 
 To submit changes to the Eclipse EDC, please refer to [the original repository](https://github.com/eclipse-edc/Connector)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Forking
+
+[Create a Fork Issue](https://github.com/sovity/core-edc/issues/new?assignees=&labels=scope%2Fcore&template=fork.md&title=Fork+A.B.C) and follow the instructions.
 
 ## Releasing
 
