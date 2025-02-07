@@ -11,5 +11,5 @@ permissions:
 
 jobs:
   check:
-    uses: sovity/core-edc-github/.github/workflows/dependency-check.yml@sovity-0.7.2.x-main
+    uses: sovity/core-edc-github/.github/workflows/dependency-check.yml@0.7.2_2025-01-22_1
     secrets: inherit

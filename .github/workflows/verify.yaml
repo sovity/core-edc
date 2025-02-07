@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run Javadoc
         run: ./gradlew javadoc
@@ -44,7 +44,7 @@ jobs:
       JACOCO: true
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run unit tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -64,7 +64,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Postgresql Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
       - name: End to End Integration Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
         with:
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Component Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@sovity-0.7.2.x-main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Component Tests
         uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
