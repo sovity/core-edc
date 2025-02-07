@@ -40,7 +40,19 @@ For instance to know from which commit on the main branch a pinned version comes
 
 `git merge-base A B` finds the last common commit between the references `A` and `B`.
 
-e.g. `git merge-base A.B.C-2025.06.07-3 main` -> `tag date`
+```mermaid
+gitGraph
+    commit
+    commit id: "merge-base(A,B)" tag: "base"
+    branch foo
+    commit
+    commit tag: "B"
+    commit
+    checkout main
+    commit
+    commit tag: "A"
+    commit
+```
 
 #### Show a colored simplified graph
 
@@ -67,6 +79,8 @@ It is advised to replace all the template strings with the version that you want
     - `P2` is `2`
     - `P3` is `1`
     - `P4` is `4`
+- [ ] Replace the placeholders with the correct numbers
+    - `sed --in-place 's/N1/0/g; s/N2/7/g; s/N3/2/g; s/P1/0/g; s/P2/2/g; s/P3/1/g; s/P4/4/g' fork.md`
 
 # Let's fork!
 
@@ -74,7 +88,7 @@ It is advised to replace all the template strings with the version that you want
 
 Each version that needs forking has its own branch in the sovity fork.
 
-Here we have an old fork that we want to get the features from named `vP1.P2.P3.x` and a new fork named `vN1.N2.N3.x` into which we want to port the changes made in `vP1.P2.P3.x` up to `vP1.P2.P3.3`
+Here we have an old fork that we want to get the features from named `vP1.P2.P3.x` and a new fork named `vN1.N2.N3.x` into which we want to port the changes made in `vP1.P2.P3.x` up to `vP1.P2.P3.P4`
 
 Note: the branch names here are to be seen as references, so they should really be `remotes/...`.
 
@@ -86,21 +100,21 @@ title: core-edc
 gitGraph
     commit tag: "v0.0.1"
     commit tag: "vP1.P2.0"
-    branch upstream/bugfix/P1.P2.x
-    checkout upstream/bugfix/P1.P2.x
-    commit tag: "vP1.P2.?"
+    branch upstream/bugfix/P1.P2.P3
+    checkout upstream/bugfix/P1.P2.P3
+    commit
     commit tag: "vP1.P2.P3"
     branch fork/sovity/P1.P2.P3
-    commit id: "old fork"
     commit
-    commit tag: "vP1.P2.P3.3"
-    checkout upstream/bugfix/P1.P2.x
+    commit
+    commit tag: "vP1.P2.P3.P4"
+    checkout upstream/bugfix/P1.P2.P3
     checkout upstream/main
-    commit tag: "v?.?.0"
+    commit
     commit
     commit tag: "vN1.N2.0"
-    branch upstream/bugfix/N1.N2.x
-    checkout upstream/bugfix/N1.N2.x
+    branch upstream/bugfix/N1.N2.N3
+    checkout upstream/bugfix/N1.N2.N3
     commit tag: "vN1.N2.1"
     commit tag: "vN1.N2.2"
     commit tag: "vN1.N2.N3" id: "to fork"
@@ -111,6 +125,13 @@ gitGraph
     commit
     commit
 ```
+
+> [!IMPORTANT]
+> Note: the upstream branch name may vary:
+> - `remotes/upstream/release/0.10.0`
+> - `remotes/upstream/bugfix/0.7.2`
+> - `remotes/upstream/v0.6.5`
+> - or just nothing, then use the tag to start a branch.
 
 ## Make it work locally
 
@@ -140,17 +161,21 @@ upstream	git@github.com:eclipse-edc/Connector.git (push)
 
 `git branch -a`
 
+`# ...` are comments to describe the situation and no part of the output.
+
 ```
-remotes/fork/default          # the replacement for upstream/main use in the sovity fork
-remotes/fork/main             # not used in the fork, deplaced by main
-remotes/fork/sovity/O12.O3     # the previous fork branch
-remotes/upstream/bugfix/N1.N2.N3 # the branch we want to work
-...                           # and many other branches
+remotes/fork/default               # the replacement for upstream/main use in the sovity fork
+remotes/fork/main                  # not used in the fork, deplaced by main
+remotes/fork/sovity/O12.O3         # the previous fork branch
+remotes/upstream/bugfix/N1.N2.N3   # the branch we want to work
+... more                           # and many other branches
 ```
 
 `git tag -l`
 
-The output will vary based on the version that have already been forked. Here is the output where `0.2.1` exists and `0.7.2` will be forked.
+The output will vary based on the version that have already been forked. Here is the output where **0.2.1** exists and **0.7.2** will be forked.
+
+`# ...` are comments to describe the situation and no part of the output.
 
 ```
 v0.2.1    # the upstream previously forked version
@@ -158,7 +183,7 @@ v0.2.1.2  # v0.2.1.1 is missing because it was never published correctly and was
 v0.2.1.3
 v0.2.1.4  # the latest sovity fork version of v0.2.1
 v0.7.2    # the version we want to fork
-...
+... more
 ```
 
 ### Establish the branches
@@ -175,22 +200,20 @@ v0.7.2    # the version we want to fork
 
 `git remote show fork`
 
-The output will vary.
-
 ```
 * remote fork
   Fetch URL: git@github.com:sovity/core-edc.git
   Push  URL: git@github.com:sovity/core-edc.git
   HEAD branch: doesntMatter
   Remote branches:
-    sovity/0.2.1           tracked
-    sovity/0.7.2           tracked
+    sovity/P1.P2.P3        tracked
+    sovity/N1.N2.N3         tracked
     ... more
   Local branches configured for 'git pull':
-    sovity/0.7.2 merges with remote sovity/0.7.2
+    sovity/N1.N2.N3 merges with remote sovity/N1.N2.N3
     ... more
   Local refs configured for 'git push':
-    sovity/0.7.2 pushes to sovity/0.7.2 (up to date)
+    sovity/N1.N2.N3 pushes to sovity/N1.N2.N3 (up to date)
     ... more
 ```
 
@@ -260,8 +283,6 @@ upstream	git@github.com:eclipse-edc/.github.git (push)
 
 Here is the example forking scenario.
 
-`LATEST` and `LASTOK` are iso dates `YYYY-MM-DD`
-
 ```mermaid
 ---
 title: actions
@@ -284,10 +305,13 @@ gitGraph
     commit tag: "N1.N2.N3_LATEST_3"
 ```
 
-The naming scheme for the tagged and updated actions is `fork version` + `date at which the action was working` + `-version`
+`LATEST` and `LASTOK` are iso dates `YYYY-MM-DD`
+
+The naming scheme for the tagged and updated actions is `fork version` _ `date at which the action was working` _ `-version`
 
 e.g. `N1.N2.N3_2025-06-07_1` for the latest main commit.
-e.g. `N1.N2.N3_2022.03.04_7` for the commit that was used during releasing, 7th revision. You will need potentially many revisions as you will need to push the tag each time you make a change to let the CI use that version, then retry if it failed.
+e.g. `N1.N2.N3_2022.03.04_3` for the commit that was used during releasing, 3rd revision. Here the `_3` is related to the `actions` `fork` scripts and is independent of the 4th digit in the `core-edc` `fork`.
+You will need potentially many revisions as you will need to push the tag each time you make a change to let the CI use that version, then retry if it failed.
 
 This was tested to work quite well in version **0.7.2** and is detail below.
 
@@ -300,20 +324,21 @@ If you need more than 1 branch for a single date, be creative in the name, eithe
 
 `LATEST` is the last commit on the `main` `upstream` branch.
 
-- [ ] You may replace `LATEST` by the date you found. The date part should be enough.
+- [ ] Replace `LATEST` in this file by the date you find. The date part should be enough.
 - `git show --no-patch --format=%ci upstream/main`
+- `sed --in-place 's/LATEST/2025-06-07/g' fork.md`
 
 `LASTOK` is optional and will be defined later.
 
 ### Pin the action versions
 
 - Pin the latest version
-    - [ ] Create a branch to track the latest `LATEST` `main` from `upstream`
+    - [ ] Create a branch to track the `LATEST` `main` commit from `upstream`
         - `git checkout upstream/main`
         - `git checkout -b pinned/N1.N2.N3_LATEST`
     - [ ] Push the branch to the fork
         - `git push fork`
-    - [ ] Tag the latest commit in the action set with the label `core edc fork branch` - `today` - `1` (e.g `N1.N2.N3-LATEST-1`)
+    - [ ] Tag the latest commit in the action set with the label `core edc fork branch` _ `today` _ `1`
         - `git tag N1.N2.N3_LATEST_1 pinned/N1.N2.N3_LATEST`
     - [ ] Push that new tag to the sovity core edc github fork
         - `git push fork tag N1.N2.N3_LATEST_1`
@@ -322,9 +347,10 @@ If you need more than 1 branch for a single date, be creative in the name, eithe
         - ❌ `eclipse-edc/.github/.github/workflows/task.yml@main`
         - ✔ `sovity/core-edc-github/.github/workflows/task.yml@N1.N2.N3_LATEST_1`
         - [ ] IDE: replace `eclipse-edc/.github/(.*)@main` with `sovity/core-edc-github/$1@N1.N2.N3_LATEST_1`
-    - Run the CI via a PR and check for errors
+    - [ ] Run the CI via a PR and check for errors
 
 From here we have:
+
 - An action works -> done
 - An action doesn't work
     - Is the action useless? -> remove it
@@ -342,7 +368,7 @@ From here we have:
 - Update the code in the `pinned/N1.N2.N3-LATEST` branch
 - Commit and tag your new version as `N1.N2.N3_LATEST_(N+1)` in the `actions` repo
 - Push the tag to the sovity fork repo
-- Update all the `@N1.N2.N3_LATEST_N` to `N1.N2.N3_LATSET_(N+1)`
+- Update all the `@N1.N2.N3_LATEST_N` to `N1.N2.N3_LATEST_(N+1)`
 - Repeat until fixed
 
 ### Lost action
@@ -350,19 +376,20 @@ From here we have:
 This part describes how to find where a missing action was and how to make it work again.
 
 - [ ] Identify the date `LASTOK` when the `core-edc` version was released either with:
-  - [ ] Alternative 1: locate the file in the git history.
-      - `git log --oneline --follow -- '.github/actions/THEACTIONNAME'`
-  - [ ] Alternative 2: Use the tag date.
-    - `git show --no-patch --format=%ci vN1.N2.N3` in the `core-edc` repo. e.g `2022-03-04`
-    - Note: the time may be important. By specifying only the date, we will get all the commit of that day until midnight.
+    - [ ] Alternative 1: locate the file in the git history.
+        - `git log --oneline --follow -- '.github/actions/THEACTIONNAME'`
+    - [ ] Alternative 2: Use the tag date.
+        - `git show --no-patch --format=%ci vN1.N2.N3` in the `core-edc` repo. e.g `2022-03-04`
+        - Note: the time may be important. By specifying only the date, we will get all the commit of that day until midnight.
+- [ ] (Optional) Replace `LASTOK` with the date you found.
 - [ ] Find in the `fork` `action` repository the *commit* on the main branch that happened right before the time
   the tagged commit in the core EDC was created.
-    - `git log --date=iso -n 2 --before="LASTOK"`
+    - `git log --date=iso -n LINES --before="LASTOK"`
     - e.g. `git log --date=iso -n 2 --before="2022-03-04"`
     - Note: the time may be important, increase the value of `LINES` to show more than 1 line.
 - [ ] Create a new branch `pinned/P1.P2.P3_LASTOK` from this older commit
 - [ ] Push this branch to the fork
-- [ ] Tag this new version as `P1.P2.P3_YYYY.MM.DD_1` e.g. `P1.P2.P2_2022-03-04_1`
+- [ ] Tag this new version as `P1.P2.P3_LASTOK_1` e.g. `P1.P2.P2_2022-03-04_1`
 - [ ] Push this tag to the `actions` fork
     - e.g. `git push fork tag P1.P2.P3_LASTOK_1`
 - [ ] Change the missing dependency versions in the `core-edc` `fork` from the pinned latest to that new version.
@@ -376,8 +403,8 @@ This part describes how to find where a missing action was and how to make it wo
     - `0.2.1.x`: publishing
         - `git checkout sovity/0.2.1 -- .github/workflows/publish.yml build.gradle.kts`
 - [ ] Adapt the publishing and promoting actions to the new `core-edc`'s actions.
-  - [ ] Branches starting with `sovity/` must be published on the `AzureTest` instance.
-  - [ ] Tags starting with `v` must be published on the `Azure` (non test) instance.
+    - [ ] Branches starting with `sovity/` must be published on the `AzureTest` instance.
+    - [ ] Tags starting with `v` must be published on the `Azure` (non test) instance.
 - [ ] Disable the jar signing
     - `v0.2.1` / `v0.7.2`
         - The signing is managed in the EDC gradle plugin.
@@ -387,12 +414,8 @@ This part describes how to find where a missing action was and how to make it wo
     - [ ] Check that the artifacts have been deployed to the [Azure Test repo](https://dev.azure.com/sovity/Test/_artifacts/feed/test)
 - [ ] Update the `release.md` on the default branch.
 - [ ] This should also be working for the prod release, but adjustments may be needed.
-  - [ ] Start a release, in this project's.
-
-TODO: extract the publishing task to the `actions` repo.
+    - [ ] Start a release, in this project's.
 
 ### Finalization
 
 - [ ] Update this procedure with new hints after forking an EDC version.
-
-TODO: use stars to quote existing versions to avoid confusion with templates
