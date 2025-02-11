@@ -1,7 +1,7 @@
 ---
-name: New Workaround
-about: How to add a workaround on an existing fork.
-title: "Add a workaround"
+name: New Patch
+about: How to add a patch on an existing fork.
+title: "Add a patch"
 labels: [ "scope/core" ]
 assignees: ""
 ---
@@ -22,4 +22,4 @@ Describes how to add a patch on a forked Eclipse EDC.
   - base: `sovity/VERSION`
   - compare: `my-crucial-patch`
 
-Before being done developing the patch changes, all pushed commits to sovity/A.B.C will be built in the [Test Azure Maven Repository](https://dev.azure.com/sovity/Test/_artifacts/feed/test).
+Before being done developing the patch changes, all pushed commits to `sovity/A.B.C` will be built in the [Test Azure Maven Repository](https://dev.azure.com/sovity/Test/_artifacts/feed/test).
