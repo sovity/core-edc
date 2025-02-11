@@ -5,5 +5,5 @@ on:
 
 jobs:
   verify:
-    uses: eclipse-edc/.github/.github/workflows/verify-openapi.yml@main
+    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@0.7.2_2025-01-22_1
     secrets: inherit

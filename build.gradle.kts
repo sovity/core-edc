@@ -67,16 +67,16 @@ subprojects {
     publishing {
         repositories {
             maven {
-                name = "AzureTestPackages"
+                name = "AzureTest"
                 url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
                 credentials {
                     username = "sovity"
-                    password = project.findProperty("azure.test.token") as String? ?: System.getenv("AZURE_TOKEN")
+                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
                 }
             }
 
             maven {
-                name = "AzurePackages"
+                name = "Azure"
                 url = uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
                 credentials {
                     username = "sovity"

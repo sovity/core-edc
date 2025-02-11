@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run Javadoc
         run: ./gradlew javadoc
@@ -44,10 +44,10 @@ jobs:
       JACOCO: true
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Run unit tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
+        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2_2024-02-28_1
         with:
           command: ./gradlew test jacocoTestReport
 
@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Postgresql Tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
+        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2_2024-02-28_1
         with:
           command: ./gradlew test -DincludeTags="PostgresqlIntegrationTest"
 
@@ -75,9 +75,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
       - name: End to End Integration Tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
+        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2_2024-02-28_1
         with:
           command: ./gradlew test jacocoTestReport -DincludeTags="EndToEndTest"
 
@@ -87,10 +87,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Component Tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
+        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2_2024-02-28_1
         with:
           command: ./gradlew test jacocoTestReport -DincludeTags="ComponentTest"
 
@@ -100,10 +100,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.7.2_2025-01-22_1
 
       - name: Component Tests
-        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2
+        uses: sovity/core-edc-github/.github/actions/run-tests@0.7.2_2024-02-28_1
         with:
           command: ./gradlew test jacocoTestReport -DincludeTags="ApiTest"
 
@@ -150,3 +150,84 @@ jobs:
           path: artifacts
       - name: CodeCov
         uses: codecov/codecov-action@v4
+
+  Publish-Artifacts:
+    needs:
+      - API-Tests
+      - Component-Tests
+      - End-To-End-Tests
+      - Postgresql-Integration-Tests
+      - Unit-Tests
+    
+    name: Publish artefacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Gradle: Publish to Production"
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
+      - name: "Gradle: Publish to Test"
+        if: ${{ startsWith(github.ref, 'refs/heads/sovity/') }}
+        run: |
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureTestRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
+  Promote-Artifacts:
+    needs:
+      - Publish-Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Promote artifacts"
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+        run: |
+          # Core EDC https://dev.azure.com/sovity/Core%20EDC
+          PROJECT="41799556-91c8-4df6-8ddb-4471d6f15953"
+          #core-edc feed https://dev.azure.com/sovity/Core%20EDC/_artifacts/feed/core-edc
+          FEED="core-edc"
+          
+          curl -u ":$AZURE_TOKEN" \
+          "https://feeds.dev.azure.com/sovity/$PROJECT/_apis/packaging/Feeds/$FEED/packages?protocolType=maven&includeUrls=false&includeAllVersions=true&includeDeleted=false&api-version=7.0" \
+          | jq --raw-output '.value[].name' | cut -d ':' -f 2 | while read -r arti
+          do
+            echo "Promoting $arti ..."
+            curl \
+              -X PATCH \
+              -u ":$AZURE_TOKEN" \
+              "https://pkgs.dev.azure.com/sovity/$PROJECT/_apis/packaging/feeds/core-edc/maven/groups/org.eclipse.edc/artifacts/${arti}/versions/${VERSION}?api-version=7.1-preview.1" \
+              --json @- <<"EOF"
+          {
+            "views": {
+              "op": "add",
+              "path": "/views/-",
+              "value": "Release"
+            }
+          }
+          
+          EOF
+          
+          if [[ $? -ne 0 ]]
+          then
+            echo "Failed to promote $arti"
+            exit 1
+          else
+            echo "Promoted $arti"
+          fi
+          
+          done

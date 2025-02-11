@@ -11,5 +11,5 @@ permissions:
 
 jobs:
   check:
-    uses: eclipse-edc/.github/.github/workflows/dependency-check.yml@main
+    uses: sovity/core-edc-github/.github/workflows/dependency-check.yml@0.7.2_2025-01-22_1
     secrets: inherit

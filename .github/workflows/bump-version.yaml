@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: eclipse-edc/.github/.github/actions/bump-version@main
+      - uses: sovity/core-edc-github/.github/actions/bump-version@0.7.2_2025-01-22_1
         name: Bump version
         with:
           target_branch: ${{ inputs.target_branch }}

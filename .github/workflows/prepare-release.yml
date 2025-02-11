@@ -16,7 +16,7 @@ on:
 
 jobs:
   Prepare-Release:
-    uses: eclipse-edc/.github/.github/workflows/core-prepare-release.yml@main
+    uses: sovity/core-edc-github/.github/workflows/core-prepare-release.yml@0.7.2_2025-01-22_1
     secrets: inherit
     with:
       version: ${{ inputs.version }}
