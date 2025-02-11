@@ -21,3 +21,5 @@ Describes how to add a patch on a forked Eclipse EDC.
   - base repository: `sovity/core-edc`
   - base: `sovity/VERSION`
   - compare: `my-crucial-patch`
+
+Before being done developing the patch changes, all pushed commits to sovity/A.B.C will be built in the [Test Azure Maven Repository](https://dev.azure.com/sovity/Test/_artifacts/feed/test).

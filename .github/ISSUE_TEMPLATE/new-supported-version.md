@@ -1,7 +1,7 @@
 ---
-name: Fork
-about: Create an issue to track a forking process.
-title: "Establish a new fork"
+name: New supported version
+about: Create a new fork from an Eclipse EDC version.
+title: "Establish a new supported version"
 labels: [ "scope/core" ]
 assignees: ""
 ---
@@ -413,9 +413,9 @@ This part describes how to find where a missing action was and how to make it wo
     - [ ] Create a PR with some changes to target the `core-edc` fork on a `sovity/` branch and merge it.
     - [ ] Check that the artifacts have been deployed to the [Azure Test repo](https://dev.azure.com/sovity/Test/_artifacts/feed/test)
 - [ ] Update the `release.md` on the default branch.
-- [ ] This should also be working for the prod release, but adjustments may be needed.
-    - [ ] Start a release, in this project's.
+- [ ] You can now create PRs against `sovity/N1.N2.N3` with your desired changes, see [the patch procedure](https://github.com/sovity/core-edc/issues/new?template=new-patch.md)
 
 ### Finalization
 
 - [ ] Update this procedure with new hints after forking an EDC version.
+- [ ] Update the default branch's README with a new entry for this fork.
