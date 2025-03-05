@@ -23,10 +23,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class ReflectionUtil {
 
     private static final String ARRAY_INDEXER_REGEX = ".*\\[([0-9])+\\]";
+    private static final Pattern ARRAY_INDEXER_PATTERN = Pattern.compile(ARRAY_INDEXER_REGEX);
     private static final String OPENING_BRACKET = "[";
     private static final String CLOSING_BRACKET = "]";
 
@@ -61,7 +63,7 @@ public class ReflectionUtil {
             }
             var rest = path.stream().skip(1).toList();
             return getFieldValue(rest, nested);
-        } else if (first.toString().matches(ARRAY_INDEXER_REGEX)) { //array indexer
+        } else if (ARRAY_INDEXER_PATTERN.matcher(first.toString()).matches()) { //array indexer
             var openingBracketIx = first.toString().indexOf(OPENING_BRACKET);
             var closingBracketIx = first.toString().indexOf(CLOSING_BRACKET);
             var propName = first.toString().substring(0, openingBracketIx);
