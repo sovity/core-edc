@@ -23,12 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class ReflectionUtil {
-
-    private static final String ARRAY_INDEXER_REGEX = ".*\\[([0-9])+\\]";
-    private static final Pattern ARRAY_INDEXER_PATTERN = Pattern.compile(ARRAY_INDEXER_REGEX);
     private static final String OPENING_BRACKET = "[";
     private static final String CLOSING_BRACKET = "]";
 
@@ -37,7 +33,7 @@ public class ReflectionUtil {
      * indexers are supported:
      * <pre>
      *     someObject.someValue
-     *     someObject[2].someValue //someObject must impement the List interface
+     *     someObject[2].someValue //someObject must implement the List interface
      * </pre>
      *
      * @param object       The object
@@ -63,21 +59,33 @@ public class ReflectionUtil {
             }
             var rest = path.stream().skip(1).toList();
             return getFieldValue(rest, nested);
-        } else if (ARRAY_INDEXER_PATTERN.matcher(first.toString()).matches()) { //array indexer
-            var openingBracketIx = first.toString().indexOf(OPENING_BRACKET);
-            var closingBracketIx = first.toString().indexOf(CLOSING_BRACKET);
-            var propName = first.toString().substring(0, openingBracketIx);
-            var arrayIndex = Integer.parseInt(first.toString().substring(openingBracketIx + 1, closingBracketIx));
-            var iterableObject = (List) getFieldValue("'%s'".formatted(propName), object);
-            return (T) iterableObject.get(arrayIndex);
         } else {
-            if (object instanceof Map<?, ?> map) {
-                return (T) map.get(first.toString());
-            } else if (object instanceof List<?> list) {
-                return (T) list.stream().filter(Objects::nonNull).map(it -> getRecursiveValue(first.toString(), it)).toList();
+            var firstAsString = first.toString();
+            var openingBracketIx = firstAsString.indexOf(OPENING_BRACKET);
+            var closingBracketIx = firstAsString.indexOf(CLOSING_BRACKET);
+            if (openingBracketIx >= 0 && closingBracketIx >= 0) { //array indexer
+                var arrayIndex = -1;
+                try {
+                    arrayIndex = Integer.parseInt(firstAsString.substring(openingBracketIx + 1, closingBracketIx));
+                } catch (Exception e) {
+                    return fallback(object, firstAsString);
+                }
+                var propName = firstAsString.substring(0, openingBracketIx);
+                var iterableObject = (List) getFieldValue("'%s'".formatted(propName), object);
+                return (T) iterableObject.get(arrayIndex);
             } else {
-                return getRecursiveValue(first.toString(), object);
+                return fallback(object, firstAsString);
             }
+        }
+    }
+
+    private static <T> T fallback(Object object, String firstAsString) {
+        if (object instanceof Map<?, ?> map) {
+            return (T) map.get(firstAsString);
+        } else if (object instanceof List<?> list) {
+            return (T) list.stream().filter(Objects::nonNull).map(it -> getRecursiveValue(firstAsString, it)).toList();
+        } else {
+            return getRecursiveValue(firstAsString, object);
         }
     }
 

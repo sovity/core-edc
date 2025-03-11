@@ -23,7 +23,32 @@ import java.util.List;
  */
 public class PathItem {
 
+    private static final int MAX_CACHE_SIZE = 4096;
+
+    private static final List<CacheEntry> CACHE = new ArrayList<>(MAX_CACHE_SIZE);
+
     public static List<PathItem> parse(String propertyName) {
+        try {
+            List<PathItem> result = null;
+            for (var entry : CACHE) {
+                if (entry.getPropertyName().equals(propertyName)) {
+                    result = entry.getGetPathItems();
+                    break;
+                }
+            }
+
+            if (result == null) {
+                result = parseInternal(propertyName);
+                CACHE.add(new CacheEntry(propertyName, result));
+            }
+
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static List<PathItem> parseInternal(String propertyName) {
         var result = new ArrayList<PathItem>();
         result.add(new PathItem());
         for (var i = 0; i < propertyName.length(); i++) {
@@ -44,6 +69,7 @@ public class PathItem {
             }
 
         }
+        System.out.println("CACHE add " + propertyName);
         return result.stream().toList();
     }
 
