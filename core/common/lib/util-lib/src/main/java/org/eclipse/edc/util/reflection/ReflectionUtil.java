@@ -64,8 +64,8 @@ public class ReflectionUtil {
             var openingBracketIx = firstAsString.indexOf(OPENING_BRACKET);
             var closingBracketIx = firstAsString.indexOf(CLOSING_BRACKET);
 
-            if ( // array indexer
-                    openingBracketIx >= 0 &&
+            // array indexer
+            if (openingBracketIx >= 0 &&
                             closingBracketIx >= openingBracketIx + 2 &&
                             closingBracketIx == firstAsString.length() - 1
             ) {
