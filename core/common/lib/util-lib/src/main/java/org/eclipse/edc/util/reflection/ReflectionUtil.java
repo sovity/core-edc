@@ -63,7 +63,12 @@ public class ReflectionUtil {
             var firstAsString = first.toString();
             var openingBracketIx = firstAsString.indexOf(OPENING_BRACKET);
             var closingBracketIx = firstAsString.indexOf(CLOSING_BRACKET);
-            if (openingBracketIx >= 0 && closingBracketIx >= 0) { //array indexer
+
+            if ( // array indexer
+                    openingBracketIx >= 0 &&
+                            closingBracketIx >= openingBracketIx + 2 &&
+                            closingBracketIx == firstAsString.length() - 1
+            ) {
                 var arrayIndex = -1;
                 try {
                     arrayIndex = Integer.parseInt(firstAsString.substring(openingBracketIx + 1, closingBracketIx));
