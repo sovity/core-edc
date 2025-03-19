@@ -75,10 +75,16 @@ public class StateMachineManager {
      */
     public CompletableFuture<Boolean> stop() {
         active.set(false);
+        executor.shutdown();
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return executor.awaitTermination(shutdownTimeout, SECONDS);
+                var stopped = executor.awaitTermination(shutdownTimeout, SECONDS);
+//                if (!stopped) {
+//                    monitor.debug("XXX not stopped");
+//                    executor.shutdownNow();
+//                }
+                return stopped;
             } catch (InterruptedException e) {
                 monitor.severe(format("StateMachineManager [%s] await termination failed", name), e);
                 return false;

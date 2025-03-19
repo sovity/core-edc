@@ -39,6 +39,7 @@ import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -90,6 +91,8 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
     @Setting(value = "OkHttpClient: receive buffer size, in bytes", defaultValue = DEFAULT_OK_HTTP_CLIENT_RECEIVE_BUFFER_SIZE + "", type = "int", min = 1)
     private static final String OK_HTTP_CLIENT_RECEIVE_BUFFER_SIZE = "edc.http.client.receive.buffer.size";
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
+
     /**
      * An optional OkHttp {@link EventListener} that can be used to instrument OkHttp client for collecting metrics.
      */
@@ -115,7 +118,12 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
 
     @Provider(isDefault = true)
     public EventExecutorServiceContainer eventExecutorServiceContainer() {
-        return new EventExecutorServiceContainer(Executors.newFixedThreadPool(1));
+        return new EventExecutorServiceContainer(executor);
+    }
+
+    @Override
+    public void shutdown() {
+        executor.shutdownNow();
     }
 
     @Provider
