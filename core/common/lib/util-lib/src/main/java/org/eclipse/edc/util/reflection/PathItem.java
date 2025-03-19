@@ -19,7 +19,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**

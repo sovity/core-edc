@@ -44,6 +44,7 @@ import org.eclipse.edc.statemachine.retry.EntityRetryProcessConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -158,7 +159,7 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
         if (dataPlaneManager != null) {
             dataPlaneManager.stop();
         }
-        ExecutorUtils.orderlyShutdown(executorService, this.getClass().getSimpleName(), monitor);
+        ExecutorUtils.orderlyShutdown(executorService, this.getClass().getSimpleName(), monitor, Duration.ofSeconds(10));
     }
 
     @Provider
