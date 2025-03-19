@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.statemachine;
 
+import org.eclipse.edc.spi.executors.ExecutorUtils;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.retry.WaitStrategy;
 import org.eclipse.edc.spi.system.ExecutorInstrumentation;
@@ -29,7 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Handles a loop that processes entities continuously.
@@ -78,17 +78,8 @@ public class StateMachineManager {
         executor.shutdown();
 
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                var stopped = executor.awaitTermination(shutdownTimeout, SECONDS);
-//                if (!stopped) {
-//                    monitor.debug("XXX not stopped");
-//                    executor.shutdownNow();
-//                }
-                return stopped;
-            } catch (InterruptedException e) {
-                monitor.severe(format("StateMachineManager [%s] await termination failed", name), e);
-                return false;
-            }
+            ExecutorUtils.orderlyShutdown(executor, format("StateMachineManager [%s]", name), monitor);
+            return true;
         });
     }
 

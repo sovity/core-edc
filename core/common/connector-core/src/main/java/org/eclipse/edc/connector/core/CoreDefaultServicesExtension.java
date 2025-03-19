@@ -41,6 +41,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides default service implementations for fallback
@@ -123,7 +124,11 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
 
     @Override
     public void shutdown() {
-        executor.shutdownNow();
+        try {
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Provider

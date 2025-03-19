@@ -33,6 +33,8 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.spi.executors.ExecutorUtils;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.retry.ExponentialWaitStrategy;
 import org.eclipse.edc.spi.system.ExecutorInstrumentation;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -101,6 +103,8 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
     private DataPlaneAccessControlService accessControlService;
     @Inject
     private PublicEndpointGeneratorService endpointGenerator;
+    @Inject
+    private Monitor monitor;
 
     private DataPlaneAuthorizationService authorizationService;
     private ExecutorService executorService;
@@ -154,9 +158,7 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
         if (dataPlaneManager != null) {
             dataPlaneManager.stop();
         }
-        if (executorService != null) {
-            executorService.shutdownNow();
-        }
+        ExecutorUtils.orderlyShutdown(executorService, this.getClass().getSimpleName(), monitor);
     }
 
     @Provider
