@@ -27,8 +27,6 @@ import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.stream.Stream;
-
 import static java.lang.String.format;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -62,40 +60,20 @@ public class CatalogProtocolServiceImpl implements CatalogProtocolService {
     @Override
     @NotNull
     public ServiceResult<Catalog> getCatalog(CatalogRequestMessage message, TokenRepresentation tokenRepresentation) {
-        var startGetCatalog = System.nanoTime();
-        ServiceResult<Catalog> result = transactionContext.execute(() -> protocolTokenValidator.verify(tokenRepresentation, CATALOGING_REQUEST_SCOPE, message)
+        return transactionContext.execute(() -> protocolTokenValidator.verify(tokenRepresentation, CATALOGING_REQUEST_SCOPE, message)
                 .map(agent -> {
-
-                    var startDatasetQueryResolver = System.nanoTime();
-                    Stream<Dataset> datasets = datasetResolver.query(agent, message.getQuerySpec());
-                    var stopDatasetQueryResolver = System.nanoTime();
-                    System.out.println("TIMER datasetQueryResolver " + (stopDatasetQueryResolver - startDatasetQueryResolver));
-
-                    try {
-                        var startGetCatalogData = System.nanoTime();
+                    try (var datasets = datasetResolver.query(agent, message.getQuerySpec())) {
                         var dataServices = dataServiceRegistry.getDataServices();
-                        var stopGetCatalogData = System.nanoTime();
-                        System.out.println("TIMER getCatalogData " + (stopGetCatalogData - startGetCatalogData));
 
-                        var startBuildCatalog = System.nanoTime();
-                        var catalog = Catalog.Builder.newInstance()
+                        return Catalog.Builder.newInstance()
                                 .dataServices(dataServices)
                                 .datasets(datasets.toList())
                                 .participantId(participantId)
                                 .property(EDC_PROPERTY_PARTICIPANT_ID, participantId)
                                 .build();
-                        var stopBuildCatalog = System.nanoTime();
-                        System.out.println("TIMER buildCatalog " + (stopBuildCatalog - startBuildCatalog));
-
-                        return catalog;
-                    } finally {
-                        datasets.close();
                     }
                 })
         );
-        var stopGetCatalog = System.nanoTime();
-        System.out.println("TIMER getCatalog " + (stopGetCatalog - startGetCatalog));
-        return result;
     }
 
     @Override

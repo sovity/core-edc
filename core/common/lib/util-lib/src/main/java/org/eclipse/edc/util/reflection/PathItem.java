@@ -63,7 +63,6 @@ public class PathItem {
             }
 
         }
-        System.out.println("CACHE add " + propertyName);
         return result.stream().toList();
     }
 
