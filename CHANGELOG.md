@@ -18,7 +18,7 @@
 
 ### Overview
 
-* Re-publishing of `0.7.2.1` with proper releasing process.
+* Performance optimizations for the catalog request
 
 #### Compatibility
 
