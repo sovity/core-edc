@@ -76,7 +76,7 @@ public class ReflectionUtil {
                     return fallback(object, firstAsString);
                 }
                 var propName = firstAsString.substring(0, openingBracketIx);
-                var iterableObject = (List) getFieldValue("'%s'".formatted(propName), object);
+                var iterableObject = (List) getFieldValue("'" + propName + "'", object);
                 return (T) iterableObject.get(arrayIndex);
             } else {
                 return fallback(object, firstAsString);
