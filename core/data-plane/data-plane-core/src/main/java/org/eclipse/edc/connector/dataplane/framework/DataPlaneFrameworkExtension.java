@@ -33,6 +33,8 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Provides;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.spi.executors.ExecutorUtils;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.retry.ExponentialWaitStrategy;
 import org.eclipse.edc.spi.system.ExecutorInstrumentation;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -42,6 +44,8 @@ import org.eclipse.edc.statemachine.retry.EntityRetryProcessConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
+import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.eclipse.edc.statemachine.AbstractStateEntityManager.DEFAULT_BATCH_SIZE;
@@ -52,7 +56,7 @@ import static org.eclipse.edc.statemachine.AbstractStateEntityManager.DEFAULT_SE
 /**
  * Provides core services for the Data Plane Framework.
  */
-@Provides({ DataPlaneManager.class, DataTransferExecutorServiceContainer.class, TransferServiceRegistry.class })
+@Provides({DataPlaneManager.class, DataTransferExecutorServiceContainer.class, TransferServiceRegistry.class})
 @Extension(value = DataPlaneFrameworkExtension.NAME)
 public class DataPlaneFrameworkExtension implements ServiceExtension {
     public static final String NAME = "Data Plane Framework";
@@ -100,8 +104,11 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
     private DataPlaneAccessControlService accessControlService;
     @Inject
     private PublicEndpointGeneratorService endpointGenerator;
+    @Inject
+    private Monitor monitor;
 
     private DataPlaneAuthorizationService authorizationService;
+    private ExecutorService executorService;
 
     @Override
     public String name() {
@@ -113,7 +120,7 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
         var monitor = context.getMonitor();
 
         var numThreads = context.getSetting(TRANSFER_THREADS, DEFAULT_TRANSFER_THREADS);
-        var executorService = Executors.newFixedThreadPool(numThreads);
+        executorService = Executors.newFixedThreadPool(numThreads);
         var executorContainer = new DataTransferExecutorServiceContainer(
                 executorInstrumentation.instrument(executorService, "Data plane transfers"));
         context.registerService(DataTransferExecutorServiceContainer.class, executorContainer);
@@ -152,6 +159,7 @@ public class DataPlaneFrameworkExtension implements ServiceExtension {
         if (dataPlaneManager != null) {
             dataPlaneManager.stop();
         }
+        ExecutorUtils.orderlyShutdown(executorService, this.getClass().getSimpleName(), monitor, Duration.ofSeconds(10));
     }
 
     @Provider

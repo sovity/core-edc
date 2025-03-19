@@ -31,6 +31,8 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.agent.ParticipantIdMapper;
+import org.eclipse.edc.spi.executors.ExecutorUtils;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
@@ -38,7 +40,9 @@ import org.eclipse.edc.transaction.datasource.spi.DefaultDataSourceRegistry;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
+import java.time.Duration;
 import java.util.Collections;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -90,11 +94,16 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
     @Setting(value = "OkHttpClient: receive buffer size, in bytes", defaultValue = DEFAULT_OK_HTTP_CLIENT_RECEIVE_BUFFER_SIZE + "", type = "int", min = 1)
     private static final String OK_HTTP_CLIENT_RECEIVE_BUFFER_SIZE = "edc.http.client.receive.buffer.size";
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
+
     /**
      * An optional OkHttp {@link EventListener} that can be used to instrument OkHttp client for collecting metrics.
      */
     @Inject(required = false)
     private EventListener okHttpEventListener;
+
+    @Inject
+    private Monitor monitor;
 
     @Override
     public String name() {
@@ -115,7 +124,12 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
 
     @Provider(isDefault = true)
     public EventExecutorServiceContainer eventExecutorServiceContainer() {
-        return new EventExecutorServiceContainer(Executors.newFixedThreadPool(1));
+        return new EventExecutorServiceContainer(executor);
+    }
+
+    @Override
+    public void shutdown() {
+        ExecutorUtils.orderlyShutdown(executor, this.getClass().getName(), monitor, Duration.ofSeconds(10));
     }
 
     @Provider

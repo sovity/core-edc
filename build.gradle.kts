@@ -59,6 +59,10 @@ allprojects {
     }
 
     tasks.withType<Javadoc>().forEach { it.enabled = false }
+
+    java {
+        withSourcesJar()
+    }
 }
 
 subprojects {
