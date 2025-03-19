@@ -16,6 +16,7 @@ package org.eclipse.edc.spi.executors;
 
 import org.eclipse.edc.spi.monitor.Monitor;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -23,12 +24,12 @@ public class ExecutorUtils {
     private ExecutorUtils() {
     }
 
-    public static void orderlyShutdown(ExecutorService executor, String description, Monitor monitor) {
+    public static void orderlyShutdown(ExecutorService executor, String description, Monitor monitor, Duration awaitingTime) {
         if (executor != null) {
             try {
                 monitor.debug(description + ": awaiting termination");
                 executor.shutdown();
-                var stopped = executor.awaitTermination(10, TimeUnit.SECONDS);
+                var stopped = executor.awaitTermination(awaitingTime.toMillis(), TimeUnit.MILLISECONDS);
                 monitor.debug(description + ": stopped: " + stopped);
                 if (!stopped) {
                     monitor.warning(description + ": shutting down now...");

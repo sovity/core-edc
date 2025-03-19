@@ -18,8 +18,8 @@ package org.eclipse.edc.util.reflection;
 import java.util.List;
 
 public class CacheEntry {
-    private String propertyName;
-    private List<PathItem> getPathItems;
+    private final String propertyName;
+    private final List<PathItem> getPathItems;
     private int count;
 
     public CacheEntry(String propertyName, List<PathItem> getPathItems) {
@@ -38,5 +38,9 @@ public class CacheEntry {
 
     public int getCount() {
         return count;
+    }
+
+    public void increaseCount() {
+        count++;
     }
 }

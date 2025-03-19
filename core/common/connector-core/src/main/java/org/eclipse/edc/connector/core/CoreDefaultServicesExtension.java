@@ -31,6 +31,8 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
 import org.eclipse.edc.spi.agent.ParticipantIdMapper;
+import org.eclipse.edc.spi.executors.ExecutorUtils;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
@@ -38,10 +40,10 @@ import org.eclipse.edc.transaction.datasource.spi.DefaultDataSourceRegistry;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Provides default service implementations for fallback
@@ -100,6 +102,9 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
     @Inject(required = false)
     private EventListener okHttpEventListener;
 
+    @Inject
+    private Monitor monitor;
+
     @Override
     public String name() {
         return NAME;
@@ -124,11 +129,7 @@ public class CoreDefaultServicesExtension implements ServiceExtension {
 
     @Override
     public void shutdown() {
-        try {
-            executor.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        ExecutorUtils.orderlyShutdown(executor, this.getClass().getName(), monitor, Duration.ofSeconds(10));
     }
 
     @Provider

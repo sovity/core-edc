@@ -20,6 +20,7 @@ import org.eclipse.edc.spi.retry.WaitStrategy;
 import org.eclipse.edc.spi.system.ExecutorInstrumentation;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -75,10 +76,9 @@ public class StateMachineManager {
      */
     public CompletableFuture<Boolean> stop() {
         active.set(false);
-        executor.shutdown();
 
         return CompletableFuture.supplyAsync(() -> {
-            ExecutorUtils.orderlyShutdown(executor, format("StateMachineManager [%s]", name), monitor);
+            ExecutorUtils.orderlyShutdown(executor, format("StateMachineManager [%s]", name), monitor, Duration.ofSeconds(10));
             return true;
         });
     }
