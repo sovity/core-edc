@@ -16,11 +16,10 @@ package org.eclipse.edc.spi.types.domain.message;
 
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-
-import static java.util.UUID.randomUUID;
 
 /**
  * A remote message that conveys state modifications of a process. These messages are idempotent.
@@ -159,7 +158,7 @@ public abstract class ProcessRemoteMessage implements RemoteMessage {
 
         public M build() {
             if (message.id == null) {
-                message.id = randomUUID().toString();
+                message.id = UuidGenerator.INSTANCE.generate().toString();
             }
             return message;
         }
