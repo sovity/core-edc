@@ -14,12 +14,17 @@
 
 ---
 
-## [0.7.2.2] - 2025-02-05
+## [0.7.2.2] - 2025-03-21
 
 ### Overview
 
+Performance improvements and fixes.
+
+#### Changes
+
 * Performance optimizations for the catalog request
 * Migrate additional random UUIDs to time-based UUIDs
+* Ask for stopping and later force-stop the EDC when a shutdown request is issued.
 
 #### Compatibility
 
