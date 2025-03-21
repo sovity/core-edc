@@ -60,7 +60,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.PROVISIONING_REQUESTED;
@@ -155,13 +154,13 @@ public class HttpProvisionerExtensionEndToEndTest {
                 .build();
 
         var contractOffer = ContractOffer.Builder.newInstance()
-                .id(randomUUID().toString())
-                .assetId(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(policy)
                 .build();
         return ContractNegotiation.Builder.newInstance()
-                .id(randomUUID().toString())
-                .counterPartyId(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("test")
                 .protocol("test")
                 .contractAgreement(contractAgreement)
@@ -179,7 +178,7 @@ public class HttpProvisionerExtensionEndToEndTest {
 
     private TransferRequestMessage createTransferRequestMessage() {
         return TransferRequestMessage.Builder.newInstance()
-                .processId(randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("test").build())
                 .protocol("any")
                 .counterPartyAddress("http://any")

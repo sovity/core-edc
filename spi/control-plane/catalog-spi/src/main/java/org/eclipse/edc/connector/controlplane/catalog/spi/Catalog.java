@@ -17,13 +17,12 @@ package org.eclipse.edc.connector.controlplane.catalog.spi;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.UUID.randomUUID;
 
 /**
  * Entity representing a Catalog
@@ -116,7 +115,7 @@ public class Catalog {
 
         public Catalog build() {
             if (catalog.id == null) {
-                catalog.id = randomUUID().toString();
+                catalog.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             return catalog;

@@ -38,7 +38,6 @@ import java.util.Set;
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.REQUESTED;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.CONTEXT;
@@ -185,7 +184,7 @@ public class ContractNegotiationApiEndToEndTest {
             return ContractNegotiation.Builder.newInstance()
                     .id(negotiationId)
                     .correlationId(negotiationId)
-                    .counterPartyId(randomUUID().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("http://counter-party/address")
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                             .uri("local://test")
@@ -199,16 +198,16 @@ public class ContractNegotiationApiEndToEndTest {
         private ContractOffer.Builder contractOfferBuilder() {
             return ContractOffer.Builder.newInstance()
                     .id("test-offer-id")
-                    .assetId(randomUUID().toString())
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
                     .policy(Policy.Builder.newInstance().build());
         }
 
         private ContractAgreement createContractAgreement(String negotiationId) {
             return ContractAgreement.Builder.newInstance()
                     .id(negotiationId)
-                    .assetId(randomUUID().toString())
-                    .consumerId(randomUUID() + "-consumer")
-                    .providerId(randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().build())
                     .build();
         }

@@ -19,6 +19,7 @@
 ### Overview
 
 * Performance optimizations for the catalog request
+* Migrate additional random UUIDs to time-based UUIDs
 
 #### Compatibility
 

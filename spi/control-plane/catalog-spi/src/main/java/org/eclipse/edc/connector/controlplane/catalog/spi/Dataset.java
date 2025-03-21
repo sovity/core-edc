@@ -19,13 +19,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.UUID.randomUUID;
 
 /**
  * Models the Dataset class of the DCAT spec. A Dataset is defined as a collection of data
@@ -128,7 +127,7 @@ public class Dataset {
 
         public Dataset build() {
             if (dataset.id == null) {
-                dataset.id = randomUUID().toString();
+                dataset.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             return dataset;

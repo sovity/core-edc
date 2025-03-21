@@ -36,6 +36,7 @@ import org.eclipse.edc.policy.model.Prohibition;
 import org.eclipse.edc.policy.model.Rule;
 import org.eclipse.edc.policy.model.XoneConstraint;
 import org.eclipse.edc.spi.agent.ParticipantIdMapper;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +44,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static jakarta.json.stream.JsonCollectors.toJsonArray;
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.VALUE;
@@ -160,7 +160,7 @@ public class JsonObjectFromPolicyTransformer extends AbstractJsonLdTransformer<P
             policy.getObligations().forEach(duty -> obligationsBuilder.add(duty.accept(this)));
 
             var builder = jsonFactory.createObjectBuilder()
-                    .add(ID, randomUUID().toString())
+                    .add(ID, UuidGenerator.INSTANCE.generate().toString())
                     .add(TYPE, getTypeAsString(policy.getType()))
                     .add(ODRL_PERMISSION_ATTRIBUTE, permissionsBuilder)
                     .add(ODRL_PROHIBITION_ATTRIBUTE, prohibitionsBuilder)

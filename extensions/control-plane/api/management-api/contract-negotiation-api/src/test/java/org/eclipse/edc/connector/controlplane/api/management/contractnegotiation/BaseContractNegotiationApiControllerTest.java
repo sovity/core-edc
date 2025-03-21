@@ -30,6 +30,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
@@ -40,7 +41,6 @@ import java.util.List;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.api.model.IdResponse.ID_RESPONSE_TYPE;
 import static org.eclipse.edc.connector.controlplane.api.management.contractnegotiation.model.NegotiationState.NEGOTIATION_STATE_TYPE;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.command.TerminateNegotiationCommand.TERMINATE_NEGOTIATION_TYPE;
@@ -332,7 +332,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
                         .counterPartyAddress("test-cb")
                         .contractOffer(ContractOffer.Builder.newInstance()
                                 .id("test-offer-id")
-                                .assetId(randomUUID().toString())
+                                .assetId(UuidGenerator.INSTANCE.generate().toString())
                                 .policy(Policy.Builder.newInstance().build())
                                 .build())
                         .build()));
@@ -459,7 +459,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
                 .id(negotiationId)
                 .consumerId("test-consumer")
                 .providerId("test-provider")
-                .assetId(randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
@@ -467,7 +467,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(randomUUID().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")

@@ -21,6 +21,7 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamFailure;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.telemetry.Telemetry;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -47,7 +47,7 @@ class ParallelSinkTest {
     private final InputStreamDataSource dataSource = new InputStreamDataSource(
             dataSourceName,
             new ByteArrayInputStream(dataSourceContent.getBytes()));
-    private final String dataFlowRequestId = randomUUID().toString();
+    private final String dataFlowRequestId = UuidGenerator.INSTANCE.generate().toString();
     FakeParallelSink fakeSink;
 
     @BeforeEach

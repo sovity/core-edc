@@ -19,9 +19,9 @@ import org.eclipse.edc.junit.assertions.AbstractResultAssert;
 import org.eclipse.edc.spi.result.StoreFailure;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -34,7 +34,7 @@ public abstract class EndpointDataReferenceCacheTestBase {
         var tpId = "tp1";
         var assetId = "asset1";
         var dataAddress = dataAddress();
-        var entry = TestFunctions.edrEntry(assetId, randomUUID().toString(), tpId, randomUUID().toString());
+        var entry = TestFunctions.edrEntry(assetId, UuidGenerator.INSTANCE.generate().toString(), tpId, UuidGenerator.INSTANCE.generate().toString());
 
         getCache().put(entry.getTransferProcessId(), dataAddress);
 

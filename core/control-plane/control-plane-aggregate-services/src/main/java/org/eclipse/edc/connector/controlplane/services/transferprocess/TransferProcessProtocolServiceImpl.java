@@ -40,6 +40,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.telemetry.Telemetry;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +50,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.joining;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.CONSUMER;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.PROVIDER;
@@ -156,7 +156,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
             return ServiceResult.success(existingTransferProcess);
         }
         var process = TransferProcess.Builder.newInstance()
-                .id(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .protocol(message.getProtocol())
                 .correlationId(message.getConsumerPid())
                 .counterPartyAddress(message.getCallbackAddress())

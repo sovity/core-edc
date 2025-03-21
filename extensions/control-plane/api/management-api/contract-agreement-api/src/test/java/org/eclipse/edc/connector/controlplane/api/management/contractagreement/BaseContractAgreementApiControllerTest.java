@@ -38,7 +38,6 @@ import java.util.List;
 
 import static io.restassured.http.ContentType.JSON;
 import static java.util.Collections.emptyList;
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.spi.query.QuerySpec.EDC_QUERY_SPEC_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -251,7 +250,7 @@ public abstract class BaseContractAgreementApiControllerTest extends RestControl
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(randomUUID().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")
