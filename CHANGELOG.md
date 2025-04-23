@@ -20,4 +20,3 @@ Initial migration from 0.7.2.2.
 #### Resolution plan
 
 ---
-
