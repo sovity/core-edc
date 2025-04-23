@@ -23,8 +23,7 @@ val edcScmConnection: String by project
 
 buildscript {
     dependencies {
-        val version: String by project
-        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:$version")
+        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:0.11.1")
     }
 }
 
@@ -42,5 +41,4 @@ allprojects {
         configFile = rootProject.file("resources/edc-checkstyle-config.xml")
         configDirectory.set(rootProject.file("resources"))
     }
-
 }
