@@ -42,4 +42,7 @@ allprojects {
         configDirectory.set(rootProject.file("resources"))
     }
 
+    java {
+        withSourcesJar()
+    }
 }
