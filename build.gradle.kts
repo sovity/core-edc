@@ -46,9 +46,7 @@ allprojects {
     java {
         withSourcesJar()
     }
-}
-
-subprojects {
+    
     apply(plugin = "maven-publish")
 
     publishing {
