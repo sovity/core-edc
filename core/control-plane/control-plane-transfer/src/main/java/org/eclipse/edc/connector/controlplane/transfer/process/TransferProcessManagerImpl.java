@@ -63,7 +63,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -130,7 +130,7 @@ public class TransferProcessManagerImpl extends AbstractStateEntityManager<Trans
     @WithSpan
     @Override
     public StatusResult<TransferProcess> initiateConsumerRequest(TransferRequest transferRequest) {
-        var id = Optional.ofNullable(transferRequest.getId()).orElseGet(() -> UUID.randomUUID().toString());
+        var id = Optional.ofNullable(transferRequest.getId()).orElseGet(() -> UuidGenerator.INSTANCE.generate().toString());
         var existingTransferProcess = store.findForCorrelationId(id);
         if (existingTransferProcess != null) {
             return StatusResult.success(existingTransferProcess);

@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -66,7 +66,7 @@ class CatalogProtocolServiceImplTest {
         var dataService = DataService.Builder.newInstance().build();
         var distribution = Distribution.Builder.newInstance().dataService(dataService).format("any").build();
         return Dataset.Builder.newInstance()
-                .offer(UUID.randomUUID().toString(), Policy.Builder.newInstance().build())
+                .offer(UuidGenerator.INSTANCE.generate().toString(), Policy.Builder.newInstance().build())
                 .distribution(distribution)
                 .build();
     }

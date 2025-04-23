@@ -30,7 +30,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -43,7 +43,7 @@ class JwkParserTest {
     @Test
     void canHandle() throws JOSEException {
         var jwk = new ECKeyGenerator(Curve.P_256)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(UuidGenerator.INSTANCE.generate().toString())
                 .generate();
         Assertions.assertThat(parser.canHandle(jwk.toJSONString())).isTrue();
     }

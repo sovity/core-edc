@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +79,7 @@ class StsAccountsApiControllerTest extends RestControllerTestBase {
         var account = createAccount().build();
         var accountCreate = new StsAccountCreation(account, null);
 
-        when(accountServiceMock.create(any(StsAccount.class), isNull())).thenReturn(ServiceResult.success(UUID.randomUUID().toString()));
+        when(accountServiceMock.create(any(StsAccount.class), isNull())).thenReturn(ServiceResult.success(UuidGenerator.INSTANCE.generate().toString()));
 
         baseRequest()
                 .contentType("application/json")

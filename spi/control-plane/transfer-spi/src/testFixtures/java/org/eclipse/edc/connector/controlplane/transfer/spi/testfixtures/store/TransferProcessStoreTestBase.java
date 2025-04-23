@@ -36,7 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -951,7 +951,7 @@ public abstract class TransferProcessStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(createTransferProcess(id));
 
             var result = getTransferProcessStore().findByIdAndLease(id);
@@ -969,7 +969,7 @@ public abstract class TransferProcessStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getTransferProcessStore().save(createTransferProcess(id));
             leaseEntity(id, "other owner");
 

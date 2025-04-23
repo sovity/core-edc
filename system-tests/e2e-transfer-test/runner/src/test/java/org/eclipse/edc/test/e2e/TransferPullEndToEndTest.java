@@ -52,7 +52,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
@@ -108,7 +108,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withCallbacks() {
             var callbacksEndpoint = startClientAndServer(getFreePort());
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var callbackUrl = String.format("http://localhost:%d/hooks", callbacksEndpoint.getLocalPort());
@@ -133,7 +133,7 @@ class TransferPullEndToEndTest {
             await().atMost(timeout).untilAsserted(() -> assertThat(events.get(transferProcessId)).isNotNull());
 
             var event = events.get(transferProcessId);
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(event.getDataAddress(), Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             providerDataSource.verify(request("/source").withMethod("GET"));
@@ -142,7 +142,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddress = httpSourceDataAddress();
             createResourcesOnProvider(assetId, PolicyFixtures.contractExpiresIn("10s"), sourceDataAddress);
 
@@ -155,7 +155,7 @@ class TransferPullEndToEndTest {
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
 
             // Do the transfer
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             // checks that the EDR is gone once the contract expires
@@ -169,7 +169,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void suspendAndResumeByConsumer_httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -180,7 +180,7 @@ class TransferPullEndToEndTest {
 
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             CONSUMER.suspendTransfer(transferProcessId, "supension");
@@ -197,7 +197,7 @@ class TransferPullEndToEndTest {
             // check that transfer is available again
             CONSUMER.awaitTransferToBeInState(transferProcessId, STARTED);
             var secondEdr = await().atMost(timeout).until(() -> CONSUMER.getEdr(transferProcessId), Objects::nonNull);
-            var secondMessage = UUID.randomUUID().toString();
+            var secondMessage = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(secondEdr, Map.of("message", secondMessage), body -> assertThat(body).isEqualTo("data")));
 
             providerDataSource.verify(request("/source").withMethod("GET"));
@@ -205,7 +205,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void suspendAndResumeByProvider_httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -216,7 +216,7 @@ class TransferPullEndToEndTest {
 
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(consumerTransferProcessId), Objects::nonNull);
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             var providerTransferProcessId  = PROVIDER.getTransferProcesses().stream()
@@ -237,7 +237,7 @@ class TransferPullEndToEndTest {
             // check that transfer is available again
             PROVIDER.awaitTransferToBeInState(providerTransferProcessId, STARTED);
             var secondEdr = await().atMost(timeout).until(() -> CONSUMER.getEdr(consumerTransferProcessId), Objects::nonNull);
-            var secondMessage = UUID.randomUUID().toString();
+            var secondMessage = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(secondEdr, Map.of("message", secondMessage), body -> assertThat(body).isEqualTo("data")));
 
             providerDataSource.verify(request("/source").withMethod("GET"));
@@ -248,7 +248,7 @@ class TransferPullEndToEndTest {
             var provisionServer = startClientAndServer(PROVIDER.getHttpProvisionerPort());
             provisionServer.when(request("/provision")).respond(new HttpProvisionerCallback());
 
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, Map.of(
                     "name", "transfer-test",
                     "baseUrl", "http://localhost:" + provisionServer.getPort() + "/provision",
@@ -284,7 +284,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenContractExpires_fixedInForcePeriod() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", now.minus(ofDays(5)));
@@ -299,7 +299,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenContractExpires_durationInForcePeriod() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", "contractAgreement+1s");

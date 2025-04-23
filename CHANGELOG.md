@@ -10,7 +10,7 @@ Initial migration from 0.7.2.2.
 
 - Port the previous changes
   - Force `/` in IdentityTrustTransformExtension
-  - 
+  - Replacement of java.util.UUID with UUIDv7
 
 #### Details
 

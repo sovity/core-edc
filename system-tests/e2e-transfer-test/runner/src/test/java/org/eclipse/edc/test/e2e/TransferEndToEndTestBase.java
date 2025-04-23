@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.connector.controlplane.test.system.utils.PolicyFixtures.noConstraintPolicy;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;
@@ -60,11 +60,11 @@ public abstract class TransferEndToEndTestBase {
     protected void createResourcesOnProvider(String assetId, JsonObject contractPolicy, Map<String, Object> dataAddressProperties) {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
         var contractPolicyId = PROVIDER.createPolicyDefinition(contractPolicy);
-        PROVIDER.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyId, contractPolicyId);
+        PROVIDER.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyId, contractPolicyId);
     }
 
     protected void createResourcesOnProvider(String assetId, Map<String, Object> dataAddressProperties) {
         PROVIDER.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
-        PROVIDER.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyId, noConstraintPolicyId);
+        PROVIDER.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyId, noConstraintPolicyId);
     }
 }

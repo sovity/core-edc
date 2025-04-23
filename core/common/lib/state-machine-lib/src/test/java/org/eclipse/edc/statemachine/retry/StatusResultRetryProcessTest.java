@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -52,7 +52,7 @@ class StatusResultRetryProcessTest {
     @Test
     void shouldExecuteOnSuccess() {
         when(process.get()).thenReturn(StatusResult.success("content"));
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new StatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         var result = retryProcess.onSuccess(onSuccess).execute("any");
@@ -66,7 +66,7 @@ class StatusResultRetryProcessTest {
     void shouldExecuteOnFatalError() {
         StatusResult<String> statusResult = StatusResult.failure(FATAL_ERROR, "error");
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new StatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onFatalError(onFatalError).execute("any");
@@ -78,7 +78,7 @@ class StatusResultRetryProcessTest {
     void shouldExecuteOnRetryExhausted_whenFailureAndRetriesHaveBeenExhausted() {
         StatusResult<String> statusResult = StatusResult.failure(ERROR_RETRY, "error");
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).stateCount(retryLimit + 1).stateTimestamp(millis - 2L).build();
         var retryProcess = new StatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onRetryExhausted(onRetryExhausted).execute("any");
@@ -90,7 +90,7 @@ class StatusResultRetryProcessTest {
     void shouldExecuteOnRetry_whenFailureAndRetriesHaveNotBeenExhausted() {
         StatusResult<String> statusResult = StatusResult.failure(ERROR_RETRY, "error");
         when(process.get()).thenReturn(statusResult);
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).stateCount(retryLimit).stateTimestamp(millis - 2L).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).stateCount(retryLimit).stateTimestamp(millis - 2L).build();
         var retryProcess = new StatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         retryProcess.onFailure(onFailure).execute("any");
@@ -101,7 +101,7 @@ class StatusResultRetryProcessTest {
     @Test
     void shouldCallFatalError_whenExceptionIsThrown() {
         when(process.get()).thenThrow(new EdcException("code throws an exception"));
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).clock(clock).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).clock(clock).build();
         var retryProcess = new StatusResultRetryProcess<>(entity, process, mock(Monitor.class), clock, configuration);
 
         var result = retryProcess.onSuccess(onSuccess).onFailure(onFailure).execute("any");

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.mock;
 public class DataplaneSelectorControlApiEndToEndTest {
 
     private final int controlPort = getFreePort();
-    private static final String DATA_PLANE_ID = UUID.randomUUID().toString();
+    private static final String DATA_PLANE_ID = UuidGenerator.INSTANCE.generate().toString();
 
     @RegisterExtension
     @Order(1)

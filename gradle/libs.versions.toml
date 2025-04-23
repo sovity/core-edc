@@ -38,6 +38,7 @@ titanium = "1.4.1"
 kafkaClients = "3.9.0"
 testcontainers = "1.20.4"
 tink = "1.15.0"
+uuid = "5.1.0"
 
 
 [libraries]
@@ -93,6 +94,7 @@ testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "tes
 testcontainers-postgres = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
 testcontainers-vault = { module = "org.testcontainers:vault", version.ref = "testcontainers" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
+uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }
 
 
 # other technology extensions

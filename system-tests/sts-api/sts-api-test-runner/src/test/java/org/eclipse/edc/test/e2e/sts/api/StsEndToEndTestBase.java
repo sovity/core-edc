@@ -23,7 +23,7 @@ import org.eclipse.edc.spi.security.Vault;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.iam.identitytrust.sts.spi.store.fixtures.TestFunctions.createClient;
 
@@ -48,7 +48,7 @@ public abstract class StsEndToEndTestBase {
     }
 
     protected StsAccount initClient(String clientSecret) {
-        return initClient(UUID.randomUUID().toString(), clientSecret);
+        return initClient(UuidGenerator.INSTANCE.generate().toString(), clientSecret);
     }
 
     protected Map<String, Object> parseClaims(String token) {

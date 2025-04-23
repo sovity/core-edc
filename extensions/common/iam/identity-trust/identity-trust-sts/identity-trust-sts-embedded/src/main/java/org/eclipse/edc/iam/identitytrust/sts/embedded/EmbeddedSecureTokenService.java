@@ -27,6 +27,8 @@ import java.time.Clock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
+
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -97,7 +99,7 @@ public class EmbeddedSecureTokenService implements SecureTokenService {
         var accessTokenClaims = new HashMap<>(accessTokenInheritedClaims(claims));
         var now = clock.instant();
         var exp = now.plusSeconds(validity);
-        var jti = "accesstoken-%s".formatted(UUID.randomUUID());
+        var jti = "accesstoken-%s".formatted(UuidGenerator.INSTANCE.generate());
 
         accessTokenClaims.put(SCOPE, bearerAccessScope);
 

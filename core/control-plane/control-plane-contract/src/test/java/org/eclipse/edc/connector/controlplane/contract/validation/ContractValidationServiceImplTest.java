@@ -46,7 +46,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.time.Instant.MIN;
 import static java.util.Collections.emptyMap;
@@ -438,6 +438,6 @@ class ContractValidationServiceImplTest {
                 .providerId(PROVIDER_ID)
                 .consumerId(CONSUMER_ID)
                 .policy(Policy.Builder.newInstance().build())
-                .assetId(UUID.randomUUID().toString());
+                .assetId(UuidGenerator.INSTANCE.generate().toString());
     }
 }

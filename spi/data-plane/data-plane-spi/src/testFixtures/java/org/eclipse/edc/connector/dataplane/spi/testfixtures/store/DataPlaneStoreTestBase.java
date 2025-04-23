@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Comparator;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,7 +73,7 @@ public abstract class DataPlaneStoreTestBase {
 
         @Test
         void shouldStoreEntity_whenItDoesNotAlreadyExist() {
-            var dataFlow = createDataFlow(UUID.randomUUID().toString(), RECEIVED);
+            var dataFlow = createDataFlow(UuidGenerator.INSTANCE.generate().toString(), RECEIVED);
             getStore().save(dataFlow);
 
             var result = getStore().findById(dataFlow.getId());
@@ -84,7 +84,7 @@ public abstract class DataPlaneStoreTestBase {
 
         @Test
         void shouldUpdate_whenEntityAlreadyExist() {
-            var dataFlow = createDataFlow(UUID.randomUUID().toString(), RECEIVED);
+            var dataFlow = createDataFlow(UuidGenerator.INSTANCE.generate().toString(), RECEIVED);
             getStore().save(dataFlow);
 
             dataFlow.transitToCompleted();
@@ -146,7 +146,7 @@ public abstract class DataPlaneStoreTestBase {
 
         @Test
         void shouldLeaseAgainAfterTimePassed() {
-            var dataFlow = createDataFlow(UUID.randomUUID().toString(), RECEIVED);
+            var dataFlow = createDataFlow(UuidGenerator.INSTANCE.generate().toString(), RECEIVED);
             getStore().save(dataFlow);
 
             leaseEntity(dataFlow.getId(), CONNECTOR_NAME, Duration.ofMillis(100));
@@ -157,7 +157,7 @@ public abstract class DataPlaneStoreTestBase {
 
         @Test
         void shouldReturnReleasedEntityByUpdate() {
-            var dataFlow = createDataFlow(UUID.randomUUID().toString(), RECEIVED);
+            var dataFlow = createDataFlow(UuidGenerator.INSTANCE.generate().toString(), RECEIVED);
             getStore().save(dataFlow);
 
             var firstLeased = getStore().nextNotLeased(1, hasState(RECEIVED.code()));
@@ -229,7 +229,7 @@ public abstract class DataPlaneStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createDataFlow(id, RECEIVED));
 
             var result = getStore().findByIdAndLease(id);
@@ -247,7 +247,7 @@ public abstract class DataPlaneStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createDataFlow(id, RECEIVED));
             leaseEntity(id, "other owner");
 
@@ -265,7 +265,7 @@ public abstract class DataPlaneStoreTestBase {
 
     private DataFlow.Builder createDataFlowBuilder() {
         return DataFlow.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .callbackAddress(URI.create("http://any"))
                 .source(DataAddress.Builder.newInstance().type("src-type").build())
                 .destination(DataAddress.Builder.newInstance().type("dest-type").build())

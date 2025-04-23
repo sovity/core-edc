@@ -22,7 +22,7 @@ import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 
@@ -31,7 +31,7 @@ public class TestFunctions {
 
         return EventEnvelope.Builder
                 .newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .at(System.currentTimeMillis())
                 .payload(event)
                 .build();

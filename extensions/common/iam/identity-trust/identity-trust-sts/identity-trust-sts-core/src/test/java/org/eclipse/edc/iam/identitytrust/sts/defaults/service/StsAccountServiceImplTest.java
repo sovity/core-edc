@@ -24,7 +24,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,7 @@ public class StsAccountServiceImplTest {
 
     @BeforeEach
     void setup() {
-        clientService = new StsAccountServiceImpl(store, vault, transactionContext, parameters -> UUID.randomUUID().toString());
+        clientService = new StsAccountServiceImpl(store, vault, transactionContext, parameters -> UuidGenerator.INSTANCE.generate().toString());
     }
 
     @Test

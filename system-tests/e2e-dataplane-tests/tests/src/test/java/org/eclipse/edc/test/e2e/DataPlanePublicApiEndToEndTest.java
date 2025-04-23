@@ -43,7 +43,7 @@ import org.mockserver.verify.VerificationTimes;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.util.Date;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -207,7 +207,7 @@ public class DataPlanePublicApiEndToEndTest extends AbstractDataPlaneTest {
      * @return The EDR in the form of a serialized JWT.
      */
     private String createEdr() {
-        var tokenId = UUID.randomUUID().toString();
+        var tokenId = UuidGenerator.INSTANCE.generate().toString();
         // create JWT representing the EDR
         var jwt = createJwt(tokenId);
 

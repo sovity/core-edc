@@ -17,7 +17,7 @@ package org.eclipse.edc.spi.types.domain.secret;
 import org.eclipse.edc.spi.entity.Entity;
 
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -69,7 +69,7 @@ public class Secret extends Entity {
             super.build();
 
             if (entity.getId() == null) {
-                id(UUID.randomUUID().toString());
+                id(UuidGenerator.INSTANCE.generate().toString());
             }
 
             Objects.requireNonNull(entity.value, "'value' is missing");

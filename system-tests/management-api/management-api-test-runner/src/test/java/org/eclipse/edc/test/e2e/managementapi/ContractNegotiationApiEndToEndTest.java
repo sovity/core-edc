@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
@@ -58,8 +58,8 @@ public class ContractNegotiationApiEndToEndTest {
 
         @Test
         void getAll(ManagementEndToEndTestContext context, ContractNegotiationStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id1).counterPartyAddress(context.providerProtocolUrl()).build());
             store.save(createContractNegotiationBuilder(id2).counterPartyAddress(context.providerProtocolUrl()).build());
 

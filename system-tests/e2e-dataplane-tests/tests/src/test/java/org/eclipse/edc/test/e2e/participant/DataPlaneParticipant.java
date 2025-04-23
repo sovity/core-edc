@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.io.File.separator;
 import static org.eclipse.edc.util.io.Ports.getFreePort;
@@ -53,7 +53,7 @@ public class DataPlaneParticipant extends Participant {
     public Map<String, String> dataPlaneConfiguration() {
         return new HashMap<>() {
             {
-                put("edc.component.id", UUID.randomUUID().toString());
+                put("edc.component.id", UuidGenerator.INSTANCE.generate().toString());
                 put("web.http.port", String.valueOf(getFreePort()));
                 put("web.http.path", "/api");
                 put("web.http.public.port", String.valueOf(dataPlanePublic.get().getPort()));

@@ -40,7 +40,7 @@ import org.mockito.ArgumentCaptor;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.emptyList;
@@ -86,7 +86,7 @@ class DataPlaneManagerImplTest {
     private final DataFlowStartMessage request = createRequest();
     private final TransferServiceRegistry registry = mock();
     private final DataPlaneAuthorizationService authorizationService = mock();
-    private final String runtimeId = UUID.randomUUID().toString();
+    private final String runtimeId = UuidGenerator.INSTANCE.generate().toString();
     private DataPlaneManager manager;
 
     @BeforeEach

@@ -32,7 +32,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -55,7 +55,7 @@ public abstract class StsAccountStoreTestBase {
     protected abstract StsAccountStore getStsClientStore();
 
     protected String getRandomId() {
-        return UUID.randomUUID().toString();
+        return UuidGenerator.INSTANCE.generate().toString();
     }
 
     private List<StsAccount> createClients(int size) {

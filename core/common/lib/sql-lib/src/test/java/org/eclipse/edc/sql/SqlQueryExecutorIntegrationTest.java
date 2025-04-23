@@ -27,7 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +107,7 @@ public class SqlQueryExecutorIntegrationTest {
 
     @NotNull
     private KeyValue insertRow(Connection connection) {
-        var keyValue = new KeyValue(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        var keyValue = new KeyValue(UuidGenerator.INSTANCE.generate().toString(), UuidGenerator.INSTANCE.generate().toString());
         executor.execute(connection, format("INSERT INTO %s (k, v) values (?, ?)", table), keyValue.key, keyValue.value);
         return keyValue;
     }

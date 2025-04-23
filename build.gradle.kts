@@ -41,4 +41,5 @@ allprojects {
         configFile = rootProject.file("resources/edc-checkstyle-config.xml")
         configDirectory.set(rootProject.file("resources"))
     }
+
 }

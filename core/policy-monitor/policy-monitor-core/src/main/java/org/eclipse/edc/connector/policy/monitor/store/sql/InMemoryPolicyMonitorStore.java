@@ -20,7 +20,7 @@ import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
 import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 
 import java.time.Clock;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * In-memory implementation of the {@link PolicyMonitorStore}
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class InMemoryPolicyMonitorStore extends InMemoryStatefulEntityStore<PolicyMonitorEntry> implements PolicyMonitorStore {
 
     public InMemoryPolicyMonitorStore(Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {
-        this(UUID.randomUUID().toString(), clock, criterionOperatorRegistry);
+        this(UuidGenerator.INSTANCE.generate().toString(), clock, criterionOperatorRegistry);
     }
 
     public InMemoryPolicyMonitorStore(String owner, Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {

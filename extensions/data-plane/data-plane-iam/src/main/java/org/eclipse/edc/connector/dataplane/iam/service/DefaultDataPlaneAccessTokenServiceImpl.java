@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -100,7 +100,7 @@ public class DefaultDataPlaneAccessTokenServiceImpl implements DataPlaneAccessTo
         // if there is no "jti" header on the token params, we'll assign a random one, and add it back to the decorators
         if (id == null) {
             monitor.debug("No '%s' claim found on TokenParameters. Will generate a random one.".formatted(TOKEN_ID));
-            id = UUID.randomUUID().toString();
+            id = UuidGenerator.INSTANCE.generate().toString();
             var tokenIdDecorator = new TokenIdDecorator(id);
             allDecorators.add(tokenIdDecorator);
         }

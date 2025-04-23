@@ -33,7 +33,7 @@ import org.eclipse.edc.web.spi.exception.ValidationFailureException;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Function;
 
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
@@ -57,7 +57,7 @@ public class HttpProvisionerWebhookApiController implements HttpProvisionerWebho
         provisionerWebhookRequestValidator.validate(request).orElseThrow(ValidationFailureException::new);
 
         var contentResource = HttpProvisionedContentResource.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .assetId(request.getAssetId())
                 .dataAddress(request.getContentDataAddress())
                 .resourceName(request.getResourceName())

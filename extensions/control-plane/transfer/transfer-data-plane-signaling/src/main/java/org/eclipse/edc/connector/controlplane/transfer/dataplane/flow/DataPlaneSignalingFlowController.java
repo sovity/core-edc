@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
@@ -91,7 +91,7 @@ public class DataPlaneSignalingFlowController implements DataFlowController {
         }
 
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .processId(transferProcess.getId())
                 .sourceDataAddress(transferProcess.getContentDataAddress())
                 .destinationDataAddress(transferProcess.getDataDestination())

@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
@@ -75,10 +75,10 @@ public class CatalogApiEndToEndTest {
         void requestCatalog_shouldReturnCatalog_withQuerySpec(ManagementEndToEndTestContext context, AssetIndex assetIndex,
                                                               PolicyDefinitionStore policyDefinitionStore,
                                                               ContractDefinitionStore contractDefinitionStore) {
-            var policyId = UUID.randomUUID().toString();
+            var policyId = UuidGenerator.INSTANCE.generate().toString();
 
             var cd = ContractDefinition.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .contractPolicyId(policyId)
                     .accessPolicyId(policyId)
                     .build();
@@ -131,12 +131,12 @@ public class CatalogApiEndToEndTest {
                                                                                   PolicyDefinitionStore policyDefinitionStore,
                                                                                   ContractDefinitionStore contractDefinitionStore) {
             // create and store policy
-            var policyId = UUID.randomUUID().toString();
+            var policyId = UuidGenerator.INSTANCE.generate().toString();
             var policy = Policy.Builder.newInstance().build();
             policyDefinitionStore.create(PolicyDefinition.Builder.newInstance().id(policyId).policy(policy).build());
 
             // create CatalogAsset
-            var catalogAssetId = "catalog-asset-" + UUID.randomUUID();
+            var catalogAssetId = "catalog-asset-" + UuidGenerator.INSTANCE.generate();
             var httpData = createAsset(catalogAssetId, "HttpData")
                     .property(Asset.PROPERTY_IS_CATALOG, true)
                     .build();
@@ -144,12 +144,12 @@ public class CatalogApiEndToEndTest {
             assetIndex.create(httpData);
 
             // create conventional asset
-            var normalAssetId = "normal-asset-" + UUID.randomUUID();
+            var normalAssetId = "normal-asset-" + UuidGenerator.INSTANCE.generate();
             assetIndex.create(createAsset(normalAssetId, "test-type").build());
 
             // create ContractDefinition
             var cd = ContractDefinition.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .contractPolicyId(policyId)
                     .accessPolicyId(policyId)
                     .assetsSelector(List.of(Criterion.criterion("id", "in", List.of(catalogAssetId, normalAssetId))))
