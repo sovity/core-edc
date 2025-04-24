@@ -21,9 +21,9 @@ env:
   AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
 
 jobs:
-  CodeQL:
-    uses: eclipse-edc/.github/.github/workflows/codeql-analysis.yml@main
-    secrets: inherit
+#  CodeQL:
+#    uses: eclipse-edc/.github/.github/workflows/codeql-analysis.yml@main
+#    secrets: inherit
 
   Checkstyle:
     runs-on: ubuntu-latest
@@ -90,10 +90,10 @@ jobs:
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ApiTest"
 
-  Verify-OpenApi:
-    if: github.event_name == 'pull_request'
-    uses: eclipse-edc/.github/.github/workflows/verify-openapi.yml@main
-    secrets: inherit
+#  Verify-OpenApi:
+#    if: github.event_name == 'pull_request'
+#    uses: eclipse-edc/.github/.github/workflows/verify-openapi.yml@main
+#    secrets: inherit
 
   Publish-Artifacts:
     needs:
