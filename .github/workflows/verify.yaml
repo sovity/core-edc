@@ -16,6 +16,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+  AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
 jobs:
   CodeQL:
     uses: eclipse-edc/.github/.github/workflows/codeql-analysis.yml@main
