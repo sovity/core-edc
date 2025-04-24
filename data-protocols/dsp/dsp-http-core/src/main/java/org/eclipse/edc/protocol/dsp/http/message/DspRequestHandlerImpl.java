@@ -31,13 +31,11 @@ import org.eclipse.edc.spi.types.domain.message.ErrorMessage;
 import org.eclipse.edc.spi.types.domain.message.ProcessRemoteMessage;
 import org.eclipse.edc.spi.types.domain.message.ProtocolRemoteMessage;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.UUID;
-
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class DspRequestHandlerImpl implements DspRequestHandler {
 

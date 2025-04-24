@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.spi.entity.Entity;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.Optional.ofNullable;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;

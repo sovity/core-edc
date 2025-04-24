@@ -19,9 +19,8 @@ import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParamsProvider;
 import org.eclipse.edc.json.JacksonTypeManager;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
-import org.junit.jupiter.api.Test;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

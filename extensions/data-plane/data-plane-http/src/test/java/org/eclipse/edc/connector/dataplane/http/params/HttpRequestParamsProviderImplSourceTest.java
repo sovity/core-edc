@@ -20,10 +20,10 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

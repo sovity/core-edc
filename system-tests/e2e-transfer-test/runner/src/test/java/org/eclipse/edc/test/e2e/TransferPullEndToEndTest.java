@@ -33,6 +33,7 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -52,7 +53,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 

@@ -20,6 +20,7 @@ import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.spi.result.StoreFailure;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Comparator;
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

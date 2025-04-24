@@ -30,6 +30,7 @@ import org.eclipse.edc.iam.identitytrust.spi.verification.VerifierContext;
 import org.eclipse.edc.jsonld.util.JacksonJsonLd;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.keys.spi.PublicKeyResolver;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.TokenValidationRulesRegistryImpl;
 import org.eclipse.edc.token.TokenValidationServiceImpl;
 import org.eclipse.edc.token.spi.TokenValidationRulesRegistry;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
 import static org.eclipse.edc.spi.result.Result.success;

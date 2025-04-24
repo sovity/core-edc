@@ -55,6 +55,7 @@ import org.eclipse.edc.spi.protocol.ProtocolWebhook;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -62,7 +63,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Duration;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;

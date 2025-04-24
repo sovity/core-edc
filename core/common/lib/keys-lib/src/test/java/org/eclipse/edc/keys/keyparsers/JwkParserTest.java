@@ -20,6 +20,7 @@ import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.gen.ECKeyGenerator;
 import org.assertj.core.api.Assertions;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -30,7 +31,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;

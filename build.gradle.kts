@@ -26,26 +26,6 @@ buildscript {
     dependencies {
         classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:0.11.1")
     }
-    repositories {
-        maven {
-            name = "AzureTest"
-            url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
-            credentials {
-                username = "sovity"
-                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-            }
-        }
-
-        maven {
-            name = "Azure"
-            url =
-                uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
-            credentials {
-                username = "sovity"
-                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-            }
-        }
-    }
 }
 
 allprojects {
@@ -68,71 +48,4 @@ allprojects {
     }
 
     apply(plugin = "maven-publish")
-
-    publishing {
-        repositories {
-            maven {
-                name = "AzureTest"
-                url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
-                credentials {
-                    username = "sovity"
-                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-                }
-            }
-
-            maven {
-                name = "Azure"
-                url =
-                    uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
-                credentials {
-                    username = "sovity"
-                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-                }
-            }
-        }
-    }
-}
-
-subprojects {
-    repositories {
-        maven {
-            name = "AzureTest"
-            url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
-            credentials {
-                username = "sovity"
-                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-            }
-        }
-
-        maven {
-            name = "Azure"
-            url =
-                uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
-            credentials {
-                username = "sovity"
-                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-            }
-        }
-    }
-}
-
-repositories {
-    maven {
-        name = "AzureTest"
-        url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
-        credentials {
-            username = "sovity"
-            password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-        }
-    }
-
-    maven {
-        name = "Azure"
-        url =
-            uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
-        credentials {
-            username = "sovity"
-            password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
-        }
-    }
 }

@@ -19,12 +19,12 @@ import org.eclipse.edc.connector.controlplane.test.system.utils.LazySupplier;
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.io.File.separator;
 import static org.eclipse.edc.util.io.Ports.getFreePort;

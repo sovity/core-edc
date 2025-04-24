@@ -19,11 +19,11 @@ import org.eclipse.edc.connector.dataplane.util.sink.AsyncStreamingDataSink;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.BiFunction;
 
 import static org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema.BODY;

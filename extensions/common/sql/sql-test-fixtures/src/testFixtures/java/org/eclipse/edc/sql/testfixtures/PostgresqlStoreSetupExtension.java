@@ -16,6 +16,7 @@ package org.eclipse.edc.sql.testfixtures;
 
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.DriverManagerConnectionFactory;
 import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.sql.SqlQueryExecutor;
@@ -38,7 +39,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.util.io.Ports.getFreePort;

@@ -24,13 +24,13 @@ import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.result.StoreFailure;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.Comparator;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -20,6 +20,7 @@ import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
@@ -33,7 +34,6 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static jakarta.json.Json.createObjectBuilder;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.COMPLETED;

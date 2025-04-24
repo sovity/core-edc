@@ -32,6 +32,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowResponseMessage;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,6 @@ import org.mockito.ArgumentCaptor;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.emptyList;

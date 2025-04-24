@@ -26,6 +26,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.spi.result.StoreFailure;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -22,12 +22,12 @@ import org.eclipse.edc.connector.dataplane.selector.spi.strategy.SelectionStrate
 import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static java.util.stream.IntStream.range;

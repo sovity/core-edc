@@ -23,6 +23,7 @@ import org.eclipse.edc.junit.extensions.RuntimePerMethodExtension;
 import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
 import static org.eclipse.edc.spi.result.ServiceFailure.Reason.CONFLICT;

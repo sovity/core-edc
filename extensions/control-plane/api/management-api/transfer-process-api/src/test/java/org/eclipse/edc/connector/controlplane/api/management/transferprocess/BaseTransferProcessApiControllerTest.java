@@ -30,6 +30,7 @@ import org.eclipse.edc.junit.annotations.ApiTest;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
@@ -39,7 +40,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.http.ContentType.JSON;
 import static java.util.Collections.emptyList;

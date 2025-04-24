@@ -27,12 +27,12 @@ import org.eclipse.edc.spi.event.EventRouter;
 import org.eclipse.edc.spi.event.EventSubscriber;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.protocol.ProtocolWebhook;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.junit.matchers.EventEnvelopeMatcher.isEnvelopeOf;

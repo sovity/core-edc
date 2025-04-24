@@ -29,13 +29,13 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.security.PrivateKey;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

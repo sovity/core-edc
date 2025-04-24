@@ -18,13 +18,13 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import org.eclipse.edc.jsonld.TitaniumJsonLd;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;

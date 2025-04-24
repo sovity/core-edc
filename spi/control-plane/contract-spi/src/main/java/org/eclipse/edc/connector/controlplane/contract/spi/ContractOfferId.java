@@ -15,9 +15,9 @@
 package org.eclipse.edc.connector.controlplane.contract.spi;
 
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Base64;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 

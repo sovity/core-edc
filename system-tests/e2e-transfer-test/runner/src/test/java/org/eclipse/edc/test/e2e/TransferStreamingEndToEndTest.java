@@ -25,6 +25,7 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
@@ -36,7 +37,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import javax.validation.constraints.NotNull;
 
 import static java.lang.String.format;

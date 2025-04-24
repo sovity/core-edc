@@ -26,11 +26,11 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.CONSUMER;

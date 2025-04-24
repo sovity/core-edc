@@ -66,8 +66,8 @@ public class ReflectionUtil {
 
             // array indexer
             if (openingBracketIx >= 0 &&
-                            closingBracketIx >= openingBracketIx + 2 &&
-                            closingBracketIx == firstAsString.length() - 1
+                    closingBracketIx >= openingBracketIx + 2 &&
+                    closingBracketIx == firstAsString.length() - 1
             ) {
                 var arrayIndex = -1;
                 try {
@@ -77,19 +77,19 @@ public class ReflectionUtil {
                 }
                 var propName = firstAsString.substring(0, openingBracketIx);
                 var iterableObject = (List) getFieldValue("'" + propName + "'", object);
-            return (T) iterableObject.get(arrayIndex);
-        } else {
+                return (T) iterableObject.get(arrayIndex);
+            } else {
                 return fallback(object, firstAsString);
             }
         }
     }
 
     private static <T> T fallback(Object object, String firstAsString) {
-            if (object instanceof Map<?, ?> map) {
+        if (object instanceof Map<?, ?> map) {
             return (T) map.get(firstAsString);
-            } else if (object instanceof List<?> list) {
+        } else if (object instanceof List<?> list) {
             return (T) list.stream().filter(Objects::nonNull).map(it -> getRecursiveValue(firstAsString, it)).toList();
-            } else {
+        } else {
             return getRecursiveValue(firstAsString, object);
         }
     }

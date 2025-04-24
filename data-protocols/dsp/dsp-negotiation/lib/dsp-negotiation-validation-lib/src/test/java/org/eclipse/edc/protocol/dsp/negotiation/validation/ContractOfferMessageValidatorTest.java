@@ -17,12 +17,11 @@ package org.eclipse.edc.protocol.dsp.negotiation.validation;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.ValidationFailure;
 import org.eclipse.edc.validator.spi.Validator;
 import org.eclipse.edc.validator.spi.Violation;
 import org.junit.jupiter.api.Test;
-
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;

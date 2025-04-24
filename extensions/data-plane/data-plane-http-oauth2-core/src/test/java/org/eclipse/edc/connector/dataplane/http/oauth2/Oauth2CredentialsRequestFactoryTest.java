@@ -28,6 +28,7 @@ import org.eclipse.edc.iam.oauth2.spi.client.SharedSecretOauth2CredentialsReques
 import org.eclipse.edc.jwt.signer.spi.JwsSignerProvider;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
@@ -35,7 +36,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

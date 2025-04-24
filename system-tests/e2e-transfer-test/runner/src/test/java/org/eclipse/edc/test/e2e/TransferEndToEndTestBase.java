@@ -16,12 +16,12 @@ package org.eclipse.edc.test.e2e;
 
 import jakarta.json.JsonObject;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.time.Duration;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.connector.controlplane.test.system.utils.PolicyFixtures.noConstraintPolicy;
 import static org.eclipse.edc.junit.testfixtures.TestUtils.getResourceFileContentAsString;

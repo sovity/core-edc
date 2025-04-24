@@ -27,6 +27,7 @@ import okio.Buffer;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.http.spi.FallbackFactory;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.model.CreateEntryResponsePayload;
 import org.eclipse.edc.vault.hashicorp.model.EntryMetadata;
 import org.eclipse.edc.vault.hashicorp.model.GetEntryResponsePayload;
@@ -46,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;

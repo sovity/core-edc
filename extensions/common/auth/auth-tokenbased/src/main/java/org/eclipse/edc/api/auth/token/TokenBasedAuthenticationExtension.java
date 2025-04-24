@@ -28,9 +28,9 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.Config;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Optional;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.web.spi.configuration.WebServiceConfigurer.WEB_HTTP_PREFIX;
 

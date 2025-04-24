@@ -15,12 +15,12 @@
 package org.eclipse.edc.iam.identitytrust.sts.embedded;
 
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.TokenDecorator;
 
 import java.time.Clock;
 import java.util.Date;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.ISSUED_AT;

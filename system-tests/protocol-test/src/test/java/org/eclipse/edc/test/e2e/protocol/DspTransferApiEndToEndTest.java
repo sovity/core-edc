@@ -28,13 +28,13 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;

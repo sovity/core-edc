@@ -27,13 +27,13 @@ import org.eclipse.edc.connector.dataplane.selector.spi.instance.DataPlaneInstan
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.spi.configuration.context.ControlApiUrl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;

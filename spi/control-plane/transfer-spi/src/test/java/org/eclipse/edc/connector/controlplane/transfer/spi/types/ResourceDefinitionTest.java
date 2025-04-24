@@ -15,11 +15,11 @@
 package org.eclipse.edc.connector.controlplane.transfer.spi.types;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

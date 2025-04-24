@@ -39,6 +39,7 @@ import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
@@ -49,7 +50,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 

@@ -33,6 +33,7 @@ import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
