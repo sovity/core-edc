@@ -7,6 +7,6 @@ on:
 
 jobs:
   trigger-workflow:
-    uses: sovity/core-edc-github/.github/.github/workflows/stale-bot.yml@0.11.1_2025-03-10_1
+    uses: sovity/core-edc-github/.github/workflows/stale-bot.yml@0.11.1_2025-03-10_1
     secrets:
       envGH: ${{ secrets.GITHUB_TOKEN }}
