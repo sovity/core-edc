@@ -2,6 +2,11 @@ name: Run Tests
 
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      AZURE_TOKEN:
+        required: true
+        type: string
   push:
     branches: [ main, release/*, bugfix/*, sovity/* ]
   pull_request:
@@ -24,8 +29,7 @@ jobs:
   CodeQL:
     uses: eclipse-edc/.github/.github/workflows/codeql-analysis.yml@main
     secrets: inherit
-    env:
-      # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+    with:
       AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
 
   Checkstyle:
@@ -97,10 +101,6 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: eclipse-edc/.github/.github/workflows/verify-openapi.yml@main
     secrets: inherit
-    env:
-      # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
-      AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
-
 
   Publish-Artifacts:
     needs:
