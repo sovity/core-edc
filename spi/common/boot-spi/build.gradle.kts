@@ -28,4 +28,7 @@ dependencies {
     testImplementation(project(":tests:junit-base"));
 }
 
+autodocextension {
+    processorVersion = "0.11.1"
+}
 
