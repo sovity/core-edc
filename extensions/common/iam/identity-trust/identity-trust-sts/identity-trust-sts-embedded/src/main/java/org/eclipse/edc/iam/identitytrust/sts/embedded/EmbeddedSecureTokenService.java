@@ -19,6 +19,7 @@ import org.eclipse.edc.jwt.validation.jti.JtiValidationEntry;
 import org.eclipse.edc.jwt.validation.jti.JtiValidationStore;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.KeyIdDecorator;
 import org.eclipse.edc.token.spi.TokenGenerationService;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,6 @@ import java.time.Clock;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -97,7 +97,7 @@ public class EmbeddedSecureTokenService implements SecureTokenService {
         var accessTokenClaims = new HashMap<>(accessTokenInheritedClaims(claims));
         var now = clock.instant();
         var exp = now.plusSeconds(validity);
-        var jti = "accesstoken-%s".formatted(UUID.randomUUID());
+        var jti = "accesstoken-%s".formatted(UuidGenerator.INSTANCE.generate());
 
         accessTokenClaims.put(SCOPE, bearerAccessScope);
 

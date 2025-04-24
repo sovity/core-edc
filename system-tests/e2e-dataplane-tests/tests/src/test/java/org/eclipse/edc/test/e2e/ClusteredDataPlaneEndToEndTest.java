@@ -25,6 +25,7 @@ import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlStoreSetupExtension;
 import org.eclipse.edc.test.e2e.participant.DataPlaneParticipant;
 import org.jetbrains.annotations.NotNull;
@@ -34,7 +35,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockserver.integration.ClientAndServer;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BiFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,7 +105,7 @@ public class ClusteredDataPlaneEndToEndTest {
                 .build();
 
         var startMessage = DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(sourceAddress)
                 .destinationDataAddress(destinationAddress)
                 .transferType(new TransferType("HttpData", FlowType.PUSH))

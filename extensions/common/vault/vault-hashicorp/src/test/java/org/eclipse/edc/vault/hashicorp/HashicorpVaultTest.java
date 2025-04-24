@@ -16,11 +16,10 @@ package org.eclipse.edc.vault.hashicorp;
 
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.client.HashicorpVaultClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -64,7 +63,7 @@ class HashicorpVaultTest {
 
     @Test
     void setSecretSuccess() {
-        var value = UUID.randomUUID().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.success(null));
 
         var returnValue = vault.storeSecret(KEY, value);
@@ -75,7 +74,7 @@ class HashicorpVaultTest {
 
     @Test
     void setSecretFailure() {
-        var value = UUID.randomUUID().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
         when(vaultClient.setSecret(KEY, value)).thenReturn(Result.failure("test-failure"));
 
         var returnValue = vault.storeSecret(KEY, value);

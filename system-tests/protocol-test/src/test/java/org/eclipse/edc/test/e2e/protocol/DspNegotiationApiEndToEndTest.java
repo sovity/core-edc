@@ -23,13 +23,13 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -74,12 +74,12 @@ public class DspNegotiationApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldExposeVersion(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id).counterPartyId("any").counterPartyAddress("any").protocol("any").state(REQUESTED.code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .contractOffer(ContractOffer.Builder.newInstance()
-                        .id(UUID.randomUUID().toString()).assetId(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString()).assetId(UuidGenerator.INSTANCE.generate().toString())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
                 .build();
@@ -105,7 +105,7 @@ public class DspNegotiationApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldReturnError_whenNotFound(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)
@@ -158,7 +158,7 @@ public class DspNegotiationApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void terminate_ShouldReturnError_whenMissingToken(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)
@@ -178,7 +178,7 @@ public class DspNegotiationApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void terminate_ShouldReturnError_whenValidationFails(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)

@@ -22,12 +22,12 @@ import org.eclipse.edc.iam.identitytrust.sts.spi.model.StsAccount;
 import org.eclipse.edc.iam.identitytrust.sts.spi.service.StsAccountService;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +79,7 @@ class StsAccountsApiControllerTest extends RestControllerTestBase {
         var account = createAccount().build();
         var accountCreate = new StsAccountCreation(account, null);
 
-        when(accountServiceMock.create(any(StsAccount.class), isNull())).thenReturn(ServiceResult.success(UUID.randomUUID().toString()));
+        when(accountServiceMock.create(any(StsAccount.class), isNull())).thenReturn(ServiceResult.success(UuidGenerator.INSTANCE.generate().toString()));
 
         baseRequest()
                 .contentType("application/json")

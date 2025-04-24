@@ -28,6 +28,7 @@ import org.eclipse.edc.junit.annotations.ApiTest;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,6 @@ import org.mockito.ArgumentCaptor;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
@@ -90,7 +90,7 @@ class DataPlanePublicApiV2ControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnForbidden_if_tokenValidationFails() {
-        var token = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
         when(authorizationService.authorize(anyString(), anyMap())).thenReturn(Result.failure("token is not valid"));
 
         baseRequest()
@@ -106,8 +106,8 @@ class DataPlanePublicApiV2ControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnInternalServerError_if_transferFails() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         when(dataAddressResolver.resolve(any())).thenReturn(Result.success(testDestAddress()));
         when(pipelineService.transfer(any(), any()))
                 .thenReturn(completedFuture(StreamResult.error(errorMsg)));
@@ -124,9 +124,9 @@ class DataPlanePublicApiV2ControllerTest extends RestControllerTestBase {
     
     @Test
     void should_returnListOfErrorsAsResponse_if_anythingFails() {
-        var token = UUID.randomUUID().toString();
-        var firstErrorMsg = UUID.randomUUID().toString();
-        var secondErrorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var firstErrorMsg = UuidGenerator.INSTANCE.generate().toString();
+        var secondErrorMsg = UuidGenerator.INSTANCE.generate().toString();
 
         when(dataAddressResolver.resolve(any())).thenReturn(Result.success(testDestAddress()));
         when(pipelineService.transfer(any(), any()))
@@ -146,8 +146,8 @@ class DataPlanePublicApiV2ControllerTest extends RestControllerTestBase {
 
     @Test
     void should_returnInternalServerError_if_transferThrows() {
-        var token = UUID.randomUUID().toString();
-        var errorMsg = UUID.randomUUID().toString();
+        var token = UuidGenerator.INSTANCE.generate().toString();
+        var errorMsg = UuidGenerator.INSTANCE.generate().toString();
         when(dataAddressResolver.resolve(any())).thenReturn(Result.success(testDestAddress()));
         when(pipelineService.transfer(any(DataFlowStartMessage.class), any()))
                 .thenReturn(failedFuture(new RuntimeException(errorMsg)));
@@ -171,7 +171,7 @@ class DataPlanePublicApiV2ControllerTest extends RestControllerTestBase {
         });
 
         var responseBody = baseRequest()
-                .header(AUTHORIZATION, UUID.randomUUID().toString())
+                .header(AUTHORIZATION, UuidGenerator.INSTANCE.generate().toString())
                 .when()
                 .post("/any?foo=bar")
                 .then()

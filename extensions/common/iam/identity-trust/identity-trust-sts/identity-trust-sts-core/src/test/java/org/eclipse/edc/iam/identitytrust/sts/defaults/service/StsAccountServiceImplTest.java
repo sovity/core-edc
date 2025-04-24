@@ -19,12 +19,12 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,7 @@ public class StsAccountServiceImplTest {
 
     @BeforeEach
     void setup() {
-        clientService = new StsAccountServiceImpl(store, vault, transactionContext, parameters -> UUID.randomUUID().toString());
+        clientService = new StsAccountServiceImpl(store, vault, transactionContext, parameters -> UuidGenerator.INSTANCE.generate().toString());
     }
 
     @Test

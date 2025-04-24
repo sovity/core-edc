@@ -15,12 +15,12 @@
 package org.eclipse.edc.iam.identitytrust.sts.embedded;
 
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.TokenDecorator;
 
 import java.time.Clock;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.ISSUED_AT;
@@ -48,6 +48,6 @@ class SelfIssuedTokenDecorator implements TokenDecorator {
         return tokenParameters.claims(ISSUED_AT, Date.from(clock.instant()))
                 .claims(NOT_BEFORE, Date.from(clock.instant()))
                 .claims(EXPIRATION_TIME, Date.from(clock.instant().plusSeconds(validity)))
-                .claims(JWT_ID, UUID.randomUUID().toString());
+                .claims(JWT_ID, UuidGenerator.INSTANCE.generate().toString());
     }
 }

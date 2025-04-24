@@ -15,8 +15,7 @@
 package org.eclipse.edc.iam.identitytrust.sts.spi.store.fixtures;
 
 import org.eclipse.edc.iam.identitytrust.sts.spi.model.StsAccount;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 
 public class TestFunctions {
@@ -32,21 +31,21 @@ public class TestFunctions {
     public static StsAccount createClient(String id, String secretAlias, String clientId, String publicKeyReference, String did) {
         return createClientBuilder(id)
                 .clientId(clientId)
-                .name(UUID.randomUUID().toString())
+                .name(UuidGenerator.INSTANCE.generate().toString())
                 .secretAlias(secretAlias)
                 .publicKeyReference(publicKeyReference)
                 .did(did)
-                .privateKeyAlias(UUID.randomUUID().toString()).build();
+                .privateKeyAlias(UuidGenerator.INSTANCE.generate().toString()).build();
     }
 
     public static StsAccount.Builder createClientBuilder(String id) {
         return StsAccount.Builder.newInstance()
                 .id(id)
-                .name(UUID.randomUUID().toString());
+                .name(UuidGenerator.INSTANCE.generate().toString());
     }
 
     public static StsAccount createClient(String id) {
-        return createClient(id, UUID.randomUUID().toString());
+        return createClient(id, UuidGenerator.INSTANCE.generate().toString());
     }
 
 }

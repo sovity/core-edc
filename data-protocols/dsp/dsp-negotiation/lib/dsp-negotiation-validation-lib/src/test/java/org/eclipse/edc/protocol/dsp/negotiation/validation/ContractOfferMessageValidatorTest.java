@@ -17,12 +17,11 @@ package org.eclipse.edc.protocol.dsp.negotiation.validation;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.ValidationFailure;
 import org.eclipse.edc.validator.spi.Validator;
 import org.eclipse.edc.validator.spi.Violation;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -49,7 +48,7 @@ class ContractOfferMessageValidatorTest {
                 .add(DSPACE_PROPERTY_OFFER_IRI, createArrayBuilder()
                         .add(createObjectBuilder()
                                 .add(TYPE, ODRL_POLICY_TYPE_OFFER)
-                                .add(ID, UUID.randomUUID().toString())
+                                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                                 .add(ODRL_TARGET_ATTRIBUTE, id("target"))))
                 .add(DSPACE_PROPERTY_CALLBACK_ADDRESS_IRI, value("http://any/address"))
                 .build();

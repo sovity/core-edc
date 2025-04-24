@@ -20,6 +20,7 @@ import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
@@ -33,7 +34,6 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static jakarta.json.Json.createObjectBuilder;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.COMPLETED;
@@ -69,7 +69,7 @@ class TransferPushEndToEndTest {
         @Test
         void httpPushDataTransfer() {
             providerDataSource.when(HttpRequest.request()).respond(HttpResponse.response().withBody("data"));
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var dataAddressProperties = Map.<String, Object>of(
                     "name", "transfer-test",
                     "baseUrl", "http://localhost:" + providerDataSource.getPort() + "/source",
@@ -94,7 +94,7 @@ class TransferPushEndToEndTest {
             oauth2server.when(HttpRequest.request()).respond(HttpResponse.response().withBody(json(Map.of("access_token", "token"))));
             providerDataSource.when(HttpRequest.request()).respond(HttpResponse.response().withBody("data"));
             getDataplaneVault().storeSecret("provision-oauth-secret", "supersecret");
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddressProperties = Map.<String, Object>of(
                     "type", "HttpData",
                     "baseUrl", "http://localhost:" + providerDataSource.getPort() + "/source",

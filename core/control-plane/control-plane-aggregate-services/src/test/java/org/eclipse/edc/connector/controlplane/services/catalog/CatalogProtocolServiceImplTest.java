@@ -27,13 +27,13 @@ import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -66,7 +66,7 @@ class CatalogProtocolServiceImplTest {
         var dataService = DataService.Builder.newInstance().build();
         var distribution = Distribution.Builder.newInstance().dataService(dataService).format("any").build();
         return Dataset.Builder.newInstance()
-                .offer(UUID.randomUUID().toString(), Policy.Builder.newInstance().build())
+                .offer(UuidGenerator.INSTANCE.generate().toString(), Policy.Builder.newInstance().build())
                 .distribution(distribution)
                 .build();
     }

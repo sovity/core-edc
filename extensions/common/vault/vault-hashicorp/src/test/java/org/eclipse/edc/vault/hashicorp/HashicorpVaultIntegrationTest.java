@@ -20,6 +20,7 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -32,7 +33,6 @@ import org.testcontainers.vault.VaultContainer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,9 +42,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HashicorpVaultIntegrationTest {
     static final String DOCKER_IMAGE_NAME = "vault:1.9.6";
     static final String VAULT_ENTRY_KEY = "testing";
-    static final String VAULT_ENTRY_VALUE = UUID.randomUUID().toString();
+    static final String VAULT_ENTRY_VALUE = UuidGenerator.INSTANCE.generate().toString();
     static final String VAULT_DATA_ENTRY_NAME = "content";
-    static final String TOKEN = UUID.randomUUID().toString();
+    static final String TOKEN = UuidGenerator.INSTANCE.generate().toString();
 
     @Container
     private static final VaultContainer<?> VAULTCONTAINER = new VaultContainer<>(DOCKER_IMAGE_NAME)
@@ -95,9 +95,9 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Update a secret that exists")
     void testSetSecret_exists(Vault vault) {
-        var key = UUID.randomUUID().toString();
-        var value1 = UUID.randomUUID().toString();
-        var value2 = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value1 = UuidGenerator.INSTANCE.generate().toString();
+        var value2 = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value1);
         vault.storeSecret(key, value2);
@@ -108,8 +108,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Create a secret that does not exist")
     void testSetSecret_doesNotExist(Vault vault) {
-        var key = UUID.randomUUID().toString();
-        var value = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value);
         var secretValue = vault.resolveSecret(key);
@@ -119,8 +119,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Delete a secret that exists")
     void testDeleteSecret_exists(Vault vault) {
-        var key = UUID.randomUUID().toString();
-        var value = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value);
         vault.deleteSecret(key);
@@ -131,7 +131,7 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Try to delete a secret that does not exist")
     void testDeleteSecret_doesNotExist(Vault vault) {
-        var key = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
 
         vault.deleteSecret(key);
         assertThat(vault.resolveSecret(key)).isNull();

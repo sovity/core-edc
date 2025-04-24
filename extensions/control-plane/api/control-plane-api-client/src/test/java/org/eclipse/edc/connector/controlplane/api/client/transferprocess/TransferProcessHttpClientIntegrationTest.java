@@ -40,6 +40,7 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.web.spi.configuration.context.ControlApiUrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
@@ -153,7 +153,7 @@ public class TransferProcessHttpClientIntegrationTest {
                 .id(id)
                 .state(TransferProcessStates.STARTED.code())
                 .type(TransferProcess.Type.PROVIDER)
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("file").build())
                 .protocol("any")
                 .counterPartyAddress("http://an/address")
@@ -162,7 +162,7 @@ public class TransferProcessHttpClientIntegrationTest {
 
     private DataFlowStartMessage createDataFlowRequest(String processId, URI callbackAddress) {
         return DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .processId(processId)
                 .callbackAddress(callbackAddress)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("file").build())

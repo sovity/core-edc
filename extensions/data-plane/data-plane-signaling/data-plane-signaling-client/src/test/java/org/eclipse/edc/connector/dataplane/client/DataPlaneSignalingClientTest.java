@@ -39,6 +39,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowResponseMessage;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.TypeTransformerRegistryImpl;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.transform.transformer.dspace.from.JsonObjectFromDataAddressDspaceTransformer;
@@ -58,7 +59,6 @@ import org.mockserver.verify.VerificationTimes;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.dataplane.client.DataPlaneSignalingClientExtension.CONTROL_CLIENT_SCOPE;
@@ -167,7 +167,7 @@ class DataPlaneSignalingClientTest {
                     .orElseThrow((e) -> new EdcException(e.getFailureDetail()));
 
             var httpRequest = new HttpRequest().withPath(DATA_PLANE_PATH).withBody(MAPPER.writeValueAsString(expected));
-            var errorMsg = UUID.randomUUID().toString();
+            var errorMsg = UuidGenerator.INSTANCE.generate().toString();
             dataPlane.when(httpRequest).respond(withResponse(errorMsg));
 
             var result = dataPlaneClient.start(flowRequest);

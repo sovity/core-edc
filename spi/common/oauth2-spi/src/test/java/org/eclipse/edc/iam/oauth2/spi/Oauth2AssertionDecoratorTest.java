@@ -15,6 +15,7 @@
 package org.eclipse.edc.iam.oauth2.spi;
 
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
@@ -23,7 +24,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +42,7 @@ class Oauth2AssertionDecoratorTest {
     private final Instant now = Instant.now();
     private final Clock clock = Clock.fixed(now, UTC);
     private final String audience = "test-audience";
-    private final String clientId = UUID.randomUUID().toString();
+    private final String clientId = UuidGenerator.INSTANCE.generate().toString();
 
     @ParameterizedTest
     @EmptySource

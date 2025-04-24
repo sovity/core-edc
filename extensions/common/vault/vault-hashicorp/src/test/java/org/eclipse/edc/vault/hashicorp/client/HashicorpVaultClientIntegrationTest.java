@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.monitor.ConsoleMonitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import org.testcontainers.vault.VaultContainer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,7 +105,7 @@ class HashicorpVaultClientIntegrationTest {
     class LastKnownFoss extends Tests {
         @Container
         static final VaultContainer<?> VAULT_CONTAINER = new VaultContainer<>("vault:1.9.6")
-                .withVaultToken(UUID.randomUUID().toString());
+                .withVaultToken(UuidGenerator.INSTANCE.generate().toString());
 
         public static HashicorpVaultSettings getSettings() throws IOException, InterruptedException {
             var execResult = VAULT_CONTAINER.execInContainer(
@@ -151,7 +151,7 @@ class HashicorpVaultClientIntegrationTest {
     class Latest extends Tests {
         @Container
         static final VaultContainer<?> VAULT_CONTAINER = new VaultContainer<>("hashicorp/vault:1.17.3")
-                .withVaultToken(UUID.randomUUID().toString());
+                .withVaultToken(UuidGenerator.INSTANCE.generate().toString());
 
         public static HashicorpVaultSettings getSettings() throws IOException, InterruptedException {
             var execResult = VAULT_CONTAINER.execInContainer(

@@ -28,9 +28,9 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.Config;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.eclipse.edc.web.spi.configuration.WebServiceConfigurer.WEB_HTTP_PREFIX;
 
@@ -73,7 +73,7 @@ public class TokenBasedAuthenticationExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var apiKey = Optional.ofNullable(context.getSetting(AUTH_SETTING_APIKEY_ALIAS, null))
                 .map(alias -> vault.resolveSecret(alias))
-                .orElseGet(() -> context.getSetting(AUTH_SETTING_APIKEY, UUID.randomUUID().toString()));
+                .orElseGet(() -> context.getSetting(AUTH_SETTING_APIKEY, UuidGenerator.INSTANCE.generate().toString()));
 
         // only register as fallback, if no other has been registered
         if (!authenticationRegistry.hasService("management-api")) {

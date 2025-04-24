@@ -17,10 +17,10 @@ package org.eclipse.edc.connector.dataplane.framework.store;
 import org.eclipse.edc.connector.dataplane.spi.DataFlow;
 import org.eclipse.edc.connector.dataplane.spi.store.DataPlaneStore;
 import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 
 import java.time.Clock;
-import java.util.UUID;
 
 /**
  * Implements an in-memory, ephemeral store with a maximum capacity. If the store grows beyond capacity, the oldest entry will be evicted.
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class InMemoryDataPlaneStore extends InMemoryStatefulEntityStore<DataFlow> implements DataPlaneStore {
 
     public InMemoryDataPlaneStore(Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {
-        this(UUID.randomUUID().toString(), clock, criterionOperatorRegistry);
+        this(UuidGenerator.INSTANCE.generate().toString(), clock, criterionOperatorRegistry);
     }
 
     public InMemoryDataPlaneStore(String connectorName, Clock clock, CriterionOperatorRegistry criterionOperatorRegistry) {

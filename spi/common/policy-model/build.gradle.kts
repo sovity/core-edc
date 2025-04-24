@@ -23,4 +23,6 @@ dependencies {
     api(libs.jetbrains.annotations)
 }
 
-
+autodocextension {
+    processorVersion = "0.11.1"
+}

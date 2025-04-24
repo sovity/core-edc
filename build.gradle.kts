@@ -15,6 +15,7 @@
 
 plugins {
     `java-library`
+    `maven-publish`
 }
 
 val javaVersion: String by project
@@ -23,8 +24,7 @@ val edcScmConnection: String by project
 
 buildscript {
     dependencies {
-        val version: String by project
-        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:$version")
+        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:0.11.1")
     }
 }
 
@@ -43,4 +43,56 @@ allprojects {
         configDirectory.set(rootProject.file("resources"))
     }
 
+    java {
+        withSourcesJar()
+    }
+
+    apply(plugin = "maven-publish")
+}
+
+subprojects {
+    repositories {
+        maven {
+            name = "AzureTest"
+            url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
+            credentials {
+                username = "sovity"
+                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
+            }
+        }
+
+        maven {
+            name = "Azure"
+            url = uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
+            credentials {
+                username = "sovity"
+                password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
+            }
+        }
+    }
+
+
+    apply(plugin = "maven-publish")
+
+    publishing {
+        repositories {
+            maven {
+                name = "AzureTest"
+                url = uri("https://pkgs.dev.azure.com/sovity/Test/_packaging/test/maven/v1")
+                credentials {
+                    username = "sovity"
+                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
+                }
+            }
+
+            maven {
+                name = "Azure"
+                url = uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
+                credentials {
+                    username = "sovity"
+                    password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
+                }
+            }
+        }
+    }
 }

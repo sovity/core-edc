@@ -26,11 +26,11 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Clock;
 import java.util.List;
-import java.util.UUID;
 
 public class TestFunctions {
 
@@ -71,7 +71,7 @@ public class TestFunctions {
 
     @NotNull
     public static TransferProcess initialTransferProcess() {
-        return createTransferProcessBuilder(UUID.randomUUID().toString()).correlationId("clientid").build();
+        return createTransferProcessBuilder(UuidGenerator.INSTANCE.generate().toString()).correlationId("clientid").build();
     }
 
     @JsonTypeName("dataspaceconnector:testresourcedef")

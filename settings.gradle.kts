@@ -30,16 +30,6 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    repositories {
-        mavenLocal()
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
-        mavenCentral()
-    }
-}
-
 // EDC core modules --------------------------------------------------------------------------------
 include(":core:common:boot")
 include(":core:common:connector-core")

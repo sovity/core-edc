@@ -23,10 +23,9 @@ import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +52,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldGenerateResourceManifestForConsumerManagedTransferProcess() {
         var transferProcess = TransferProcess.Builder.newInstance().dataDestination(dataDestination()).build();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         when(consumerGenerator.canGenerate(any(), any())).thenReturn(true);
         when(consumerGenerator.generate(any(), any())).thenReturn(resourceDefinition);
         when(policyEngine.evaluate(any(), isA(PolicyContext.class))).thenReturn(Result.success());
@@ -80,7 +79,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldReturnFailedResultForConsumerWhenPolicyEvaluationFailed() {
         var transferProcess = TransferProcess.Builder.newInstance().dataDestination(dataDestination()).build();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         when(consumerGenerator.generate(any(), any())).thenReturn(resourceDefinition);
         when(policyEngine.evaluate(any(), isA(PolicyContext.class))).thenReturn(Result.failure("error"));
 
@@ -92,7 +91,7 @@ class ResourceManifestGeneratorImplTest {
     @Test
     void shouldGenerateResourceManifestForProviderTransferProcess() {
         var transferProcess = TransferProcess.Builder.newInstance().dataDestination(dataDestination()).build();
-        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var resourceDefinition = TestResourceDefinition.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         when(providerGenerator.canGenerate(any(), any(), any())).thenReturn(true);
         when(providerGenerator.generate(any(), any(), any())).thenReturn(resourceDefinition);
 

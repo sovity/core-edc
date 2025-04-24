@@ -37,6 +37,7 @@ import org.eclipse.edc.spi.iam.TokenParameters;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.iam.VerificationContext;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.TokenDecoratorRegistryImpl;
 import org.eclipse.edc.token.TokenValidationRulesRegistryImpl;
 import org.eclipse.edc.token.TokenValidationServiceImpl;
@@ -52,7 +53,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static com.nimbusds.jwt.JWTClaimNames.AUDIENCE;
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
@@ -218,7 +218,7 @@ class Oauth2ServiceImplTest {
     private RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate();
     }
 

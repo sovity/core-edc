@@ -32,6 +32,7 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,7 +51,6 @@ import org.mockserver.verify.VerificationTimes;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.AUTHORIZATION;
 import static io.restassured.RestAssured.given;
@@ -151,7 +151,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_pull_withSourceQueryParamsAndPath_success(DataPlaneAuthorizationService dataPlaneAuthorizationService) {
-            var token = UUID.randomUUID().toString();
+            var token = UuidGenerator.INSTANCE.generate().toString();
             var responseBody = "some info";
             var queryParams = Map.of(
                     "param1", "foo",
@@ -222,8 +222,8 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_success() {
-            var body = UUID.randomUUID().toString();
-            var processId = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest(""), once()).respond(successfulResponse(body, APPLICATION_JSON));
             httpSinkMockServer.when(request(), once()).respond(successfulResponse());
 
@@ -238,8 +238,8 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_withSourcePathAndQueryParams_success() {
-            var body = UUID.randomUUID().toString();
-            var processId = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var queryParams = Map.of(
                     "param1", "any value",
                     "param2", "any other value"
@@ -267,7 +267,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_sourceNotAvailable_noInteractionWithSink() {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest("")).error(withDropConnection());
 
             initiate(transferRequestPayload(processId))
@@ -284,10 +284,10 @@ public class DataPlaneHttpIntegrationTests {
          */
         @Test
         void transfer_toHttpSink_sourceTemporaryDropConnection_success() {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest(""), exactly(2)).error(withDropConnection());
 
-            var body = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
             httpSourceMockServer.when(getRequest(""), once()).respond(successfulResponse(body, PLAIN_TEXT_UTF_8));
 
             httpSinkMockServer.when(postRequest(body, APPLICATION_OCTET_STREAM), once()).respond(successfulResponse());
@@ -303,7 +303,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_invalidInput_failure() {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var validRequest = transferRequestPayload(processId);
             var invalidRequest = Json.createObjectBuilder(validRequest).remove("transferTypeDestination").build();
 
@@ -345,7 +345,7 @@ public class DataPlaneHttpIntegrationTests {
             return Json.createObjectBuilder()
                     .add("@context", Json.createObjectBuilder().add("@vocab", EDC_NAMESPACE).add("dspace", "https://w3id.org/dspace/v0.8/"))
                     .add("@type", EDC_DATA_FLOW_START_MESSAGE_TYPE)
-                    .add("@id", UUID.randomUUID().toString())
+                    .add("@id", UuidGenerator.INSTANCE.generate().toString())
                     .add("processId", processId)
                     .add("sourceDataAddress", sourceDataAddress)
                     .add("destinationDataAddress", Json.createObjectBuilder()
