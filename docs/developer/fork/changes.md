@@ -1,6 +1,6 @@
 # Fork
 
-## Changes implemented in `0.7.2`'s fork
+## Changes implemented in `0.11.1`'s fork
 
 ---
 
@@ -13,9 +13,7 @@ the separator should not be `File.separator` as it causes an error on windows wh
 
 ### Switch to UUIDv7
 
-Identical to [0.2.1.X.md](0.2.1.X.md#switch-to-uuidv7)'s UUID switch.
-
----
+Identical to [0.2.1.X.md](0.2.1.X.md#switch-to-uuidv7)'s or [0.7.2.X.md](0.7.2.X.md#switch-to-uuidv7)'s UUID switch.
 
 ## Catalog performance
 
@@ -24,10 +22,6 @@ Changes to improve the performance of the catalog request
 * Add caching for frequently used `PathItem`s.
 * Avoid needless String formatting.
 
----
-
 ## Force shutdown
 
-The EDC doesn't want to shutdown on its own, because of a few non-daemon threads.
-
-Changes were made to ask the executor that possesses those threads to shut down and if unsuccessful force the shutdown.
+Not migrated. The tests shut down fine now.
