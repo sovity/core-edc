@@ -90,6 +90,11 @@ jobs:
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ApiTest"
 
+# This refuses to work, because it uses a task that would now depend on our Azure repo, for which I didn't find how to
+# pass the credentials and it's not a critical task, we only fork for a single version and on the next version we can
+# forget about this, either because the root cause vanished, the task went somewhere else, or whatever may happen,
+# noone knows...
+
 #  Verify-OpenApi:
 #    if: github.event_name == 'pull_request'
 #    uses: sovity/core-edc-github/.github/.github/workflows/verify-openapi.yml@0.11.1_2025-03-10_1

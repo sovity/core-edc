@@ -4,7 +4,7 @@
 
 ### Overview
 
-Initial migration from 0.7.2.2.
+Initial migration of changes from `0.7.2.2` into `0.11.1`.
 
 #### Changes
 
