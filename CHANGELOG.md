@@ -4,6 +4,21 @@
 
 ### Overview
 
+#### Changes
+  
+#### Details
+
+#### Compatibility
+
+#### Resolution plan
+
+---
+
+
+## [0.11.1.1] - 2025-04-25
+
+### Overview
+
 Initial migration of changes from `0.7.2.2` into `0.11.1`.
 
 #### Changes
@@ -13,10 +28,8 @@ Initial migration of changes from `0.7.2.2` into `0.11.1`.
   - Replacement of java.util.UUID with UUIDv7
   - Catalog performance
 
-#### Details
-
 #### Compatibility
 
-#### Resolution plan
+Compatible with core EDC `0.11.1`.
 
 ---
