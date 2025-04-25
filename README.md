@@ -74,7 +74,7 @@ To submit changes to the Eclipse EDC, please refer to [the original repository](
 
 ## Forking
 
-[Create a Fork Issue](https://github.com/sovity/core-edc/issues/new?assignees=&labels=scope%2Fcore&template=fork.md&title=Fork+A.B.C) and follow the instructions.
+[Create a Fork Issue](https://github.com/sovity/core-edc/issues/new?assignees=&labels=scope%2Fcore&template=new-supported-version.md&title=Fork+A.B.C) and follow the instructions.
 
 ## Releasing
 
