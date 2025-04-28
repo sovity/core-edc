@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ main, release/*, bugfix/*, sovity/* ]
+    tags: '*'
   pull_request:
     branches: [ main, release/*, bugfix/*, sovity/* ]
     paths-ignore:
