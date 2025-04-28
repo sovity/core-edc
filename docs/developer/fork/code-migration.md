@@ -59,19 +59,19 @@ Execution failed for task ':core:common:lib:util-lib:compileJava'.
             project :core:common:lib:util-lib
 ```
 
-I didn't manage to make `0.11.1` run the gradle tests locally, but `0.12.0` worked and only required to set `skip.signing=true` in the `gradle.properties` of the plugin project.
+Fix that by forcing the plugin's dependency to the forked version:
 
-Test build and publish locally and later publish to Azure from the local machine.
-
-Change the `spi/common/boot-spi/build.gradle.kts` and `spi/common/policy-model/build.gradle.kts`
-
-to add
-
-```
-autodocextension {
-    processorVersion = "0.11.1"
+```kotlin
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.eclipse.edc" && requested.name == "autodoc-processor") {
+            useVersion("0.11.1")
+        }
+    }
 }
 ```
+
+
 
 ## Switch to UUIDv7
 
