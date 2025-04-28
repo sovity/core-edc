@@ -51,7 +51,6 @@ allprojects {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-            logger.lifecycle("Hitting ${requested.group}:${requested.name}:${requested.version}")
             if (requested.group == "org.eclipse.edc" && requested.name == "autodoc-processor") {
                 useVersion("0.11.1")
             }
