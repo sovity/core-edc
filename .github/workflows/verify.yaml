@@ -120,6 +120,7 @@ jobs:
       - name: "Gradle: Publish to Production"
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         run: |
+          IS_RELEASE=true
           GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
           ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureRepository
         env:
@@ -129,6 +130,7 @@ jobs:
       - name: "Gradle: Publish to Test"
         if: ${{ startsWith(github.ref, 'refs/heads/sovity/') }}
         run: |
+          IS_RELEASE=false
           GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
           ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureTestRepository
         env:
