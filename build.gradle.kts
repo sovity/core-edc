@@ -48,6 +48,15 @@ allprojects {
     }
 
     apply(plugin = "maven-publish")
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            logger.lifecycle("Hitting ${requested.group}:${requested.name}:${requested.version}")
+            if (requested.group == "org.eclipse.edc" && requested.name == "autodoc-processor") {
+                useVersion("0.11.1")
+            }
+        }
+    }
 }
 
 subprojects {
@@ -63,7 +72,8 @@ subprojects {
 
         maven {
             name = "Azure"
-            url = uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
+            url =
+                uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
             credentials {
                 username = "sovity"
                 password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
@@ -87,7 +97,8 @@ subprojects {
 
             maven {
                 name = "Azure"
-                url = uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
+                url =
+                    uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
                 credentials {
                     username = "sovity"
                     password = project.findProperty("azure.token") as String? ?: System.getenv("AZURE_TOKEN")
