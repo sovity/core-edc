@@ -66,7 +66,7 @@ subprojects {
         repositories {
             if (System.getenv("IS_RELEASE") == "true") {
                 maven {
-                    name = "Azure"
+                    name = "AzureProd"
                     url =
                         uri("https://pkgs.dev.azure.com/sovity/41799556-91c8-4df6-8ddb-4471d6f15953/_packaging/core-edc/maven/v1")
                     credentials {
