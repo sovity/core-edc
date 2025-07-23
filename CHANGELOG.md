@@ -6,7 +6,7 @@
 
 #### Changes
 
-- Add aching for data plane OAuth requests
+- Add caching for data plane OAuth requests
 
 #### Details
 
