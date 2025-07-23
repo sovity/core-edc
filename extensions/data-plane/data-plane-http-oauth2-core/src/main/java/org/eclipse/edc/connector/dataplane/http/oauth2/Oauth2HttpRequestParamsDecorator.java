@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Bayerische Motoren Werke Aktiengesellschaft (BMW AG) - initial API and implementation
+ *       sovity GmbH - token caching
  *
  */
 
@@ -22,29 +23,32 @@ import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 
+import java.time.Duration;
+
 /**
  * Requests the OAuth2 token if configured in the DataAddress
  */
 public class Oauth2HttpRequestParamsDecorator implements HttpParamsDecorator {
 
     private final Oauth2CredentialsRequestFactory requestFactory;
-    private final Oauth2Client client;
     private final Oauth2DataAddressValidator validator = new Oauth2DataAddressValidator();
+    private final TokenCache tokenCache;
 
-    public Oauth2HttpRequestParamsDecorator(Oauth2CredentialsRequestFactory requestFactory, Oauth2Client client) {
+    public Oauth2HttpRequestParamsDecorator(Oauth2CredentialsRequestFactory requestFactory, Oauth2Client client, Duration minimumTimeToLive) {
         this.requestFactory = requestFactory;
-        this.client = client;
+        this.tokenCache = new TokenCache(client, minimumTimeToLive);
     }
 
     @Override
     public HttpRequestParams.Builder decorate(DataFlowStartMessage request, HttpDataAddress address, HttpRequestParams.Builder params) {
         if (validator.test(address)) {
             return requestFactory.create(address)
-                    .compose(client::requestToken)
+                    .compose(tokenCache::getCachedToken)
                     .map(tokenRepresentation -> params.header("Authorization", "Bearer " + tokenRepresentation.getToken()))
                     .orElseThrow(failure -> new EdcException("Cannot authenticate through OAuth2: " + failure.getFailureDetail()));
         } else {
             return params;
         }
     }
+
 }

@@ -43,5 +43,4 @@ class DataPlaneHttpOauth2ExtensionTest {
         verify(paramsProvider).registerSourceDecorator(isA(Oauth2HttpRequestParamsDecorator.class));
         verify(paramsProvider, never()).registerSinkDecorator(isA(Oauth2HttpRequestParamsDecorator.class));
     }
-
 }
