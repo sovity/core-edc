@@ -21,6 +21,7 @@ import org.eclipse.edc.connector.dataplane.http.spi.HttpRequestParams;
 import org.eclipse.edc.iam.oauth2.spi.Oauth2DataAddressValidator;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.spi.EdcException;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 
 import java.time.Duration;
@@ -34,9 +35,14 @@ public class Oauth2HttpRequestParamsDecorator implements HttpParamsDecorator {
     private final Oauth2DataAddressValidator validator = new Oauth2DataAddressValidator();
     private final TokenCache tokenCache;
 
-    public Oauth2HttpRequestParamsDecorator(Oauth2CredentialsRequestFactory requestFactory, Oauth2Client client, Duration minimumTimeToLive) {
+    public Oauth2HttpRequestParamsDecorator(
+            Oauth2CredentialsRequestFactory requestFactory,
+            Oauth2Client client,
+            Monitor monitor,
+            Duration minimumTimeToLive
+    ) {
         this.requestFactory = requestFactory;
-        this.tokenCache = new TokenCache(client, minimumTimeToLive);
+        this.tokenCache = new TokenCache(client, monitor, minimumTimeToLive);
     }
 
     @Override

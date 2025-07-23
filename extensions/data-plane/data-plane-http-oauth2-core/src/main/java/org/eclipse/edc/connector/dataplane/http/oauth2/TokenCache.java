@@ -19,22 +19,27 @@ import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2CredentialsRequest;
 import org.eclipse.edc.iam.oauth2.spi.client.OauthTokenRequestCacheKey;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
 
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TokenCache {
     private final Oauth2Client client;
+    private final Monitor monitor;
 
     private final Duration minimumTimeToLive;
-    private final Map<OauthTokenRequestCacheKey, TokenRepresentation> cache = new HashMap<>();
+    private final Map<OauthTokenRequestCacheKey, TokenRepresentation> cache =
+            Collections.synchronizedMap(new HashMap<>());
 
-    public TokenCache(Oauth2Client client, Duration minimumTimeToLive) {
+    public TokenCache(Oauth2Client client, Monitor monitor, Duration minimumTimeToLive) {
         this.client = client;
+        this.monitor = monitor;
         this.minimumTimeToLive = minimumTimeToLive;
     }
 
@@ -55,6 +60,7 @@ public class TokenCache {
             try {
                 tryCacheResponse(response, key);
             } catch (ParseException e) {
+                monitor.debug(() -> "Failed to parse token as JWT for request key " + key + ": " + e.getMessage() + ". No caching will happen.");
                 return response;
             }
         }

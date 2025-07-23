@@ -26,6 +26,7 @@ import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2CredentialsRequest;
 import org.eclipse.edc.iam.oauth2.spi.client.SharedSecretOauth2CredentialsRequest;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
+import org.eclipse.edc.spi.monitor.ConsoleMonitor;
 import org.eclipse.edc.spi.result.Result;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +65,7 @@ class TokenCacheTest {
                 .thenAnswer(it -> Result.success(TokenRepresentation.Builder.newInstance().token(generateJwt()).build()));
 
         var minimumTimeToLive = Duration.ofSeconds(2);
-        var cache = new TokenCache(oauthClient, minimumTimeToLive);
+        var cache = new TokenCache(oauthClient, new ConsoleMonitor(), minimumTimeToLive);
 
         // query once and use the cache
         var token1 = cache.getCachedToken(request);
@@ -97,7 +98,7 @@ class TokenCacheTest {
         when(oauthClient.requestToken(request)).thenReturn(Result.failure("OAuth failure"));
 
         var minimumTimeToLive = Duration.ofSeconds(2);
-        var cache = new TokenCache(oauthClient, minimumTimeToLive);
+        var cache = new TokenCache(oauthClient, new ConsoleMonitor(), minimumTimeToLive);
 
         var response = cache.getCachedToken(request);
         assertThat(response.getFailureDetail()).isEqualTo("OAuth failure");
@@ -124,7 +125,7 @@ class TokenCacheTest {
                 );
 
         var minimumTimeToLive = Duration.ofSeconds(2);
-        var cache = new TokenCache(oauthClient, minimumTimeToLive);
+        var cache = new TokenCache(oauthClient, new ConsoleMonitor(), minimumTimeToLive);
 
         // act
         var response1 = cache.getCachedToken(request);

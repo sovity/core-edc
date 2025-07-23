@@ -7,10 +7,10 @@
 #### Changes
 
 - Add aching for data plane OAuth requests
-  
+
 #### Details
 
-- Add `TokenCache` in 
+- Add `TokenCache`ing in `Oauth2HttpRequestParamsDecorator`.
 
 #### Compatibility
 

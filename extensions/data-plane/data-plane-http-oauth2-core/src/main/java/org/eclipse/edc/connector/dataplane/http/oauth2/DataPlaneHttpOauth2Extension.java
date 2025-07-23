@@ -21,6 +21,7 @@ import org.eclipse.edc.jwt.signer.spi.JwsSignerProvider;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -52,6 +53,9 @@ public class DataPlaneHttpOauth2Extension implements ServiceExtension {
     private HttpRequestParamsProvider paramsProvider;
 
     @Inject
+    private Monitor monitor;
+
+    @Inject
     private Vault vault;
 
     @Inject
@@ -69,7 +73,7 @@ public class DataPlaneHttpOauth2Extension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         final var requestFactory = new Oauth2CredentialsRequestFactory(jwsSignerProvider, clock, vault);
         final var minimumTimeToLiveDuration = Duration.parse(minimumTimeToLive);
-        final var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client, minimumTimeToLiveDuration);
+        final var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client, monitor, minimumTimeToLiveDuration);
 
         paramsProvider.registerSourceDecorator(oauth2ParamsDecorator);
     }

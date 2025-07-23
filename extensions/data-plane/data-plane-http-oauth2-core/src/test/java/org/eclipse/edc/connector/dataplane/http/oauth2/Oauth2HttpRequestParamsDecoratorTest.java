@@ -27,6 +27,7 @@ import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.SharedSecretOauth2CredentialsRequest;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
+import org.eclipse.edc.spi.monitor.ConsoleMonitor;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.uuid.UuidGenerator;
@@ -57,7 +58,12 @@ class Oauth2HttpRequestParamsDecoratorTest {
     private final Oauth2CredentialsRequestFactory requestFactory = mock(Oauth2CredentialsRequestFactory.class);
     private final Oauth2Client client = mock(Oauth2Client.class);
 
-    private final Oauth2HttpRequestParamsDecorator decorator = new Oauth2HttpRequestParamsDecorator(requestFactory, client, Duration.ofSeconds(1));
+    private final Oauth2HttpRequestParamsDecorator decorator = new Oauth2HttpRequestParamsDecorator(
+            requestFactory,
+            client,
+            new ConsoleMonitor(),
+            Duration.ofSeconds(1)
+    );
 
     @Test
     void requestOauth2TokenAndSetItOnRequest() {
@@ -129,7 +135,7 @@ class Oauth2HttpRequestParamsDecoratorTest {
                 .thenAnswer(it -> Result.success(TokenRepresentation.Builder.newInstance().token(generateJwt()).build()));
 
         var minimumTimeToLive = Duration.ofSeconds(3);
-        var decorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauthClient, minimumTimeToLive);
+        var decorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauthClient, new ConsoleMonitor(), minimumTimeToLive);
 
         var request1 = mock(DataFlowStartMessage.class);
         var params1 = HttpRequestParams.Builder.newInstance()
