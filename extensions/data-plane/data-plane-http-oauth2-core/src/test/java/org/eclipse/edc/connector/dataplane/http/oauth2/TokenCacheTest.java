@@ -37,6 +37,8 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class TokenCacheTest {
@@ -101,13 +103,51 @@ class TokenCacheTest {
         assertThat(response.getFailureDetail()).isEqualTo("OAuth failure");
     }
 
+    @Test
+    void dontCacheTheTokenWhenItsNotJwt() {
+        // arrange
+        var dataAddress = HttpDataAddress.Builder.newInstance()
+                .property(Oauth2DataAddressSchema.CLIENT_ID, "someClientId")
+                .property(Oauth2DataAddressSchema.TOKEN_URL, "http://example.com/token")
+                .property(Oauth2DataAddressSchema.CLIENT_SECRET_KEY, "someSecret")
+                .build();
+        var request = createRequest();
+
+        var requestFactory = mock(Oauth2CredentialsRequestFactory.class);
+        when(requestFactory.create(dataAddress)).thenReturn(Result.success(request));
+
+        var oauthClient = mock(Oauth2Client.class);
+        when(oauthClient.requestToken(request))
+                .thenReturn(
+                        Result.success(TokenRepresentation.Builder.newInstance().token("not JWT").build()),
+                        Result.success(TokenRepresentation.Builder.newInstance().token("still not JWT").build())
+                );
+
+        var minimumTimeToLive = Duration.ofSeconds(2);
+        var cache = new TokenCache(oauthClient, minimumTimeToLive);
+
+        // act
+        var response1 = cache.getCachedToken(request);
+
+        // get the first token
+        assertThat(response1.getContent().getToken()).isEqualTo("not JWT");
+
+        // try again
+        var response2 = cache.getCachedToken(request);
+
+        // get the second token
+        assertThat(response2.getContent().getToken()).isEqualTo("still not JWT");
+
+        verify(oauthClient, times(2)).requestToken(request);
+    }
+
     private Oauth2CredentialsRequest createRequest() {
         return SharedSecretOauth2CredentialsRequest.Builder.newInstance()
-                .url("http://example.com/token")
-                .grantType("client_credentials")
-                .clientId("someClientId")
-                .clientSecret("someSecret")
-                .build();
+            .url("http://example.com/token")
+            .grantType("client_credentials")
+            .clientId("someClientId")
+            .clientSecret("someSecret")
+            .build();
     }
 
     private static String generateJwt() throws JOSEException {

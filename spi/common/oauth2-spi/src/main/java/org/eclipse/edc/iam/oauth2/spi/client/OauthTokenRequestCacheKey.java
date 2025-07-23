@@ -16,15 +16,15 @@ package org.eclipse.edc.iam.oauth2.spi.client;
 
 import java.util.Map;
 
-public record OauthTokenRequestRecord(
+public record OauthTokenRequestCacheKey(
         String url,
         String scope,
         String grantType,
         String resource,
         Map<String, String> params
 ) {
-    public static OauthTokenRequestRecord from(Oauth2CredentialsRequest request) {
-        return new OauthTokenRequestRecord(
+    public static OauthTokenRequestCacheKey from(Oauth2CredentialsRequest request) {
+        return new OauthTokenRequestCacheKey(
                 request.getUrl(),
                 request.getScope(),
                 request.getGrantType(),

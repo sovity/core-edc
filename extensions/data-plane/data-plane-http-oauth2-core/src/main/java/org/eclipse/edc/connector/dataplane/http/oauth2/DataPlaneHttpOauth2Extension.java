@@ -35,13 +35,13 @@ import java.time.Duration;
 public class DataPlaneHttpOauth2Extension implements ServiceExtension {
     public static final String NAME = "Data Plane HTTP OAuth2";
 
-    public static final String SOVITY_EDC_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY = "sovity.edc.oauth2.cache.minimum.time.to.live";
+    public static final String SOVITY_EDC_DATAPLANE_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY = "sovity.edc.dataplane.oauth2.cache.minimum.time.to.live";
 
     @Setting(
-            description = "Format: ISO 8601 duration. The minimum duratrion between the token's age and the time at which it expires. If the token has a shorter remaining lifespan than this, it is renewed.",
+            description = "Format: ISO 8601 duration. The minimum duration between the token's age and the time at which it expires. If the token has a shorter remaining lifespan than this, it is renewed.",
             required = false,
             defaultValue = "PT5s",
-            key = SOVITY_EDC_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY
+            key = SOVITY_EDC_DATAPLANE_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY
     )
     private String minimumTimeToLive;
 
@@ -67,9 +67,9 @@ public class DataPlaneHttpOauth2Extension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var requestFactory = new Oauth2CredentialsRequestFactory(jwsSignerProvider, clock, vault);
+        final var requestFactory = new Oauth2CredentialsRequestFactory(jwsSignerProvider, clock, vault);
         final var minimumTimeToLiveDuration = Duration.parse(minimumTimeToLive);
-        var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client, minimumTimeToLiveDuration);
+        final var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client, minimumTimeToLiveDuration);
 
         paramsProvider.registerSourceDecorator(oauth2ParamsDecorator);
     }

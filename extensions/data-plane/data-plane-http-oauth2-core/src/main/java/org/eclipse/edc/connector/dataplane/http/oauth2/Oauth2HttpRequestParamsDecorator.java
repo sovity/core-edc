@@ -50,5 +50,4 @@ public class Oauth2HttpRequestParamsDecorator implements HttpParamsDecorator {
             return params;
         }
     }
-
 }

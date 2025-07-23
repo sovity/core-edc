@@ -17,7 +17,7 @@ package org.eclipse.edc.connector.dataplane.http.oauth2;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2CredentialsRequest;
-import org.eclipse.edc.iam.oauth2.spi.client.OauthTokenRequestRecord;
+import org.eclipse.edc.iam.oauth2.spi.client.OauthTokenRequestCacheKey;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
 
@@ -31,7 +31,7 @@ public class TokenCache {
     private final Oauth2Client client;
 
     private final Duration minimumTimeToLive;
-    private final Map<OauthTokenRequestRecord, TokenRepresentation> cache = new HashMap<>();
+    private final Map<OauthTokenRequestCacheKey, TokenRepresentation> cache = new HashMap<>();
 
     public TokenCache(Oauth2Client client, Duration minimumTimeToLive) {
         this.client = client;
@@ -39,40 +39,49 @@ public class TokenCache {
     }
 
     public Result<TokenRepresentation> getCachedToken(Oauth2CredentialsRequest request) {
-        var key = OauthTokenRequestRecord.from(request);
+        var key = OauthTokenRequestCacheKey.from(request);
         var tokenRepresentation = cache.get(key);
         var isMissing = tokenRepresentation == null;
 
-        boolean isOutdated = true;
-
-        try {
-            if (!isMissing) {
-                final var jwt = SignedJWT.parse(tokenRepresentation.getToken());
-                final var expirationTime = jwt.getJWTClaimsSet().getExpirationTime().toInstant();
-                final var requireValidUntil = Instant.now().plus(minimumTimeToLive);
-                isOutdated = requireValidUntil.isAfter(expirationTime);
-            }
-        } catch (ParseException e) {
-            // should not happen, because the token is parsed when added to the cache
-            // if we reach this branch, then we assume that we must fetch the token again
-        }
+        boolean isOutdated = !isMissing && isOutdated(tokenRepresentation);
 
         if (isMissing || isOutdated) {
             var response = client.requestToken(request);
             if (response.failed()) {
+                // Propagate the error
                 return response;
             }
 
             try {
-                SignedJWT.parse(response.getContent().getToken());
-                // it is a JWT that we can parse later
-                cache.put(key, response.getContent());
+                tryCacheResponse(response, key);
             } catch (ParseException e) {
                 return response;
             }
         }
 
         return Result.success(cache.get(key));
+    }
+
+    private void tryCacheResponse(Result<TokenRepresentation> response, OauthTokenRequestCacheKey key) throws ParseException {
+        // test that it's a JWT
+        SignedJWT.parse(response.getContent().getToken());
+        // it is now a JWT that we can parse later
+        cache.put(key, response.getContent());
+    }
+
+    private boolean isOutdated(TokenRepresentation tokenRepresentation) {
+        boolean isOutdated = true;
+
+        try {
+            final var jwt = SignedJWT.parse(tokenRepresentation.getToken());
+            final var expirationTime = jwt.getJWTClaimsSet().getExpirationTime().toInstant();
+            final var requireValidUntil = Instant.now().plus(minimumTimeToLive);
+            isOutdated = requireValidUntil.isAfter(expirationTime);
+        } catch (ParseException e) {
+            // should not happen, because the token is parsed when added to the cache
+            // if we reach this branch, then we assume that we must fetch the token again
+        }
+        return isOutdated;
     }
 
 }

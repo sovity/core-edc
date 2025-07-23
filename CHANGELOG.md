@@ -5,10 +5,16 @@
 ### Overview
 
 #### Changes
+
+- Add aching for data plane OAuth requests
   
 #### Details
 
+- Add `TokenCache` in 
+
 #### Compatibility
+
+No breaking expected.
 
 #### Resolution plan
 

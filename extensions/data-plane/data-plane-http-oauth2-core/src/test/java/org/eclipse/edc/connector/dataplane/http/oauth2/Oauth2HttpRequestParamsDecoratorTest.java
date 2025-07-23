@@ -57,7 +57,7 @@ class Oauth2HttpRequestParamsDecoratorTest {
     private final Oauth2CredentialsRequestFactory requestFactory = mock(Oauth2CredentialsRequestFactory.class);
     private final Oauth2Client client = mock(Oauth2Client.class);
 
-    private final Oauth2HttpRequestParamsDecorator decorator = new Oauth2HttpRequestParamsDecorator(requestFactory, client, Duration.ofDays(1));
+    private final Oauth2HttpRequestParamsDecorator decorator = new Oauth2HttpRequestParamsDecorator(requestFactory, client, Duration.ofSeconds(1));
 
     @Test
     void requestOauth2TokenAndSetItOnRequest() {
