@@ -5,10 +5,16 @@
 ### Overview
 
 #### Changes
-  
+
+- Add caching for data plane OAuth requests
+
 #### Details
 
+- Add `TokenCache`ing in `Oauth2HttpRequestParamsDecorator`.
+
 #### Compatibility
+
+No breaking expected.
 
 #### Resolution plan
 

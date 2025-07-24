@@ -22,6 +22,7 @@ dependencies {
     api(project(":spi:common:jwt-signer-spi"))
     implementation(project(":core:common:lib:token-lib"))
     implementation(project(":spi:common:keys-spi"))
+    implementation(libs.nimbus.jwt)
 
     testImplementation(project(":core:common:junit"))
     testImplementation(libs.restAssured)
