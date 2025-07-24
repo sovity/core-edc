@@ -12,8 +12,11 @@
  *
  */
 
-package org.eclipse.edc.iam.oauth2.spi.client;
+package org.eclipse.edc.connector.dataplane.http.oauth2;
 
+import org.eclipse.edc.iam.oauth2.spi.client.Oauth2CredentialsRequest;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public record OauthTokenRequestCacheKey(
@@ -29,7 +32,7 @@ public record OauthTokenRequestCacheKey(
                 request.getScope(),
                 request.getGrantType(),
                 request.getResource(),
-                request.getParams()
+                new HashMap<>(request.getParams())
         );
     }
 }

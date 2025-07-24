@@ -17,7 +17,6 @@ package org.eclipse.edc.connector.dataplane.http.oauth2;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2CredentialsRequest;
-import org.eclipse.edc.iam.oauth2.spi.client.OauthTokenRequestCacheKey;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
