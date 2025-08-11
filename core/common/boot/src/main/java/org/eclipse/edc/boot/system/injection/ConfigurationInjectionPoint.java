@@ -102,7 +102,7 @@ public class ConfigurationInjectionPoint<T> implements InjectionPoint<T> {
     }
 
     @Override
-    public Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
+    public @Nullable Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
 
         // all fields annotated with the @Setting annotation
         var settingsFields = resolveSettingsFields(context, configurationObject.getType().getDeclaredFields());

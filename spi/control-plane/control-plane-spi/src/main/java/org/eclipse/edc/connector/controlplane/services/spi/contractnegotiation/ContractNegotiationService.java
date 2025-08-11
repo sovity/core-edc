@@ -20,6 +20,7 @@ import org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.Con
 import org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractRequest;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public interface ContractNegotiationService {
      * @param negotiationId the id of contract negotiation
      * @return the contract agreement, null if the negotiation does not exist or no agreement attached.
      */
-    ContractAgreement getForNegotiation(String negotiationId);
+    @Nullable ContractAgreement getForNegotiation(String negotiationId);
 
     /**
      * Initiate contract negotiation

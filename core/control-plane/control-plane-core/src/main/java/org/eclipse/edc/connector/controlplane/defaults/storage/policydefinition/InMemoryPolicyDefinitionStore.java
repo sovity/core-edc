@@ -22,6 +22,7 @@ import org.eclipse.edc.spi.query.QueryResolver;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.store.ReflectionBasedQueryResolver;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class InMemoryPolicyDefinitionStore implements PolicyDefinitionStore {
     }
 
     @Override
-    public PolicyDefinition findById(String policyId) {
+    public @Nullable PolicyDefinition findById(String policyId) {
         try {
             return policiesById.get(policyId);
         } catch (Exception e) {

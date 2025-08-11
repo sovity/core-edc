@@ -16,6 +16,7 @@ package org.eclipse.edc.transform.spi;
 
 import org.eclipse.edc.spi.result.Result;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Generic registry to hold {@link TypeTransformer} objects
@@ -56,6 +57,6 @@ public interface TypeTransformerRegistry {
      * @param outputType the transformed output type
      * @return the transform result
      */
-    <INPUT, OUTPUT> Result<OUTPUT> transform(@NotNull INPUT input, @NotNull Class<OUTPUT> outputType);
+    <INPUT, OUTPUT> @Nullable Result<OUTPUT> transform(@NotNull INPUT input, @NotNull Class<OUTPUT> outputType);
 
 }

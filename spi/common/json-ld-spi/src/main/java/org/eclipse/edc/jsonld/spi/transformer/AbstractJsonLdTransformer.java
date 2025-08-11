@@ -85,7 +85,7 @@ public abstract class AbstractJsonLdTransformer<INPUT, OUTPUT> implements JsonLd
      * @param propertyName the property name to use for error reporting
      * @return the extracted object or null if one cannot be returned
      */
-    protected JsonObject returnMandatoryJsonObject(@Nullable JsonValue value, TransformerContext context, String propertyName) {
+    protected @Nullable JsonObject returnMandatoryJsonObject(@Nullable JsonValue value, TransformerContext context, String propertyName) {
         return returnJsonObject(value, context, propertyName, true);
     }
 
@@ -469,7 +469,7 @@ public abstract class AbstractJsonLdTransformer<INPUT, OUTPUT> implements JsonLd
      * @param context the context
      * @return the instance or null
      */
-    protected <T> T builderResult(Supplier<T> builder, TransformerContext context) {
+    protected <T> @Nullable T builderResult(Supplier<T> builder, TransformerContext context) {
         try {
             return builder.get();
         } catch (Exception e) {
