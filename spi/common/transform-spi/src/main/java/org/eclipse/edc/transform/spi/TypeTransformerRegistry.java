@@ -57,6 +57,6 @@ public interface TypeTransformerRegistry {
      * @param outputType the transformed output type
      * @return the transform result
      */
-    <INPUT, OUTPUT> @Nullable Result<OUTPUT> transform(@NotNull INPUT input, @NotNull Class<OUTPUT> outputType);
+    <INPUT, OUTPUT> Result<OUTPUT> transform(@NotNull INPUT input, @NotNull Class<OUTPUT> outputType);
 
 }

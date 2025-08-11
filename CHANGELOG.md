@@ -6,9 +6,15 @@
 
 #### Changes
 
+- Correctly mark nullable elements
+
 #### Details
 
+- Any element that is comment as `or null` now has the appropriate `@Nullable` annotation.
+
 #### Compatibility
+
+- May add compiler warnings (Java) or errors (Kotlin), for the developer's sake.
 
 #### Resolution plan
 
