@@ -143,6 +143,7 @@ public class ContractNegotiation extends StatefulEntity<ContractNegotiation> {
     /**
      * Returns the finalized agreement or null if the negotiation has not been confirmed.
      */
+    @Nullable
     public ContractAgreement getContractAgreement() {
         return contractAgreement;
     }
