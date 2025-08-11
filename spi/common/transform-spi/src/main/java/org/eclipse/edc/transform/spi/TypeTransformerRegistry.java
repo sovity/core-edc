@@ -16,7 +16,6 @@ package org.eclipse.edc.transform.spi;
 
 import org.eclipse.edc.spi.result.Result;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Generic registry to hold {@link TypeTransformer} objects
