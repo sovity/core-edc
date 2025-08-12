@@ -15,6 +15,7 @@
 package org.eclipse.edc.spi.iam;
 
 import org.eclipse.edc.policy.model.Policy;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class VerificationContext {
 
 
     @SuppressWarnings("unchecked")
-    public <T> T getContextData(Class<T> type) {
+    public <T> @Nullable T getContextData(Class<T> type) {
         return (T) additional.get(type);
     }
 

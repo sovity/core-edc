@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 import static java.util.Optional.ofNullable;
 
@@ -86,7 +87,7 @@ public class Cache<K, V> {
      * @param key the key
      * @return the value previously associated with "key", or null if no value was associated with the key
      */
-    public V evict(K key) {
+    public @Nullable V evict(K key) {
         lock.writeLock().lock();
         try {
             return ofNullable(cache.remove(key)).map(TimestampedValue::value).orElse(null);

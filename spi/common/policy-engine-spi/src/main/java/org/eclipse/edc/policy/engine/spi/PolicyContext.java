@@ -16,6 +16,7 @@
 package org.eclipse.edc.policy.engine.spi;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public interface PolicyContext {
      * @deprecated implementations should add specific get methods
      */
     @Deprecated(since = "0.10.0")
-    <T> T getContextData(Class<T> type);
+    <T> @Nullable T getContextData(Class<T> type);
 
     /**
      * Adds additional data to the context.
