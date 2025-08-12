@@ -6,6 +6,22 @@
 
 #### Changes
 
+#### Details
+
+#### Compatibility
+
+#### Resolution plan
+
+---
+
+## [0.11.1.3] - 2025-08-12
+
+### Overview
+
+Code safety improvements.
+
+#### Changes
+
 - Correctly mark nullable elements
 
 #### Details
@@ -15,8 +31,6 @@
 #### Compatibility
 
 - May add compiler warnings (Java) or errors (Kotlin), for the developer's sake.
-
-#### Resolution plan
 
 ---
 
