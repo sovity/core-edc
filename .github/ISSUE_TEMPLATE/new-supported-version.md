@@ -167,6 +167,14 @@ This documentation uses the `N` and `P` placeholders. You can replace them with 
 
 # Let's fork!
 
+The newly forked repository will be called `new-repo`. This will be the name by which it is called in this procedure further on.
+
+There will later be 2 other repo with different names.
+
+The naming convention to identify a repo will be `<name of the repo>/path/in/the/repo` in the commands or file references.
+
+- [ ] I understand the naming convention.
+
 ## Set up
 
 Each version that needs forking has its own branch in the sovity fork.
@@ -222,8 +230,8 @@ This section describes the steps to prepare the fork and make it run locally.
 
 ### Setup a repository
 
-- [ ] Clone the `fork` `core-edc`
-    - `git clone --origin fork git@github.com:sovity/core-edc.git`
+- [ ] Clone the `fork` `core-edc` into the `new-repo` folder.
+    - `git clone --origin fork git@github.com:sovity/core-edc.git new-repo && cd new-repo`
 - [ ] Add the upstream repository
     - `git remote add upstream git@github.com:eclipse-edc/Connector.git`
 - [ ] Fetch the upstream tags
@@ -232,6 +240,8 @@ This section describes the steps to prepare the fork and make it run locally.
 ### Setup example
 
 Your repository now looks like this:
+
+In `new-repo`:
 
 `git remote -v`
 
@@ -301,9 +311,25 @@ v0.7.2    # the version we want to fork
     ... more
 ```
 
+### Other resources
+
+- [ ] In a separate folder (we'll call it `default-repo`), check out the `edc-core` repository on the `default` branch. This will be useful to update the `/.github/new-supported-version.md` procedure. It is likely to change a bit on each fork.
+  - [ ] I promise that I will update the procedure step by step.
+
 ### Update the project
 
 - [ ] Before editing the code, check that your IDE has the correct editor settings (imports single classes, indents, ...). There is an `resources/edc-codestyle.editorconfig` file in the project.
+
+### Adjustments
+
+- [ ] Check out the changes that were made in the previous fork. They should be documented on the branch of the previous version in `/docs/developer/fork/code-migration.md`
+  - `cd new-repo && git show vP1.P2.P3.P4:docs/developer/fork/code-migration.md`
+  - [ ] Create the equivalent file in the new repo:
+    - `cd new-repo && git restore -s vP1.P2.P3.P4 -- docs/developer/fork/code-migration.md`
+  - [ ] Remember to copy and adapt each point that you use from that procedure in the new fork.
+- [ ] Read `/docs/developer/fork/code-migration.md` and apply it to the current branch.
+  - You may want to check out the previous repo and diff between the 2 projects.
+  - [ ] Update `/docs/developer/fork/code-migration.md` to reflect the situation in this new fork.
 - [ ] Run the tests locally and check that they all work. If not:
     - [ ] Try to fix the test if it's relevant for the changes that we want to do in the fork.
     - [ ] Consider adding `@Disabled` on the tests that we will likely not use or that would be hard to fix.
@@ -311,25 +337,63 @@ v0.7.2    # the version we want to fork
 - [ ] Add a changelog `CHANGELOG.md` and the docs `docs/developer/fork/*` from the previous version `P1.P2.P3.P4`
     - `git checkout vP1.P2.P3.P4 -- CHANGELOG.md docs/developer/fork/\*`
     - [ ] Remove the previous releases from the `CHANGELOG.md` and keep the template.
-    - [ ] Rename the old doc file `docs/developer/fork/vP1.P2.P3.P4.md`
+
+### CI adjustments
+
 - [ ] Update the CI
   - [ ] Remove the unwanted github CI actions
     - publishing to the core EDC repo
     - discord notification
     - ...
   - [ ] Add missing details
-    - Javadoc, see main build.gradle.kts from a previous version: `java { withSourcesJar() }`
-    - Add sovity publishing from `.github/workflows/verify.yaml`, tasks: `Publish-Artifacts` and `Promote-Artifacts`
-      - Copy the tasks
-      - Check that the task's dependencies still exists
-      - Maybe a new dependency should be added?
-- [ ] Add the publishing elements from the previous version in the top-level `gradle.build.kts`
-  - `maven-publish`
-  - Azure repos
+    - [ ] Javadoc, see main build.gradle.kts from a previous version: `java { withSourcesJar() }`
+    - [ ] Add sovity publishing from `.github/workflows/verify.yaml`, tasks: `Publish-Artifacts` and `Promote-Artifacts`
+      - Show the part to copy: `git show vP1.P2.P3.P4:.github/workflows/verify.yaml | grep -A999 'Publish-Artifacts:'`
+      - [ ] Copy the tasks at the end of the `verify.yml` in the new fork.
+      - [ ] Check that the task's dependencies still exists
+- [ ] Add the publishing elements from the previous version in the top-level `build.gradle.kts`
+  - [ ] `maven-publish` plugin
+  - [ ] Azure repos
+
+```
+subprojects {
+    apply(plugin = "maven-publish")
+    publishing {
+        repositories {
+            if (System.getenv("IS_RELEASE") == "true") {
+                maven {
+                // ...
+```
+
 - [ ] Add a way to read the gradle plugin dependencies in the `settings.kts`
+
+#### Compare the verify.yml file between the new forked version and the previous version.
+
+- [ ] Make the CI trigger the `verify.yml` file on `sovity/*` branches, PRs and tags
+
+```yaml
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, release/*, bugfix/*, sovity/* ]
+    tags: '*'
+  pull_request:
+    branches: [ main, release/*, bugfix/*, sovity/* ]
+```
+- [ ] Add the Azure token
+
+```yaml
+env:
+  # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+  AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+```
+
+
+### Port the code
+
 - [ ] Here would be a great moment to commit the above changes as `Migration baseline` as we're now going in uncharted territories... 😉
-- [ ] For each of the former change in the `CHANGELOG.md`
-    - Check the bonus section above to find helpful commands. 
+- [ ] For each of the former change in the `/docs/developer/fork/changes.md`
+    - Check the bonus section above to find helpful commands.
     - [ ] Evaluate whether the change needs to be ported
         - Reasons for not porting may include
             - The code that the fork used no longer exist
@@ -337,8 +401,8 @@ v0.7.2    # the version we want to fork
             - The change is no longer desired
             - ...
     - [ ] Port the change if needed.
-    - [ ] Document the change in the `CHANGELOG.md`.
-    - [ ] Detail the change in the current documentation `docs/developer/fork/vN1.N2.N3.X.md`. Check out the previous fork documentation for how to structure the document.
+    - [ ] Update `CHANGELOG.md`.
+    - [ ] Detail the change in the current documentation `docs/developer/fork/changes.md`. Check out the previous fork documentation for how to structure the document.
 - [ ] Implement the new changes that apply to this fork.
 - [ ] Delete the previous `docs/developer/fork/vP1.P2.P3.P4.md` notes after each element is either migrated or discarded.
 
@@ -518,3 +582,10 @@ This part describes how to find where a missing action was and how to make it wo
 
 - [ ] Update this procedure with new hints after forking an EDC version.
 - [ ] Update the default branch's README with a new entry for this fork.
+- [ ] Open a PR
+  - [ ] Add a message in the PR: `⚠️⚠️ NO SQUASH COMMIT ON THIS ONE PLEASE ⚠️⚠️`. This will help during the next migration by keeping roughly 1 commit for 1 change.
+
+
+TODO
+
+Add diffing `verify.yml` with previous version to add the branch triggers.
