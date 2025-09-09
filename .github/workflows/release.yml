@@ -6,7 +6,7 @@ on:
 jobs:
 
   Release:
-    uses: eclipse-edc/.github/.github/workflows/release.yml@main
+    uses: sovity/core-edc-github/.github/workflows/release.yml@0.14.0_2025-08-21_1
     secrets: inherit
     with:
       publish-autodoc: true
