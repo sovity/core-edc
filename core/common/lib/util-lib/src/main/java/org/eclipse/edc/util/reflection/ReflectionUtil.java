@@ -14,6 +14,8 @@
 
 package org.eclipse.edc.util.reflection;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -144,7 +146,7 @@ public class ReflectionUtil {
      * @param clazz The class of the object
      * @return The type argument {@link Class} or null
      */
-    public static Class<?> getSingleSuperTypeGenericArgument(Class<?> clazz, Class<?> target) {
+    public static @Nullable Class<?> getSingleSuperTypeGenericArgument(Class<?> clazz, Class<?> target) {
         var supertype = clazz.getGenericSuperclass();
         var superclass = clazz.getSuperclass();
         while (superclass != null && superclass != Object.class) {

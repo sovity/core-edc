@@ -12,15 +12,13 @@ Initial migration of changes from `0.11.1.3` into `0.14.0`.
     - Replacement of java.util.UUID with UUIDv7
     - Catalog performance
     - Add caching for data plane OAuth requests (`8df1baceb`)
+    - Add nullability correctness
 
 - Changes that were not ported
   - Force `/` in IdentityTrustTransformExtension
     - The mistake is not present anymore
 
 #### Details
-
-- Add `TokenCache`ing in `Oauth2HttpRequestParamsDecorator`.
-    - The minimum time to live for the token (how long before it expires it should be renewed) can be configured with `sovity.edc.dataplane.oauth2.cache.minimum.time.to.live`.
 
 #### Compatibility
 

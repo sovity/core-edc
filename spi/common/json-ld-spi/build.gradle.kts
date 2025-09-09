@@ -23,6 +23,7 @@ dependencies {
     api(project(":spi:common:transform-spi"))
 
     implementation(libs.parsson)
+    implementation(libs.jetbrains.annotations)
 }
 
 
