@@ -24,7 +24,7 @@ val edcScmConnection: String by project
 buildscript {
     dependencies {
         val version: String by project
-        classpath("org.eclipse.edc.autodoc:org.eclipse.edc.autodoc.gradle.plugin:$version")
+        classpath("org.eclipse.edc.autodoc:org.eclipse.edc.autodoc.gradle.plugin:0.14.0")
     }
 }
 
@@ -46,4 +46,11 @@ allprojects {
         configDirectory.set(rootProject.file("resources"))
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.eclipse.edc" && requested.name == "autodoc-processor") {
+                useVersion("0.14.0")
+            }
+        }
+    }
 }

@@ -9,7 +9,7 @@ atomikos = "6.0.0"
 awaitility = "4.2.2"
 bouncyCastle-jdk18on = "1.81"
 cloudEvents = "4.0.1"
-edc = "0.14.0"
+edc = "0.14.0.1"
 failsafe = "3.3.2"
 h2 = "2.3.232"
 jakarta-annotation = "3.0.0"
@@ -40,6 +40,7 @@ tink = "1.18.0"
 dsp-tck = "1.0.0-RC4"
 dcp-tck = "1.0.0-RC4"
 junit = "1.13.4"
+uuid = "5.1.0
 wiremock = "3.13.1"
 
 [libraries]
@@ -50,7 +51,7 @@ awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" 
 bouncyCastle-bcpkixJdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 bouncyCastle-bcprovJdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 dnsOverHttps = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp" }
-edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version.ref = "edc" }
+edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version = "0.14.0" }
 failsafe-core = { module = "dev.failsafe:failsafe", version.ref = "failsafe" }
 failsafe-okhttp = { module = "dev.failsafe:failsafe-okhttp", version.ref = "failsafe" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
@@ -95,6 +96,7 @@ testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "tes
 testcontainers-postgres = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
 testcontainers-vault = { module = "org.testcontainers:vault", version.ref = "testcontainers" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
+uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }
 
 
 # other technology extensions
