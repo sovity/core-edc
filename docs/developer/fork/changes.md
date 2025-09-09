@@ -6,7 +6,7 @@
 
 Add data plane OAuth tokens caching to offload keycloak.
 
-### 0.11.1.1
+### 0.14.0.1
 
 ---
 
@@ -27,11 +27,7 @@ Changes to improve the performance of the catalog request from `f7e46c618b276664
 * Add caching for frequently used `PathItem`s. 
 * Avoid needless String formatting.
 
-### Force shutdown
-
-Not migrated. The tests shut down fine now.
-
-### Affected files
+#### Affected files
 
 - `core/common/lib/util-lib/build.gradle.kts`
   - Added guava dependency
