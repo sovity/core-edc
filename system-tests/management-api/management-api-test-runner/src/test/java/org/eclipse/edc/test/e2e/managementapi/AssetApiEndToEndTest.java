@@ -22,6 +22,7 @@ import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
@@ -31,7 +32,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -56,7 +56,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void getAssetById(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset().id(id)
                     .dataAddress(createDataAddress().type("addressType").build())
                     .build();
@@ -87,7 +87,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void createAsset_shouldBeStored(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                     .add(TYPE, "Asset")
@@ -146,7 +146,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void createAsset_withoutPrefix_shouldAddEdcNamespace(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                     .add(TYPE, "Asset")
@@ -185,7 +185,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void createAsset_whenCatalogAsset_shouldSetProperty(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder()
                             .add(EDC_PREFIX, EDC_NAMESPACE))
@@ -215,7 +215,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void createAsset_whenCatalogInPrivateProps_shouldReturnCatalogType(ManagementEndToEndTestContext context, AssetIndex index) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                     .add(TYPE, "Asset")
@@ -258,7 +258,7 @@ public class AssetApiEndToEndTest {
         @Test
         void queryAsset_byContentType(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
             //insert one asset into the index
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = Asset.Builder.newInstance().id(id).contentType("application/octet-stream").dataAddress(createDataAddress().build()).build();
             assetIndex.create(asset);
 
@@ -306,7 +306,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void queryAsset_byCustomComplexProperty(ManagementEndToEndTestContext context) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                     .add(TYPE, "Asset")
@@ -347,7 +347,7 @@ public class AssetApiEndToEndTest {
 
         @Test
         void queryAsset_byCatalogProperty(ManagementEndToEndTestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             assetIndex.create(Asset.Builder.newInstance()
                     .property(Asset.PROPERTY_IS_CATALOG, true)
                     .id(id)
@@ -415,7 +415,7 @@ public class AssetApiEndToEndTest {
 
         private Asset.Builder createAsset() {
             return Asset.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .name("test-asset")
                     .description("test description")
                     .contentType("application/json")

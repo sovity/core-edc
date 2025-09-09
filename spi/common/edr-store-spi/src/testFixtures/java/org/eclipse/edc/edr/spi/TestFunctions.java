@@ -17,8 +17,7 @@ package org.eclipse.edc.edr.spi;
 
 import org.eclipse.edc.edr.spi.types.EndpointDataReferenceEntry;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 
@@ -27,13 +26,13 @@ public class TestFunctions {
                 .assetId(assetId)
                 .agreementId(agreementId)
                 .transferProcessId(transferProcessId)
-                .providerId(UUID.randomUUID().toString())
+                .providerId(UuidGenerator.INSTANCE.generate().toString())
                 .contractNegotiationId(contractNegotiationId)
                 .build();
     }
 
     public static EndpointDataReferenceEntry edrEntry(String assetId, String agreementId, String transferProcessId, String contractNegotiationId) {
-        return edrEntry(assetId, agreementId, transferProcessId, contractNegotiationId, UUID.randomUUID().toString());
+        return edrEntry(assetId, agreementId, transferProcessId, contractNegotiationId, UuidGenerator.INSTANCE.generate().toString());
     }
 
     public static EndpointDataReferenceEntry edrEntry() {

@@ -19,11 +19,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.spi.entity.StatefulEntity;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.eclipse.edc.connector.dataplane.spi.provision.ProvisionResourceStates.CREATED;
 import static org.eclipse.edc.connector.dataplane.spi.provision.ProvisionResourceStates.DEPROVISIONED;
@@ -152,7 +152,7 @@ public class ProvisionResource extends StatefulEntity<ProvisionResource> {
             Objects.requireNonNull(entity.flowId);
 
             if (entity.id == null) {
-                entity.id = UUID.randomUUID().toString();
+                entity.id = UuidGenerator.INSTANCE.generate().toString();
             }
             if (entity.state == 0) {
                 entity.transitionTo(CREATED.code());

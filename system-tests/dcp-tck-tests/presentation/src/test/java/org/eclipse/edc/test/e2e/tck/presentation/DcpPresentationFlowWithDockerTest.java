@@ -39,6 +39,7 @@ import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.monitor.ConsoleMonitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.tck.TckTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +52,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -133,7 +133,7 @@ public class DcpPresentationFlowWithDockerTest {
                     claims.put("nbf", Instant.now().getEpochSecond());
 
                     var claimsSet = new JWTClaimsSet.Builder(JWTClaimsSet.parse(claims))
-                            .jwtID(UUID.randomUUID().toString())
+                            .jwtID(UuidGenerator.INSTANCE.generate().toString())
                             .build();
                     var jwt = new SignedJWT(hdr, claimsSet);
                     jwt.sign(new ECDSASigner(verifierKey));
@@ -153,7 +153,7 @@ public class DcpPresentationFlowWithDockerTest {
                                 .id(verifierKey.getKeyID())
                                 .build()
                 ))
-                .service(List.of(new Service(UUID.randomUUID().toString(), "CredentialService", "https://example.com/credentialservice")))
+                .service(List.of(new Service(UuidGenerator.INSTANCE.generate().toString(), "CredentialService", "https://example.com/credentialservice")))
                 .build();
         try {
             return new ObjectMapper().writeValueAsString(ddoc);

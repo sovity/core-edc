@@ -127,7 +127,7 @@ public class ValueInjectionPoint<T> implements InjectionPoint<T> {
     }
 
     @Override
-    public Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
+    public @Nullable Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
         var config = context.getConfig();
         var type = getType();
 

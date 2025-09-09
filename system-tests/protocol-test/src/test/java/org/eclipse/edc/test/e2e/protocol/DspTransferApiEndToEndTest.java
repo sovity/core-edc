@@ -28,12 +28,11 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -64,10 +63,10 @@ public class DspTransferApiEndToEndTest {
 
     private static ContractNegotiation createNegotiationWithAgreement(String contractId) {
         return ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString()).counterPartyId("any").counterPartyAddress("any").protocol("any").state(ContractNegotiationStates.REQUESTED.code())
-                .correlationId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString()).counterPartyId("any").counterPartyAddress("any").protocol("any").state(ContractNegotiationStates.REQUESTED.code())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .contractOffer(ContractOffer.Builder.newInstance()
-                        .id(UUID.randomUUID().toString()).assetId(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString()).assetId(UuidGenerator.INSTANCE.generate().toString())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
                 .contractAgreement(ContractAgreement.Builder.newInstance()
@@ -83,8 +82,8 @@ public class DspTransferApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldExposeVersion(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
-        var contractId = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
+        var contractId = UuidGenerator.INSTANCE.generate().toString();
         var transfer = TransferProcess.Builder.newInstance()
                 .id(id)
                 .contractId(contractId)
@@ -142,7 +141,7 @@ public class DspTransferApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldReturnError_whenNotFound(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)
@@ -164,7 +163,7 @@ public class DspTransferApiEndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldReturnError_whenTokenIsMissing(String basePath, JsonLdNamespace namespace) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)

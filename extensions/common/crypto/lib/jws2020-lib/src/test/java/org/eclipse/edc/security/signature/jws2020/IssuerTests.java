@@ -29,6 +29,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonString;
 import org.eclipse.edc.jsonld.util.JacksonJsonLd;
 import org.eclipse.edc.security.token.jwt.CryptoConverter;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,7 +42,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -97,7 +97,7 @@ class IssuerTests {
         var jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                 .privateKey((RSAPrivateKey) keyPair.getPrivate())
                 .keyUse(KeyUse.SIGNATURE)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(UuidGenerator.INSTANCE.generate().toString())
                 .issueTime(new Date())
                 .build();
         var keypair = createKeyPair(jwk);

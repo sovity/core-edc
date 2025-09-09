@@ -18,6 +18,8 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.google.guava)
+    implementation(libs.jetbrains.annotations)
     testImplementation(libs.junit.pioneer)
 }
 

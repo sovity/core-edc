@@ -30,9 +30,9 @@ import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.List;
-import java.util.UUID;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -88,7 +88,7 @@ public class TckWebhookController {
     public void startTransfer(TransferProcessRequest request) {
 
         var transferRequest = TransferRequest.Builder.newInstance()
-                .id(request.agreementId() + "_" + UUID.randomUUID())
+                .id(request.agreementId() + "_" + UuidGenerator.INSTANCE.generate())
                 .transferType(request.format())
                 .counterPartyAddress(request.connectorAddress())
                 .protocol("dataspace-protocol-http:2025-1")
