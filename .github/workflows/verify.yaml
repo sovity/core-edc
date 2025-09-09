@@ -4,14 +4,19 @@ on:
   workflow_call:
   workflow_dispatch:
   push:
-    branches: [ main, release/*, bugfix/* ]
+    branches: [ main, release/*, bugfix/*, sovity/* ]
+    tags: '*'
   pull_request:
-    branches: [ main, release/*, bugfix/* ]
+    branches: [ main, release/*, bugfix/*, sovity/* ]
     paths-ignore:
       - "**.md"
       - "docs/**"
       - "CODEOWNERS"
       - "LICENSE"
+
+env:
+  # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+  AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
