@@ -1,5 +1,7 @@
 Migration notes about the problems that have been seen in the `0.7.2.2` -> `0.11.1` forking.
 
+# Code migration
+
 ## Refusing to compile when setting a new version
 
 The EDC gradle plugin now seems to be in sync with the EDC version. Good upgrade, it was previously versioned separately. But we don't have (and don't want) a fork for this, so we keep the original fork version.
@@ -91,3 +93,24 @@ Same drill each time. Cherry-picking is not enough because the UUID will be used
     - `UUID.randomUUID()` -> `UuidGenerator.INSTANCE.generate()`
     - `import java.util.UUID;` -> `import org.eclipse.edc.spi.uuid.UuidGenerator;`
 
+
+# CI migration
+
+Publishing (`gradle publishToMavenLocal`) results in
+
+```
+* What went wrong:
+Execution failed for task ':core:control-plane:control-plane-aggregate-services:signMavenPublication'.
+> Cannot perform signing task ':core:control-plane:control-plane-aggregate-services:signMavenPublication' because it has no configured signatory
+```
+
+In the root `build.gradle.kts`, add
+
+```kotlin
+allprojects {
+    // ...
+    tasks.withType(Sign::class.java).configureEach {
+        onlyIf { false }
+    }
+}
+```

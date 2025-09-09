@@ -59,6 +59,10 @@ allprojects {
             }
         }
     }
+
+    tasks.withType(Sign::class.java).configureEach {
+        onlyIf { false }
+    }
 }
 
 subprojects {
