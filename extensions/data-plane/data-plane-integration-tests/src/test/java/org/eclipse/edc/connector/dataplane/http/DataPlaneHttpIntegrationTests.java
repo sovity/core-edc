@@ -36,6 +36,7 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -244,7 +244,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_pull_withSourceQueryParamsAndPath_success(DataPlaneAuthorizationService dataPlaneAuthorizationService) {
-            var token = UUID.randomUUID().toString();
+            var token = UuidGenerator.INSTANCE.generate().toString();
             var responseBody = "some info";
             var queryParams = Map.of(
                     "param1", "foo",
@@ -320,7 +320,7 @@ public class DataPlaneHttpIntegrationTests {
         @Test
         void transfer_toHttpSink_success() {
             var body = "{}";
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
 
             httpSourceMockServer.stubFor(getRequest("/").willReturn(okForContentType(APPLICATION_JSON, body)));
             httpSinkMockServer.stubFor(post(anyUrl()).willReturn(ok()));
@@ -337,8 +337,8 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_withSourcePathAndQueryParams_success() {
-            var body = UUID.randomUUID().toString();
-            var processId = UUID.randomUUID().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var queryParams = Map.of(
                     "param1", "any value",
                     "param2", "any other value"
@@ -369,7 +369,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_toHttpSink_sourceNotAvailable_noInteractionWithSink() {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
 
             httpSourceMockServer.stubFor(getRequest("/").willReturn(aResponse().withFault(CONNECTION_RESET_BY_PEER)));
 
@@ -387,8 +387,8 @@ public class DataPlaneHttpIntegrationTests {
          */
         @Test
         void transfer_toHttpSink_sourceTemporaryDropConnection_success() {
-            var processId = UUID.randomUUID().toString();
-            var body = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
+            var body = UuidGenerator.INSTANCE.generate().toString();
 
             httpSourceMockServer.stubFor(getRequest("/")
                     .willReturn(aResponse().withFault(CONNECTION_RESET_BY_PEER))
@@ -421,7 +421,7 @@ public class DataPlaneHttpIntegrationTests {
 
         @Test
         void transfer_invalidInput_failure() {
-            var processId = UUID.randomUUID().toString();
+            var processId = UuidGenerator.INSTANCE.generate().toString();
             var validRequest = transferRequestPayload(processId);
             var invalidRequest = Json.createObjectBuilder(validRequest).remove("transferTypeDestination").build();
 
@@ -458,7 +458,7 @@ public class DataPlaneHttpIntegrationTests {
             return Json.createObjectBuilder()
                     .add("@context", Json.createObjectBuilder().add("@vocab", EDC_NAMESPACE).add("dspace", "https://w3id.org/dspace/v0.8/"))
                     .add("@type", EDC_DATA_FLOW_START_MESSAGE_TYPE)
-                    .add("@id", UUID.randomUUID().toString())
+                    .add("@id", UuidGenerator.INSTANCE.generate().toString())
                     .add("processId", processId)
                     .add("sourceDataAddress", sourceDataAddress)
                     .add("destinationDataAddress", Json.createObjectBuilder()

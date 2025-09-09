@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.connector.dataplane.spi.provision;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Deprovisioned resource
@@ -58,7 +58,7 @@ public class DeprovisionedResource {
 
         public DeprovisionedResource build() {
             if (resource.id == null) {
-                resource.id = UUID.randomUUID().toString();
+                resource.id = UuidGenerator.INSTANCE.generate().toString();
             }
             return resource;
         }

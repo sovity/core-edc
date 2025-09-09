@@ -18,6 +18,7 @@ package org.eclipse.edc.iam.did.resolution;
 import org.eclipse.edc.iam.did.spi.document.DidDocument;
 import org.eclipse.edc.iam.did.spi.resolution.DidResolver;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -127,7 +127,7 @@ class DidResolverRegistryImplTest {
         @Override
         @NotNull
         public Result<DidDocument> resolve(String didKey) {
-            return Result.success(DidDocument.Builder.newInstance().id(UUID.randomUUID().toString()).build());
+            return Result.success(DidDocument.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build());
         }
     }
 

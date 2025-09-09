@@ -33,6 +33,7 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
@@ -49,7 +50,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -93,7 +93,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void httpPull_dataTransfer_withCallbacks() throws IOException {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var callbackUrl = String.format("http://localhost:%d/hooks", callbacksEndpoint.getPort());
@@ -120,14 +120,14 @@ class TransferPullEndToEndTest {
             var event = MAPPER.readValue(request.getBody(), new TypeReference<EventEnvelope<TransferProcessStarted>>() {
             });
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(event.getPayload().getDataAddress(), Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
         }
 
         @Test
         void httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddress = httpSourceDataAddress();
             createResourcesOnProvider(assetId, PolicyFixtures.contractExpiresIn("10s"), sourceDataAddress);
 
@@ -144,7 +144,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void httpPull_dataTransfer_withHttpResponseChannel() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var responseChannel = Map.of(
                     EDC_NAMESPACE + "name", "transfer-test",
                     EDC_NAMESPACE + "baseUrl", "http://any/response/channel",
@@ -165,7 +165,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void suspendAndResumeByConsumer_httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -189,7 +189,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void suspendAndResumeByProvider_httpPull_dataTransfer_withEdrCache() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -218,7 +218,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenContractExpires_fixedInForcePeriod() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", now.minus(ofDays(5)));
@@ -233,7 +233,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenContractExpires_durationInForcePeriod() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", "contractAgreement+1s");
@@ -248,7 +248,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenProviderTerminatesIt() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -273,7 +273,7 @@ class TransferPullEndToEndTest {
 
         @Test
         void shouldTerminateTransfer_whenConsumerTerminatesIt() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -310,7 +310,7 @@ class TransferPullEndToEndTest {
 
         private EdrMessage assertConsumerCanAccessData(String consumerTransferProcessId) {
             var edr = await().atMost(timeout).until(() -> CONSUMER.getEdr(consumerTransferProcessId), Objects::nonNull);
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> CONSUMER.pullData(edr, Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             return new EdrMessage(edr, msg);

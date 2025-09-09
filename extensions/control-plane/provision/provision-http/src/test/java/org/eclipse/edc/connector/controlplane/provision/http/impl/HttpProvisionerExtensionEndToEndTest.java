@@ -50,6 +50,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +61,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +79,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(RuntimePerMethodExtension.class)
 public class HttpProvisionerExtensionEndToEndTest {
     private static final String ASSET_ID = "assetId";
-    private static final String CONTRACT_ID = UUID.randomUUID().toString();
+    private static final String CONTRACT_ID = UuidGenerator.INSTANCE.generate().toString();
     private static final String POLICY_ID = "3";
     private final int dataPort = getFreePort();
     private final Interceptor delegate = mock(Interceptor.class);

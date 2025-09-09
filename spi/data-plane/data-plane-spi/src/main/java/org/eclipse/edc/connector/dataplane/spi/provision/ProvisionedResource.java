@@ -15,8 +15,7 @@
 package org.eclipse.edc.connector.dataplane.spi.provision;
 
 import org.eclipse.edc.spi.types.domain.DataAddress;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Provisioned resource
@@ -65,7 +64,7 @@ public class ProvisionedResource {
 
         public ProvisionedResource build() {
             if (resource.id == null) {
-                resource.id = UUID.randomUUID().toString();
+                resource.id = UuidGenerator.INSTANCE.generate().toString();
             }
             return resource;
         }

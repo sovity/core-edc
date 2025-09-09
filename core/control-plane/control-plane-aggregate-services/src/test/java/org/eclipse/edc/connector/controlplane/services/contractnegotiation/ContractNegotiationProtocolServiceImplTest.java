@@ -43,6 +43,7 @@ import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.message.ProcessRemoteMessage;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +59,6 @@ import org.mockito.ArgumentCaptor;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -414,7 +414,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("counterPartyAddress")
@@ -424,7 +424,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private TokenRepresentation tokenRepresentation() {
         return TokenRepresentation.Builder.newInstance()
-                .token(UUID.randomUUID().toString())
+                .token(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 

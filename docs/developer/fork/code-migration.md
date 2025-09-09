@@ -83,7 +83,17 @@ Same drill each time. Cherry-picking is not enough because the UUID will be used
     - in `gradle/libs.versions.toml`
         - `uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }`
         - `uuid = "5.1.0"` (May change, check out [maven](https://central.sonatype.com/artifact/com.fasterxml.uuid/java-uuid-generator))
-- Replace in the whole project:
+- Replace the UUID usage in the whole project:
     - `UUID.randomUUID()` -> `UuidGenerator.INSTANCE.generate()`
     - `import java.util.UUID;` -> `import org.eclipse.edc.spi.uuid.UuidGenerator;`
-
+    - You probably replaced the 2 lines above. Restore them by copy-pasting what's below and replacing the `_` with `.`:
+      - `UUID_randomUUID()` -> `UuidGenerator_INSTANCE_generate()`
+      - `import java_util_UUID;` -> `import org_eclipse_edc_spi_uuid_UuidGenerator;`
+    - You probably replace the imports in the `UuidGenerator` itself:
+      - In `spi/common/core-spi/src/main/java/org/eclipse/edc/spi/uuid/UuidGenerator.java`, use add old import: `java.util.UUID`.
+    - Add the module dependency `implementation(project(":spi:common:core-spi"))` where needed:
+      - `/home/uuh/dev/sovity/core-edc/core/common/boot/build.gradle.kts`
+    - Re-order the headers to checkstyle doesn't complain:
+      - With IJ: `Ctrl+Alt+O` on the root.
+    - There instances of `UUID.fromString()` that need the import of `java.util.UUID`. Fix them.
+- Run `gradle check` and fix.

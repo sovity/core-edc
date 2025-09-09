@@ -19,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -178,7 +178,7 @@ public class ContractAgreement {
 
         public ContractAgreement build() {
             if (instance.id == null) {
-                instance.id = UUID.randomUUID().toString();
+                instance.id = UuidGenerator.INSTANCE.generate().toString();
             }
             requireNonNull(instance.providerId, "providerId cannot be null");
             requireNonNull(instance.consumerId, "consumerId cannot be null");

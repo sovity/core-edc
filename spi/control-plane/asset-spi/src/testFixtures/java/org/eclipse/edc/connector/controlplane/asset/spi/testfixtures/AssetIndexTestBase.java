@@ -24,6 +24,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static java.util.stream.IntStream.range;
@@ -55,7 +55,7 @@ public abstract class AssetIndexTestBase {
 
     @NotNull
     protected Asset createAsset(String name) {
-        return createAsset(name, UUID.randomUUID().toString());
+        return createAsset(name, UuidGenerator.INSTANCE.generate().toString());
     }
 
     @NotNull
@@ -130,7 +130,7 @@ public abstract class AssetIndexTestBase {
 
         @Test
         void shouldFail_whenAssetAlreadyExists() {
-            var asset = createAsset("test-asset", UUID.randomUUID().toString());
+            var asset = createAsset("test-asset", UuidGenerator.INSTANCE.generate().toString());
             var assetIndex = getAssetIndex();
             assetIndex.create(asset);
 
@@ -489,7 +489,7 @@ public abstract class AssetIndexTestBase {
     class FindById {
         @Test
         void shouldReturnAsset() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = getAsset(id);
             getAssetIndex().create(asset);
 

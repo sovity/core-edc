@@ -21,9 +21,8 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.ResourceDefinit
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -40,7 +39,7 @@ public class HttpProviderResourceDefinitionGenerator implements ProviderResource
     @Override
     public @Nullable ResourceDefinition generate(TransferProcess transferProcess, DataAddress assetAddress, Policy policy) {
         return HttpProviderResourceDefinition.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .dataAddressType(dataAddressType)
                 .transferProcessId(transferProcess.getId())
                 .assetId(transferProcess.getAssetId())

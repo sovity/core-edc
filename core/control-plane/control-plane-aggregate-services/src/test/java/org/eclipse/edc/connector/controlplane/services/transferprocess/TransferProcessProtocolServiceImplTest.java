@@ -43,6 +43,7 @@ import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.message.ProcessRemoteMessage;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
@@ -57,7 +58,6 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.ArgumentCaptor;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -328,7 +328,7 @@ class TransferProcessProtocolServiceImplTest {
 
     private TokenRepresentation tokenRepresentation() {
         return TokenRepresentation.Builder.newInstance()
-                .token(UUID.randomUUID().toString())
+                .token(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 
@@ -415,7 +415,7 @@ class TransferProcessProtocolServiceImplTest {
         void shouldReturnConflict_whenStatusIsNotValid() {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
-            var transferProcess = transferProcess(REQUESTED, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(REQUESTED, UuidGenerator.INSTANCE.generate().toString());
             var message = TransferCompletionMessage.Builder.newInstance()
                     .protocol("protocol")
                     .consumerPid("consumerPid")
@@ -506,7 +506,7 @@ class TransferProcessProtocolServiceImplTest {
         void shouldReturnConflict_whenTransferProcessCannotBeTerminated() {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
-            var transferProcess = transferProcess(DEPROVISIONING, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(DEPROVISIONING, UuidGenerator.INSTANCE.generate().toString());
             var agreement = contractAgreement();
             var message = TransferTerminationMessage.Builder.newInstance()
                     .protocol("protocol")
@@ -537,7 +537,7 @@ class TransferProcessProtocolServiceImplTest {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
             var agreement = contractAgreement();
-            var transferProcess = transferProcess(TERMINATED, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(TERMINATED, UuidGenerator.INSTANCE.generate().toString());
             var message = TransferTerminationMessage.Builder.newInstance()
                     .protocol("protocol")
                     .consumerPid("consumerPid")
@@ -606,7 +606,7 @@ class TransferProcessProtocolServiceImplTest {
         void shouldReturnConflict_whenTransferCannotBeStarted() {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
-            var transferProcess = transferProcess(DEPROVISIONING, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(DEPROVISIONING, UuidGenerator.INSTANCE.generate().toString());
             var message = TransferStartMessage.Builder.newInstance()
                     .protocol("protocol")
                     .consumerPid("consumerPid")
@@ -792,7 +792,7 @@ class TransferProcessProtocolServiceImplTest {
         void shouldReturnConflict_whenTransferProcessCannotBeSuspended() {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
-            var transferProcess = transferProcess(DEPROVISIONING, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(DEPROVISIONING, UuidGenerator.INSTANCE.generate().toString());
             var agreement = contractAgreement();
             var message = TransferSuspensionMessage.Builder.newInstance()
                     .protocol("protocol")
@@ -823,7 +823,7 @@ class TransferProcessProtocolServiceImplTest {
             var participantAgent = participantAgent();
             var tokenRepresentation = tokenRepresentation();
             var agreement = contractAgreement();
-            var transferProcess = transferProcess(TERMINATED, UUID.randomUUID().toString());
+            var transferProcess = transferProcess(TERMINATED, UuidGenerator.INSTANCE.generate().toString());
             var message = TransferSuspensionMessage.Builder.newInstance()
                     .protocol("protocol")
                     .consumerPid("consumerPid")

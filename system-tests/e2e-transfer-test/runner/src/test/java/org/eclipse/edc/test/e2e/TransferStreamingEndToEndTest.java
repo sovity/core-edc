@@ -25,6 +25,7 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -37,7 +38,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.moreThanOrExactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
@@ -69,8 +69,8 @@ public class TransferStreamingEndToEndTest {
                 .options(wireMockConfig().dynamicPort())
                 .build();
         
-        protected final String sinkTopic = "sink_topic_" + UUID.randomUUID();
-        private final String sourceTopic = "source_topic_" + UUID.randomUUID();
+        protected final String sinkTopic = "sink_topic_" + UuidGenerator.INSTANCE.generate();
+        private final String sourceTopic = "source_topic_" + UuidGenerator.INSTANCE.generate();
 
         protected abstract KafkaExtension getKafkaExtension();
 
@@ -89,7 +89,7 @@ public class TransferStreamingEndToEndTest {
             destinationServer.stubFor(post("/api/service")
                     .willReturn(okJson("{}")));
 
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(assetId, contractExpiresIn("10s"), kafkaSourceProperty(getKafkaExtension().getBootstrapServers()));
 
             var destination = httpSink(destinationServer.getPort(), "/api/service");
@@ -120,7 +120,7 @@ public class TransferStreamingEndToEndTest {
             try (var consumer = getKafkaExtension().createKafkaConsumer()) {
                 consumer.subscribe(List.of(sinkTopic));
 
-                var assetId = UUID.randomUUID().toString();
+                var assetId = UuidGenerator.INSTANCE.generate().toString();
                 createResourcesOnProvider(assetId, contractExpiresIn("10s"), kafkaSourceProperty(getKafkaExtension().getBootstrapServers()));
 
                 var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -137,7 +137,7 @@ public class TransferStreamingEndToEndTest {
             try (var consumer = getKafkaExtension().createKafkaConsumer()) {
                 consumer.subscribe(List.of(sinkTopic));
 
-                var assetId = UUID.randomUUID().toString();
+                var assetId = UuidGenerator.INSTANCE.generate().toString();
                 createResourcesOnProvider(assetId, kafkaSourceProperty(getKafkaExtension().getBootstrapServers()));
 
                 var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
@@ -304,7 +304,7 @@ public class TransferStreamingEndToEndTest {
             try (var consumer = getKafkaExtension().createKafkaConsumer()) {
                 consumer.subscribe(List.of(sinkTopic));
 
-                var assetId = UUID.randomUUID().toString();
+                var assetId = UuidGenerator.INSTANCE.generate().toString();
                 createResourcesOnProvider(assetId, kafkaSourceProperty(getKafkaExtension().getBootstrapServers()));
 
                 var transferProcessId = CONSUMER.requestAssetFrom(assetId, PROVIDER)
