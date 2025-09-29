@@ -4,6 +4,20 @@
 
 ### Overview
 
+#### Changes
+
+#### Details
+
+#### Compatibility
+
+#### Resolution plan
+
+---
+
+## [0.14.0.1] - 2025-09-29
+
+### Overview
+
 Initial migration of changes from `0.11.1.3` into `0.14.0`.
 
 #### Changes
@@ -21,6 +35,8 @@ Initial migration of changes from `0.11.1.3` into `0.14.0`.
 #### Details
 
 #### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
 
 #### Resolution plan
 
