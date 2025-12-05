@@ -42,6 +42,7 @@ dsp-tck = "1.0.0-SNAPSHOT"
 dcp-tck = "1.0.0-SNAPSHOT"
 junit = "6.0.1"
 wiremock = "3.13.2"
+uuid = "5.1.0"
 
 [libraries]
 iron-vc = { module = "com.apicatalog:iron-verifiable-credentials", version.ref = "apicatalog" }
@@ -51,7 +52,7 @@ awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" 
 bouncyCastle-bcpkixJdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 bouncyCastle-bcprovJdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 dnsOverHttps = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp" }
-edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version.ref = "edc" }
+edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version = "0.15.0" }
 failsafe-core = { module = "dev.failsafe:failsafe", version.ref = "failsafe" }
 failsafe-okhttp = { module = "dev.failsafe:failsafe-okhttp", version.ref = "failsafe" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
@@ -96,6 +97,7 @@ testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", ver
 testcontainers-postgres = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-vault = { module = "org.testcontainers:testcontainers-vault", version.ref = "testcontainers" }
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
+uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }
 
 
 # other technology extensions
