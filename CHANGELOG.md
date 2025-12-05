@@ -1,16 +1,42 @@
 # Changelog
 
-## [0.14.0.x] - UNRELEASED
+## [0.14.1.x] - UNRELEASED
 
 ### Overview
 
+Merge `upstream/0.14.1` into `fork/sovity/0.14.0` (`@0.14.0.1`)
+
 #### Changes
+
+None, only merging
 
 #### Details
 
+- Port the previous changes
+    - Replacement of java.util.UUID with UUIDv7
+    - Catalog performance
+    - Add caching for data plane OAuth requests (`8df1baceb`)
+    - Add nullability correctness
+
+- Changes that were not ported
+    - Force `/` in IdentityTrustTransformExtension
+        - The mistake is not present anymore
+
 #### Compatibility
 
+Should be compatible without any modification with a `0.14.1` version.
+
 #### Resolution plan
+
+- Port the previous changes
+    - Replacement of java.util.UUID with UUIDv7
+      - no plan
+    - Catalog performance
+      - no plan
+    - Add caching for data plane OAuth requests (`8df1baceb`)
+      - maybe upstream? maybe add that as a feature?
+    - Add nullability correctness
+      - Can be upstreamed
 
 ---
 
