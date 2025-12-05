@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -231,7 +231,7 @@ public class DspCatalogApiEndToEndTest {
     @ArgumentsSource(ProtocolVersionProvider.class)
     void shouldReturnError_whenDatasetNotFound(String basePath, JsonLdNamespace namespace) {
 
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var authorizationHeader = """
                 {"region": "any", "audience": "any", "clientId":"any"}"
                 """;

@@ -72,7 +72,7 @@ import org.mockito.ArgumentCaptor;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -430,17 +430,17 @@ class TransferProcessManagerImplTest {
     }
 
     private TransferProcess.Builder createTransferProcessBuilder(TransferProcessStates state) {
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
 
         return TransferProcess.Builder.newInstance()
                 .provisionedResourceSet(ProvisionedResourceSet.Builder.newInstance().build())
                 .type(CONSUMER)
                 .id("test-process-" + processId)
                 .state(state.code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("http://an/address")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type(DESTINATION_TYPE).build())
                 .participantContextId(PARTICIPANT_CONTEXT_ID)
                 .protocol("protocol");
@@ -813,7 +813,7 @@ class TransferProcessManagerImplTest {
 
         @Test
         void shouldTransitionToProvisioningRequested_whenProvisionThroughDataplaneSucceeds() {
-            var dataPlaneId = UUID.randomUUID().toString();
+            var dataPlaneId = UuidGenerator.INSTANCE.generate().toString();
             var dataFlowResponse = DataFlowResponse.Builder.newInstance()
                     .dataPlaneId(dataPlaneId)
                     .provisioning(true)
@@ -841,7 +841,7 @@ class TransferProcessManagerImplTest {
 
         @Test
         void shouldTransitionToRequesting_whenProvisionThroughDataplaneSucceedsButNoActualProvisionNeeded() {
-            var dataPlaneId = UUID.randomUUID().toString();
+            var dataPlaneId = UuidGenerator.INSTANCE.generate().toString();
             var dataFlowResponse = DataFlowResponse.Builder.newInstance()
                     .dataPlaneId(dataPlaneId)
                     .provisioning(false)

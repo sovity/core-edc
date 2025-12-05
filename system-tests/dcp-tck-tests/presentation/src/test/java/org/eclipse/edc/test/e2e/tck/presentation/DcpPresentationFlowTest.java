@@ -51,7 +51,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -134,7 +134,7 @@ public class DcpPresentationFlowTest {
                     claims.put("nbf", Instant.now().getEpochSecond());
 
                     var claimsSet = new JWTClaimsSet.Builder(JWTClaimsSet.parse(claims))
-                            .jwtID(UUID.randomUUID().toString())
+                            .jwtID(UuidGenerator.INSTANCE.generate().toString())
                             .build();
                     var jwt = new SignedJWT(hdr, claimsSet);
                     jwt.sign(new ECDSASigner(verifierKey));
@@ -154,7 +154,7 @@ public class DcpPresentationFlowTest {
                                 .id(verifierKey.getKeyID())
                                 .build()
                 ))
-                .service(List.of(new Service(UUID.randomUUID().toString(), "CredentialService", "https://example.com/credentialservice")))
+                .service(List.of(new Service(UuidGenerator.INSTANCE.generate().toString(), "CredentialService", "https://example.com/credentialservice")))
                 .build();
         try {
             return new ObjectMapper().writeValueAsString(ddoc);

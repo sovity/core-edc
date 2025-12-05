@@ -31,7 +31,7 @@ import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 
@@ -59,7 +59,7 @@ public class TestFunctions {
                 .id(id)
                 .providerId("provider")
                 .consumerId("consumer")
-                .assetId(UUID.randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(createPolicy())
                 .contractSigningDate(Instant.now().getEpochSecond())
                 .participantContextId("participantContextId");

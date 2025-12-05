@@ -22,7 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.time.ZoneOffset.UTC;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +41,7 @@ class Oauth2AssertionDecoratorTest {
     private final Instant now = Instant.now();
     private final Clock clock = Clock.fixed(now, UTC);
     private final String audience = "test-audience";
-    private final String clientId = UUID.randomUUID().toString();
+    private final String clientId = UuidGenerator.INSTANCE.generate().toString();
 
     @ParameterizedTest
     @EmptySource

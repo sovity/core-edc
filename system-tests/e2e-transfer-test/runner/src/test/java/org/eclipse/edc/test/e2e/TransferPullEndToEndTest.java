@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -101,7 +101,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withCallbacks(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                  @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) throws IOException {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var callbackUrl = String.format("http://localhost:%d/hooks", callbacksEndpoint.getPort());
@@ -128,7 +128,7 @@ class TransferPullEndToEndTest {
             var event = MAPPER.readValue(request.getBody(), new TypeReference<EventEnvelope<TransferProcessStarted>>() {
             });
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> consumer.pullData(event.getPayload().getDataAddress(), Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
         }
@@ -136,7 +136,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withEdrCache(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                 @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddress = httpSourceDataAddress();
             createResourcesOnProvider(provider, assetId, PolicyFixtures.contractExpiresIn("10s"), sourceDataAddress);
 
@@ -154,7 +154,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withHttpResponseChannel(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                            @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var responseChannel = Map.of(
                     EDC_NAMESPACE + "name", "transfer-test",
                     EDC_NAMESPACE + "baseUrl", "http://any/response/channel",
@@ -176,7 +176,7 @@ class TransferPullEndToEndTest {
         @Test
         void suspendAndResumeByConsumer_httpPull_dataTransfer_withEdrCache(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                                            @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var transferProcessId = consumer.requestAssetFrom(assetId, provider)
@@ -201,7 +201,7 @@ class TransferPullEndToEndTest {
         @Test
         void suspendAndResumeByProvider_httpPull_dataTransfer_withEdrCache(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                                            @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = consumer.requestAssetFrom(assetId, provider)
@@ -231,7 +231,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenContractExpires_fixedInForcePeriod(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                                             @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", now.minus(ofDays(5)));
@@ -247,7 +247,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenContractExpires_durationInForcePeriod(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                                                @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var now = Instant.now();
             // contract was valid from t-10d to t-5d, so "now" it is expired
             var contractPolicy = inForceDatePolicy("gteq", now.minus(ofDays(10)), "lteq", "contractAgreement+1s");
@@ -263,7 +263,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenProviderTerminatesIt(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                               @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = consumer.requestAssetFrom(assetId, provider)
@@ -289,7 +289,7 @@ class TransferPullEndToEndTest {
         @Test
         void shouldTerminateTransfer_whenConsumerTerminatesIt(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                               @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var consumerTransferProcessId = consumer.requestAssetFrom(assetId, provider)
@@ -326,7 +326,7 @@ class TransferPullEndToEndTest {
 
         private EdrMessage assertConsumerCanAccessData(TransferEndToEndParticipant consumer, String consumerTransferProcessId) {
             var edr = await().atMost(timeout).until(() -> consumer.getEdr(consumerTransferProcessId), Objects::nonNull);
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> consumer.pullData(edr, Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
             return new EdrMessage(edr, msg);

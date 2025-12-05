@@ -42,7 +42,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 
 import static java.util.stream.IntStream.range;
@@ -364,7 +364,7 @@ public abstract class ContractNegotiationStoreTestBase {
     class Delete {
         @Test
         void shouldDeleteTheEntity() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var n = createNegotiation(id);
             getContractNegotiationStore().save(n);
 
@@ -378,7 +378,7 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         @DisplayName("Verify that an entity cannot be deleted when leased by self")
         void whenLeasedBySelf_shouldThrowException() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var n = createNegotiation(id);
             getContractNegotiationStore().save(n);
 
@@ -392,7 +392,7 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         @DisplayName("Verify that an entity cannot be deleted when leased by other")
         void whenLeasedByOther_shouldThrowException() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var n = createNegotiation(id);
             getContractNegotiationStore().save(n);
 
@@ -468,7 +468,7 @@ public abstract class ContractNegotiationStoreTestBase {
 
         @Test
         void withAgreementOnAsset_negotiationWithoutAgreement() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var negotiation = createNegotiation("negotiation1");
 
             getContractNegotiationStore().save(negotiation);
@@ -484,7 +484,7 @@ public abstract class ContractNegotiationStoreTestBase {
 
         @Test
         void withAgreementOnAsset_multipleNegotiationsSameAsset() {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var negotiation1 = createNegotiation("negotiation1", createAgreementBuilder("contract1").assetId(assetId).build());
             var negotiation2 = createNegotiation("negotiation2", createAgreementBuilder("contract2").assetId(assetId).build());
 
@@ -643,8 +643,8 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void shouldReturnAllItems_whenQuerySpecHasNoFilter() {
             range(0, 10).forEach(i -> {
-                var contractAgreement = createAgreement(ContractOfferId.create(UUID.randomUUID().toString(), ASSET_ID));
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var contractAgreement = createAgreement(ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), ASSET_ID));
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -656,9 +656,9 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void withQuerySpec() {
             range(0, 10).mapToObj(i -> "asset-" + i).forEach(assetId -> {
-                var contractId = ContractOfferId.create(UUID.randomUUID().toString(), assetId).toString();
+                var contractId = ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), assetId).toString();
                 var contractAgreement = createAgreementBuilder(contractId).assetId(assetId).build();
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -671,8 +671,8 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void verifyPaging() {
             range(0, 10).forEach(i -> {
-                var contractAgreement = createAgreement(ContractOfferId.create(UUID.randomUUID().toString(), ASSET_ID));
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var contractAgreement = createAgreement(ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), ASSET_ID));
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -686,9 +686,9 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void verifySorting() {
             range(0, 9).forEach(i -> {
-                var contractId = ContractOfferId.create(UUID.randomUUID().toString(), UUID.randomUUID().toString()).toString();
+                var contractId = ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), UuidGenerator.INSTANCE.generate().toString()).toString();
                 var contractAgreement = createAgreementBuilder(contractId).consumerId(String.valueOf(i)).build();
-                var negotiation = createNegotiationBuilder(UUID.randomUUID().toString()).contractAgreement(contractAgreement).build();
+                var negotiation = createNegotiationBuilder(UuidGenerator.INSTANCE.generate().toString()).contractAgreement(contractAgreement).build();
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -702,10 +702,10 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void shouldReturnEmpty_whenCriterionLeftOperandIsInvalid() {
             range(0, 10).mapToObj(i -> "asset-" + i).forEach(assetId -> {
-                var contractAgreement = createAgreementBuilder(ContractOfferId.create(UUID.randomUUID().toString(), assetId).toString())
+                var contractAgreement = createAgreementBuilder(ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), assetId).toString())
                         .assetId(assetId)
                         .build();
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
             var query = QuerySpec.Builder.newInstance().filter(criterion("notexistprop", "=", "asset-2")).build();
@@ -725,9 +725,9 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void byParticipantContextId() {
             range(0, 10).mapToObj(i -> "participantContext-" + i).forEach(participantContextId -> {
-                var contractId = ContractOfferId.create(UUID.randomUUID().toString(), "asset").toString();
+                var contractId = ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), "asset").toString();
                 var contractAgreement = createAgreementBuilder(contractId).assetId("asset").participantContextId(participantContextId).build();
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -740,10 +740,10 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         void byAgreementIdAndParticipantContextId() {
             range(0, 10).mapToObj(i -> "agreementId-" + i).forEach(agreementId -> {
-                var contractId = ContractOfferId.create(UUID.randomUUID().toString(), "asset").toString();
+                var contractId = ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), "asset").toString();
                 var contractAgreement = createAgreementBuilder(contractId).assetId("asset").agreementId(agreementId)
                         .participantContextId("participantContextId").build();
-                var negotiation = createNegotiation(UUID.randomUUID().toString(), contractAgreement);
+                var negotiation = createNegotiation(UuidGenerator.INSTANCE.generate().toString(), contractAgreement);
                 getContractNegotiationStore().save(negotiation);
             });
 
@@ -835,8 +835,8 @@ public abstract class ContractNegotiationStoreTestBase {
         @Test
         @DisplayName("Verify that nextNotLeased returns the agreement")
         void withAgreement() {
-            var contractAgreement = createAgreement(ContractOfferId.create(UUID.randomUUID().toString(), ASSET_ID));
-            var negotiation = createNegotiationBuilder(UUID.randomUUID().toString())
+            var contractAgreement = createAgreement(ContractOfferId.create(UuidGenerator.INSTANCE.generate().toString(), ASSET_ID));
+            var negotiation = createNegotiationBuilder(UuidGenerator.INSTANCE.generate().toString())
                     .contractAgreement(contractAgreement)
                     .state(ContractNegotiationStates.AGREED.code())
                     .build();
@@ -893,7 +893,7 @@ public abstract class ContractNegotiationStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getContractNegotiationStore().save(createNegotiation(id));
 
             var result = getContractNegotiationStore().findByIdAndLease(id);
@@ -911,7 +911,7 @@ public abstract class ContractNegotiationStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getContractNegotiationStore().save(createNegotiation(id));
             leaseEntity(id, "other owner");
 

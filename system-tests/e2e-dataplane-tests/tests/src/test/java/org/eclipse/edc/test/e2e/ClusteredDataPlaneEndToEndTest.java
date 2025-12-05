@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.BiFunction;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
@@ -116,7 +116,7 @@ public class ClusteredDataPlaneEndToEndTest {
                 .build();
 
         var startMessage = DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(sourceAddress)
                 .destinationDataAddress(destinationAddress)
                 .transferType(new TransferType("HttpData", FlowType.PUSH))

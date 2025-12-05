@@ -44,7 +44,7 @@ import java.util.List;
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import static org.eclipse.edc.api.model.IdResponse.ID_RESPONSE_TYPE;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.command.TerminateNegotiationCommand.TERMINATE_NEGOTIATION_TYPE;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.NegotiationState.NEGOTIATION_STATE_TYPE;
@@ -341,7 +341,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
                         .counterPartyAddress("test-cb")
                         .contractOffer(ContractOffer.Builder.newInstance()
                                 .id("test-offer-id")
-                                .assetId(randomUUID().toString())
+                                .assetId(UuidGenerator.INSTANCE.generate().toString())
                                 .policy(Policy.Builder.newInstance().build())
                                 .build())
                         .build()));
@@ -507,7 +507,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
                 .id(negotiationId)
                 .consumerId("test-consumer")
                 .providerId("test-provider")
-                .assetId(randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance().build())
                 .build();
     }
@@ -515,7 +515,7 @@ public abstract class BaseContractNegotiationApiControllerTest extends RestContr
     private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
         return ContractNegotiation.Builder.newInstance()
                 .id(negotiationId)
-                .counterPartyId(randomUUID().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                         .uri("local://test")

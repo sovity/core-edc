@@ -57,7 +57,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.iam.decentralizedclaims.spi.DcpConstants.DSPACE_DCP_V_1_0_CONTEXT;
@@ -136,13 +136,13 @@ class DefaultCredentialServiceClientTest {
                 .build();
 
         var descriptor = InputDescriptor.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .constraints(new Constraints(List.of(field)))
                 .format(format)
                 .build();
 
         var presentationDefinition = PresentationDefinition.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .format(format)
                 .inputDescriptors(List.of(descriptor))
                 .build();

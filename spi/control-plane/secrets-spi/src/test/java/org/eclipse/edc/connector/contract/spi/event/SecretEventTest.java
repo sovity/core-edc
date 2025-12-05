@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,7 +68,7 @@ class SecretEventTest {
             return eventBuilders
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UUID.randomUUID().toString()).payload(it)
+                            .id(UuidGenerator.INSTANCE.generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

@@ -36,7 +36,7 @@ import org.testcontainers.vault.VaultContainer;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -98,7 +98,7 @@ class HashicorpVaultSignatureServiceIntegrationTest {
     @BeforeEach
     void setUp() throws IOException {
 
-        vaultKey = UUID.randomUUID().toString();
+        vaultKey = UuidGenerator.INSTANCE.generate().toString();
         service = new HashicorpVaultSignatureService(monitor, settings, httpClient, new ObjectMapper(), tokenProvider);
 
 

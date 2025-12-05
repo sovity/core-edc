@@ -16,7 +16,7 @@ package org.eclipse.edc.spi.event;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * The {@link EventEnvelope} is a container for all EDC events. Its responsibility is to carry the {@link Event} as payload
@@ -76,7 +76,7 @@ public class EventEnvelope<E extends Event> {
 
         public EventEnvelope<E> build() {
             if (envelope.id == null) {
-                envelope.id = UUID.randomUUID().toString();
+                envelope.id = UuidGenerator.INSTANCE.generate().toString();
             }
             if (envelope.at == 0) {
                 throw new IllegalStateException("Event 'at' field must be set");

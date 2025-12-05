@@ -46,6 +46,7 @@ import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.telemetry.Telemetry;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +57,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.lang.String.format;
-import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.joining;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.CONSUMER;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.PROVIDER;
@@ -162,7 +162,7 @@ public class TransferProcessProtocolServiceImpl implements TransferProcessProtoc
             return ServiceResult.success(existingTransferProcess);
         }
 
-        var id = randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         return offloadEventualSecretToVault(id, participantContext, message.getDataDestination())
                 .map(destination -> {

@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.Executors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.any;
@@ -109,7 +109,7 @@ public class ProvisionHttpIntegrationTest {
 
     @Test
     void shouldProvision_andDeprovision(DataPlaneManager dataPlaneManager) {
-        var flowId = UUID.randomUUID().toString();
+        var flowId = UuidGenerator.INSTANCE.generate().toString();
         var startMessage = DataFlowStartMessage.Builder.newInstance()
                 .processId(flowId)
                 .sourceDataAddress(DataAddress.Builder.newInstance()

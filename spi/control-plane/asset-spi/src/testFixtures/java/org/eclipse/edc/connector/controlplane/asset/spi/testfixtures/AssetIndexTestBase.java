@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.IntStream;
 
 import static java.util.stream.IntStream.range;
@@ -105,7 +105,7 @@ public abstract class AssetIndexTestBase {
 
         @Test
         void shouldFail_whenAssetAlreadyExists() {
-            var asset = createAsset(UUID.randomUUID().toString());
+            var asset = createAsset(UuidGenerator.INSTANCE.generate().toString());
             var assetIndex = getAssetIndex();
             assetIndex.create(asset);
 
@@ -332,9 +332,9 @@ public abstract class AssetIndexTestBase {
 
         @Test
         void multipleFound() {
-            var testAsset1 = createAssetBuilder(UUID.randomUUID().toString()).property("propertyKey", "foobar").build();
-            var testAsset2 = createAssetBuilder(UUID.randomUUID().toString()).property("propertyKey", "barbaz").build();
-            var testAsset3 = createAssetBuilder(UUID.randomUUID().toString()).property("propertyKey", "barbaz").build();
+            var testAsset1 = createAssetBuilder(UuidGenerator.INSTANCE.generate().toString()).property("propertyKey", "foobar").build();
+            var testAsset2 = createAssetBuilder(UuidGenerator.INSTANCE.generate().toString()).property("propertyKey", "barbaz").build();
+            var testAsset3 = createAssetBuilder(UuidGenerator.INSTANCE.generate().toString()).property("propertyKey", "barbaz").build();
             getAssetIndex().create(testAsset1);
             getAssetIndex().create(testAsset2);
             getAssetIndex().create(testAsset3);
@@ -474,7 +474,7 @@ public abstract class AssetIndexTestBase {
     class FindById {
         @Test
         void shouldReturnAsset() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset(id);
             getAssetIndex().create(asset);
 

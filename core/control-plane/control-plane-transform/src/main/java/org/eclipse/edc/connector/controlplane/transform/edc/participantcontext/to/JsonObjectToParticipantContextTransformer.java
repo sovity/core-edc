@@ -21,7 +21,7 @@ import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.participantcontext.spi.types.ParticipantContext.PARTICIPANT_CONTEXT_IDENTITY_IRI;
 import static org.eclipse.edc.participantcontext.spi.types.ParticipantContext.PARTICIPANT_CONTEXT_PROPERTIES_IRI;
@@ -35,7 +35,7 @@ public class JsonObjectToParticipantContextTransformer extends AbstractJsonLdTra
     public @Nullable ParticipantContext transform(@NotNull JsonObject jsonObject, @NotNull TransformerContext context) {
         var participantContext = ParticipantContext.Builder.newInstance();
         var nodeId = nodeId(jsonObject);
-        var id = nodeId != null ? nodeId : UUID.randomUUID().toString();
+        var id = nodeId != null ? nodeId : UuidGenerator.INSTANCE.generate().toString();
         participantContext.participantContextId(id);
         participantContext.id(id);
 

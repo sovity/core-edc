@@ -19,7 +19,7 @@ import org.eclipse.edc.spi.types.domain.DataAddress;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -104,7 +104,7 @@ public class DataFlowProvisionMessage {
 
         public DataFlowProvisionMessage build() {
             if (message.id == null) {
-                message.id = UUID.randomUUID().toString();
+                message.id = UuidGenerator.INSTANCE.generate().toString();
             }
             return message;
         }

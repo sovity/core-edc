@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiation.CONTRACT_NEGOTIATION_AGREEMENT_ID;
@@ -88,7 +88,7 @@ class JsonObjectFromContractNegotiationTransformerTest {
 
     private ContractOffer createContractOffer(String assetId) {
         return ContractOffer.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .assetId(assetId)
                 .policy(Policy.Builder.newInstance().build())
                 .build();

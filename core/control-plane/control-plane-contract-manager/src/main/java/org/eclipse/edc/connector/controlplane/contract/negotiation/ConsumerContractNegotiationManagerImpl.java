@@ -31,7 +31,7 @@ import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.statemachine.StateMachineManager;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.agreement.ContractNegotiationEventMessage.Type.ACCEPTED;
@@ -61,7 +61,7 @@ public class ConsumerContractNegotiationManagerImpl extends AbstractContractNego
     @WithSpan
     @Override
     public StatusResult<ContractNegotiation> initiate(ParticipantContext participantContext, ContractRequest request) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id)
                 .protocol(request.getProtocol())

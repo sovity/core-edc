@@ -48,7 +48,7 @@ import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Function;
 
 import static java.lang.String.format;
@@ -224,7 +224,7 @@ public class ContractNegotiationProtocolServiceImpl implements ContractNegotiati
     @NotNull
     private ServiceResult<ContractNegotiation> createNegotiation(ParticipantContext participantContext, ContractRemoteMessage message, String counterPartyIdentity, ContractNegotiation.Type type, String callbackAddress) {
         var negotiation = ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .correlationId(message.getConsumerPid())
                 .counterPartyId(counterPartyIdentity)
                 .counterPartyAddress(callbackAddress)

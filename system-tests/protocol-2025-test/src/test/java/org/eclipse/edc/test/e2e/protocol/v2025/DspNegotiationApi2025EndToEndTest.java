@@ -28,7 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -63,12 +63,12 @@ public class DspNegotiationApi2025EndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionContextProvider.class)
     void shouldExposeVersion(String basePath, List<String> context) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
         var negotiation = ContractNegotiation.Builder.newInstance()
                 .id(id).counterPartyId("any").counterPartyAddress("any").protocol("any").state(REQUESTED.code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .contractOffer(ContractOffer.Builder.newInstance()
-                        .id(UUID.randomUUID().toString()).assetId(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString()).assetId(UuidGenerator.INSTANCE.generate().toString())
                         .policy(Policy.Builder.newInstance().build())
                         .build())
                 .participantContextId("anonymous")
@@ -95,7 +95,7 @@ public class DspNegotiationApi2025EndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionContextProvider.class)
     void shouldReturnError_whenNotFound(String basePath, List<String> context) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)
@@ -148,7 +148,7 @@ public class DspNegotiationApi2025EndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionContextProvider.class)
     void terminate_ShouldReturnError_whenMissingToken(String basePath, List<String> context) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)
@@ -168,7 +168,7 @@ public class DspNegotiationApi2025EndToEndTest {
     @ParameterizedTest
     @ArgumentsSource(ProtocolVersionContextProvider.class)
     void terminate_ShouldReturnError_whenValidationFails(String basePath, List<String> context) {
-        var id = UUID.randomUUID().toString();
+        var id = UuidGenerator.INSTANCE.generate().toString();
 
         given()
                 .port(PROTOCOL_PORT)

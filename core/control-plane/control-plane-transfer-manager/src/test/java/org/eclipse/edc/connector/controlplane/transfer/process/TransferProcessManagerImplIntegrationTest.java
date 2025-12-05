@@ -61,7 +61,7 @@ import org.mockito.ArgumentCaptor;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -182,10 +182,10 @@ class TransferProcessManagerImplIntegrationTest {
         return TransferProcess.Builder.newInstance()
                 .provisionedResourceSet(ProvisionedResourceSet.Builder.newInstance().build())
                 .type(CONSUMER)
-                .id("test-process-" + UUID.randomUUID())
-                .correlationId(UUID.randomUUID().toString())
+                .id("test-process-" + UuidGenerator.INSTANCE.generate())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("test-type").build())
-                .contractId(UUID.randomUUID().toString());
+                .contractId(UuidGenerator.INSTANCE.generate().toString());
     }
 
     @Nested

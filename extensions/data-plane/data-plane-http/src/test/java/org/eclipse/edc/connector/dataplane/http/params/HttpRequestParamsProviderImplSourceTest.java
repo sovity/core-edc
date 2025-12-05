@@ -22,7 +22,7 @@ import org.eclipse.edc.spi.types.domain.transfer.TransferType;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -49,7 +49,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .nonChunkedTransfer(true)
                 .build();
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyHttpDataAddress())
                 .build();
@@ -79,7 +79,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .build();
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
                 .flowType(PULL)
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .transferType(new TransferType("HttpData", PULL))
                 .properties(Map.of(
@@ -108,7 +108,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .baseUrl("http://source")
                 .build();
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyHttpDataAddress())
                 .build();
@@ -135,7 +135,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .build();
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
                 .flowType(PULL)
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .transferType(new TransferType("HttpData", PULL))
                 .build();
@@ -155,7 +155,7 @@ class HttpRequestParamsProviderImplSourceTest {
                 .method("POST")
                 .build();
         var dataFlowRequest = DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(source)
                 .destinationDataAddress(dummyHttpDataAddress())
                 .build();

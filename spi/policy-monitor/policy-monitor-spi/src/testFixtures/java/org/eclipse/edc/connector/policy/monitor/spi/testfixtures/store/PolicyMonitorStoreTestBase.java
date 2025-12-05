@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Comparator;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,7 +63,7 @@ public abstract class PolicyMonitorStoreTestBase {
     private PolicyMonitorEntry createPolicyMonitorEntry(String id, PolicyMonitorEntryStates state) {
         return PolicyMonitorEntry.Builder.newInstance()
                 .id(id)
-                .contractId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
                 .state(state.code())
                 .build();
     }
@@ -73,7 +73,7 @@ public abstract class PolicyMonitorStoreTestBase {
 
         @Test
         void shouldStoreEntity_whenItDoesNotAlreadyExist() {
-            var entry = createPolicyMonitorEntry(UUID.randomUUID().toString(), STARTED);
+            var entry = createPolicyMonitorEntry(UuidGenerator.INSTANCE.generate().toString(), STARTED);
             getStore().save(entry);
 
             var result = getStore().findById(entry.getId());
@@ -84,7 +84,7 @@ public abstract class PolicyMonitorStoreTestBase {
 
         @Test
         void shouldUpdate_whenEntityAlreadyExist() {
-            var entry = createPolicyMonitorEntry(UUID.randomUUID().toString(), STARTED);
+            var entry = createPolicyMonitorEntry(UuidGenerator.INSTANCE.generate().toString(), STARTED);
             getStore().save(entry);
 
             entry.transitionToCompleted();
@@ -146,7 +146,7 @@ public abstract class PolicyMonitorStoreTestBase {
 
         @Test
         void shouldLeaseAgainAfterTimePassed() {
-            var entry = createPolicyMonitorEntry(UUID.randomUUID().toString(), STARTED);
+            var entry = createPolicyMonitorEntry(UuidGenerator.INSTANCE.generate().toString(), STARTED);
             getStore().save(entry);
 
             leaseEntity(entry.getId(), CONNECTOR_NAME, Duration.ofMillis(100));
@@ -157,7 +157,7 @@ public abstract class PolicyMonitorStoreTestBase {
 
         @Test
         void shouldReturnReleasedEntityByUpdate() {
-            var entry = createPolicyMonitorEntry(UUID.randomUUID().toString(), STARTED);
+            var entry = createPolicyMonitorEntry(UuidGenerator.INSTANCE.generate().toString(), STARTED);
             getStore().save(entry);
 
             var firstLeased = getStore().nextNotLeased(1, hasState(STARTED.code()));
@@ -203,7 +203,7 @@ public abstract class PolicyMonitorStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createPolicyMonitorEntry(id, STARTED));
 
             var result = getStore().findByIdAndLease(id);
@@ -221,7 +221,7 @@ public abstract class PolicyMonitorStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createPolicyMonitorEntry(id, STARTED));
             leaseEntity(id, "other owner");
 

@@ -24,7 +24,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -104,7 +104,7 @@ class Oauth2HttpRequestParamsDecoratorTest {
 
     private DataFlowStartMessage dummyDataFlowRequest() {
         return DataFlowStartMessage.Builder.newInstance()
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(dummyAddress())
                 .destinationDataAddress(dummyAddress())
                 .properties(emptyMap())

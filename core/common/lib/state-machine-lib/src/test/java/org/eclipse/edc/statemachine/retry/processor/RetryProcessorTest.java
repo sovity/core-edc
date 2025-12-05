@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -62,7 +62,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldExecuteAllTheStagesInTheRightOrder_whenItIsRetryButDoesNotDelay() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
         BiFunction<TestEntity, Object, CompletableFuture<Integer>> firstProcess = mock();
         when(firstProcess.apply(any(), any())).thenReturn(CompletableFuture.completedFuture(1));
         BiFunction<TestEntity, Integer, StatusResult<String>> secondProcess = mock();
@@ -86,7 +86,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldNotProcess_whenItShouldDelay() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
         BiFunction<TestEntity, Object, StatusResult<String>> process = mock();
 
         var processed = new RetryProcessor<>(entity, monitor, clock, configuration)
@@ -101,7 +101,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldNotProcessSecond_whenFirstFails() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
         BiFunction<TestEntity, Object, StatusResult<String>> first = mock();
         when(first.apply(any(), any())).thenReturn(StatusResult.failure(ERROR_RETRY));
         BiFunction<TestEntity, String, StatusResult<String>> second = mock();
@@ -121,7 +121,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldInvokeFailureHandler_whenFailureHappensAndRetryLimitNotExceeded() {
-        var entityId = UUID.randomUUID().toString();
+        var entityId = UuidGenerator.INSTANCE.generate().toString();
         var entity = TestEntity.Builder.newInstance().id(entityId).stateTimestamp(shouldNotDelayTime).build();
 
         org.eclipse.edc.statemachine.retry.processor.Process<TestEntity, Object, String> process = context -> failedFuture(new EntityStateException(
@@ -142,7 +142,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldInvokeFinalFailureHandler_whenRetryExhausted() {
-        var entityId = UUID.randomUUID().toString();
+        var entityId = UuidGenerator.INSTANCE.generate().toString();
         var entity = TestEntity.Builder.newInstance().id(entityId).stateTimestamp(shouldNotDelayTime).build();
 
         org.eclipse.edc.statemachine.retry.processor.Process<TestEntity, Object, String> process = context -> failedFuture(new EntityStateException(
@@ -163,7 +163,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldInvokeFinalFailureHandler_whenUnrecoverableException() {
-        var entityId = UUID.randomUUID().toString();
+        var entityId = UuidGenerator.INSTANCE.generate().toString();
         var entity = TestEntity.Builder.newInstance().id(entityId).stateTimestamp(shouldNotDelayTime).build();
 
         org.eclipse.edc.statemachine.retry.processor.Process<TestEntity, Object, String> process = context -> failedFuture(new UnrecoverableEntityStateException(
@@ -184,7 +184,7 @@ class RetryProcessorTest {
 
     @Test
     void shouldInvokeFinalFailureHandler_whenGenericException() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldDelayTime).stateCount(1).build();
 
         var runtimeException = new RuntimeException("generic exception");
         Process<TestEntity, Object, String> process = context -> failedFuture(runtimeException);

@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
 import static org.eclipse.edc.spi.result.ServiceFailure.Reason.CONFLICT;
@@ -114,7 +114,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldUnregister() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.unregister(any())).thenReturn(ServiceResult.success());
 
             var result = service().unregister(instanceId);
@@ -125,7 +125,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldFail_whenServiceFails() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.unregister(any())).thenReturn(ServiceResult.conflict("conflict"));
 
             var result = service().unregister(instanceId);
@@ -140,7 +140,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldDelete() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.delete(any())).thenReturn(ServiceResult.success());
 
             var result = service().delete(instanceId);
@@ -151,7 +151,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldFail_whenNotFound() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.delete(any())).thenReturn(ServiceResult.notFound("not found"));
 
             var result = service().delete(instanceId);
@@ -166,7 +166,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldReturnInstanceById() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             var instance = DataPlaneInstance.Builder.newInstance().url("http://any").build();
             when(serverService.findById(any())).thenReturn(ServiceResult.success(instance));
 
@@ -179,7 +179,7 @@ class RemoteDataPlaneSelectorServiceTest {
 
         @Test
         void shouldReturnNotFound_whenInstanceDoesNotExist() {
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
             when(serverService.findById(any())).thenReturn(ServiceResult.notFound("not found"));
 
             var result = service().findById(instanceId);

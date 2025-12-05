@@ -34,7 +34,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -64,7 +64,7 @@ public class EdrApiV4EndToEndTest {
 
         @Test
         void queryEdrEntries_noQuerySpec(ManagementEndToEndTestContext context, EndpointDataReferenceStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var entry = createEdrEntry(id).build();
             store.save(entry, createDataAddress());
 
@@ -84,9 +84,9 @@ public class EdrApiV4EndToEndTest {
 
         @Test
         void queryEdrEntries_sortByCreatedDate(ManagementEndToEndTestContext context, EndpointDataReferenceStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
-            var id3 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
+            var id3 = UuidGenerator.INSTANCE.generate().toString();
             var createdAtTime = new AtomicLong(1000L);
             Stream.of(id1, id2, id3).forEach(id -> store.save(createEdrEntry(id).createdAt(createdAtTime.getAndIncrement()).build(), createDataAddress()));
 
@@ -118,7 +118,7 @@ public class EdrApiV4EndToEndTest {
 
         @Test
         void shouldRetrieveEdrDataAddress(ManagementEndToEndTestContext context, EndpointDataReferenceStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createEdrEntry(id).build(), createDataAddress());
 
             var actual = store.findById(id);
@@ -138,7 +138,7 @@ public class EdrApiV4EndToEndTest {
 
         @Test
         void delete(ManagementEndToEndTestContext context, EndpointDataReferenceStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var entity = createEdrEntry(id).build();
             store.save(entity, createDataAddress());
 

@@ -20,7 +20,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -192,7 +192,7 @@ public class DspTestFunctions {
 
     public static JsonObject inForceDatePolicy() {
         return policy(inForceDatePermission("gteq", "contractAgreement+0s", "lteq", "contractAgreement+10s"), "Offer")
-                .add(ID, UUID.randomUUID().toString())
+                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 
@@ -217,7 +217,7 @@ public class DspTestFunctions {
 
     public static JsonObject inForceDateAgreement() {
         return policy(inForceDatePermission("gteq", "contractAgreement+0s", "lteq", "contractAgreement+10s"), "Agreement")
-                .add(ID, UUID.randomUUID().toString())
+                .add(ID, UuidGenerator.INSTANCE.generate().toString())
                 .add("timestamp", ofEpochSecond(System.currentTimeMillis()).toString())
                 .add("assigner", "assigner")
                 .add("assignee", "assignee")

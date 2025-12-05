@@ -27,7 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -169,7 +169,7 @@ class HttpRequestParamsProviderImplTest {
         return DataFlowStartMessage.Builder.newInstance()
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("test-type").build())
                 .sourceDataAddress(source)
-                .processId(UUID.randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 

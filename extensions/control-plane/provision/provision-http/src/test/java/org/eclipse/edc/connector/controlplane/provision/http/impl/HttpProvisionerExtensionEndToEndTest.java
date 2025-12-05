@@ -61,9 +61,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
-import static java.util.UUID.randomUUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.PROVISIONING_REQUESTED;
@@ -81,7 +81,7 @@ import static org.mockito.Mockito.when;
 public class HttpProvisionerExtensionEndToEndTest {
     public static final String PARTICIPANT_CONTEXT_ID = "anonymous";
     private static final String ASSET_ID = "assetId";
-    private static final String CONTRACT_ID = UUID.randomUUID().toString();
+    private static final String CONTRACT_ID = UuidGenerator.INSTANCE.generate().toString();
     private static final String POLICY_ID = "3";
     private final int dataPort = getFreePort();
     private final Interceptor delegate = mock(Interceptor.class);
@@ -168,13 +168,13 @@ public class HttpProvisionerExtensionEndToEndTest {
                 .build();
 
         var contractOffer = ContractOffer.Builder.newInstance()
-                .id(randomUUID().toString())
-                .assetId(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(policy)
                 .build();
         return ContractNegotiation.Builder.newInstance()
-                .id(randomUUID().toString())
-                .counterPartyId(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("test")
                 .protocol("test")
                 .contractAgreement(contractAgreement)
@@ -193,7 +193,7 @@ public class HttpProvisionerExtensionEndToEndTest {
 
     private TransferRequestMessage createTransferRequestMessage() {
         return TransferRequestMessage.Builder.newInstance()
-                .processId(randomUUID().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .dataDestination(DataAddress.Builder.newInstance().type("test").build())
                 .protocol("any")
                 .counterPartyAddress("http://any")

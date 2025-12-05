@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
 import static org.eclipse.edc.spi.result.Result.success;
@@ -279,7 +279,7 @@ class JwtPresentationVerifierTest {
                     .issueTime(now)
                     .audience(MY_OWN_DID)
                     .notBeforeTime(now)
-                    .claim("jti", UUID.randomUUID().toString())
+                    .claim("jti", UuidGenerator.INSTANCE.generate().toString())
                     .expirationTime(Date.from(Instant.now().plusSeconds(60)));
 
             Map.of("vp", asMap(vpContent)).forEach(claimsSet::claim);
@@ -326,7 +326,7 @@ class JwtPresentationVerifierTest {
                     .issueTime(now)
                     .audience(VP_HOLDER_ID)
                     .notBeforeTime(now)
-                    .claim("jti", UUID.randomUUID().toString())
+                    .claim("jti", UuidGenerator.INSTANCE.generate().toString())
                     .expirationTime(Date.from(Instant.now().plusSeconds(60)));
 
             Map.of("vc", VC_CONTENT_DEGREE_EXAMPLE).forEach(claimsSet::claim);

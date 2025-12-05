@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.binaryEqualTo;
@@ -82,7 +82,7 @@ class TransferPushEndToEndTest {
         void httpPushDataTransfer(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                   @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) {
             providerDataSource.stubFor(get(anyUrl()).willReturn(ok("data")));
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var dataAddressProperties = Map.<String, Object>of(
                     "name", "transfer-test",
                     "baseUrl", "http://localhost:" + providerDataSource.getPort() + "/source",
@@ -112,7 +112,7 @@ class TransferPushEndToEndTest {
             oauth2server.stubFor(post(anyUrl()).willReturn(okJson("{\"access_token\": \"token\"}")));
             providerDataSource.stubFor(get(anyUrl()).willReturn(ok("data")));
             vault.storeSecret("provision-oauth-secret", "supersecret");
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var sourceDataAddressProperties = Map.<String, Object>of(
                     "type", "HttpData",
                     "baseUrl", "http://localhost:" + providerDataSource.getPort() + "/source",

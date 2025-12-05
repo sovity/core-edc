@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -29,7 +29,7 @@ class ResourceDefinitionTest {
     void verifyDeserialization() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        TestResourceDefinition process = TestResourceDefinition.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        TestResourceDefinition process = TestResourceDefinition.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, process);
 

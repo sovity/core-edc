@@ -42,7 +42,7 @@ import org.mockito.ArgumentCaptor;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -482,10 +482,10 @@ public class DataPlaneSignalingFlowControllerTest {
 
     private TransferProcess.Builder transferProcessBuilder() {
         return TransferProcess.Builder.newInstance()
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .protocol("test-protocol")
-                .contractId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .contractId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("test.connector.address")
                 .transferType("transferType")
                 .dataDestination(DataAddress.Builder.newInstance().type("test").build());

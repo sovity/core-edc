@@ -39,12 +39,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
-import static java.util.UUID.randomUUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.AGREED;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.REQUESTED;
@@ -64,8 +64,8 @@ public class ContractNegotiationApiV4EndToEndTest {
 
         @Test
         void getAll(ManagementEndToEndTestContext context, ContractNegotiationStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id1).counterPartyAddress(context.providerProtocolUrl()).build());
             store.save(createContractNegotiationBuilder(id2).counterPartyAddress(context.providerProtocolUrl()).build());
 
@@ -235,7 +235,7 @@ public class ContractNegotiationApiV4EndToEndTest {
             return ContractNegotiation.Builder.newInstance()
                     .id(negotiationId)
                     .correlationId(negotiationId)
-                    .counterPartyId(randomUUID().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("http://counter-party/address")
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                             .uri("local://test")
@@ -250,16 +250,16 @@ public class ContractNegotiationApiV4EndToEndTest {
         private ContractOffer.Builder contractOfferBuilder() {
             return ContractOffer.Builder.newInstance()
                     .id("test-offer-id")
-                    .assetId(randomUUID().toString())
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
                     .policy(Policy.Builder.newInstance().build());
         }
 
         private ContractAgreement createContractAgreement(String negotiationId) {
             return ContractAgreement.Builder.newInstance()
                     .id(negotiationId)
-                    .assetId(randomUUID().toString())
-                    .consumerId(randomUUID() + "-consumer")
-                    .providerId(randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().type(PolicyType.CONTRACT).build())
                     .participantContextId("participantContextId")
                     .build();

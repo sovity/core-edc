@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.security.PrivateKey;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -49,14 +49,14 @@ class DcpDefaultServicesExtensionTest {
     private static PrivateKey privateKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate()
                 .toPrivateKey();
     }
 
     @BeforeEach
     void setup(ServiceExtensionContext context) throws JOSEException {
-        var publicKeyId = "did:web:" + UUID.randomUUID() + "#key-id";
+        var publicKeyId = "did:web:" + UuidGenerator.INSTANCE.generate() + "#key-id";
         var privateKeyAlias = "private";
         var config = ConfigFactory.fromMap(Map.of("edc.iam.sts.publickey.id", publicKeyId, "edc.iam.sts.privatekey.alias", privateKeyAlias));
         when(context.getConfig()).thenReturn(config);

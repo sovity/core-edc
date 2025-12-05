@@ -54,7 +54,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
@@ -163,7 +163,7 @@ class DataPlaneSignalingClientTest {
                     .compose(DataPlaneSignalingClientTest::compact)
                     .orElseThrow((e) -> new EdcException(e.getFailureDetail()));
 
-            var errorMsg = UUID.randomUUID().toString();
+            var errorMsg = UuidGenerator.INSTANCE.generate().toString();
             var body = MAPPER.writeValueAsString(expected);
             dataPlane.stubFor(post(DATA_PLANE_PATH + "/start").withRequestBody(equalTo(body))
                     .willReturn(aResponse().withStatus(400).withBody(errorMsg)));
@@ -313,7 +313,7 @@ class DataPlaneSignalingClientTest {
                     .compose(DataPlaneSignalingClientTest::compact)
                     .orElseThrow((e) -> new EdcException(e.getFailureDetail()));
 
-            var errorMsg = UUID.randomUUID().toString();
+            var errorMsg = UuidGenerator.INSTANCE.generate().toString();
 
             var body = MAPPER.writeValueAsString(expected);
             dataPlane.stubFor(post(DATA_PLANE_PATH + "/prepare").withRequestBody(equalTo(body))

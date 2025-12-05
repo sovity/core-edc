@@ -90,8 +90,8 @@ Same drill each time. Cherry-picking is not enough because the UUID will be used
         - `uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }`
         - `uuid = "5.1.0"` (May change)
 - Replace in the whole project:
-    - `UUID.randomUUID()` -> `UuidGenerator.INSTANCE.generate()`
-    - `import java.util.UUID;` -> `import org.eclipse.edc.spi.uuid.UuidGenerator;`
+    - `UuidGenerator.INSTANCE.generate()` -> `UuidGenerator.INSTANCE.generate()`
+    - `import org.eclipse.edc.spi.uuid.UuidGenerator;` -> `import org.eclipse.edc.spi.uuid.UuidGenerator;`
 
 
 # CI migration

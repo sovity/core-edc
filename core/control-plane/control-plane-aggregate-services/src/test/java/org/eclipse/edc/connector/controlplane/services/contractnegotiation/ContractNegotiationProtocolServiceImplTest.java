@@ -62,7 +62,7 @@ import org.mockito.ArgumentCaptor;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -458,7 +458,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private ContractNegotiation.Builder contractNegotiationBuilder() {
         return ContractNegotiation.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .correlationId("processId")
                 .counterPartyId("connectorId")
                 .counterPartyAddress("counterPartyAddress")
@@ -469,7 +469,7 @@ class ContractNegotiationProtocolServiceImplTest {
 
     private TokenRepresentation tokenRepresentation() {
         return TokenRepresentation.Builder.newInstance()
-                .token(UUID.randomUUID().toString())
+                .token(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -177,7 +177,7 @@ public class ContractDefinition extends AbstractParticipantResource {
         @Override
         public ContractDefinition build() {
             if (entity.getId() == null) {
-                id(UUID.randomUUID().toString());
+                id(UuidGenerator.INSTANCE.generate().toString());
             }
             Objects.requireNonNull(entity.accessPolicyId);
             Objects.requireNonNull(entity.contractPolicyId);

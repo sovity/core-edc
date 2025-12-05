@@ -81,7 +81,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static java.util.UUID.randomUUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.failedFuture;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -405,7 +405,7 @@ class ContractNegotiationIntegrationTest {
     private ContractOffer getContractOffer() {
         return ContractOffer.Builder.newInstance()
                 .id(ContractOfferId.create("1", "test-asset-id").toString())
-                .assetId(randomUUID().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .policy(Policy.Builder.newInstance()
                         .type(PolicyType.CONTRACT)
                         .assigner("assigner")

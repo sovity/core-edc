@@ -32,7 +32,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.test.system.utils.PolicyFixtures.noConstraintPolicy;
@@ -65,12 +65,12 @@ class ContractNegotiationEndToEndTest {
 
         protected void createResourcesOnProvider(ManagementApiClientV4 provider, String assetId, Map<String, Object> dataAddressProperties) {
             provider.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
-            provider.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyId, noConstraintPolicyId);
+            provider.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyId, noConstraintPolicyId);
         }
 
         @Test
         void contractNegotiation(@Runtime(PROVIDER_NAME) ManagementApiClientV4 provider, @Runtime(CONSUMER_NAME) ManagementApiClientV4 consumer) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var agreementId = consumer.negotiateContract(provider.asCounterParty(), assetId);

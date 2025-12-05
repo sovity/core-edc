@@ -19,7 +19,7 @@ import org.eclipse.edc.statemachine.retry.TestEntity;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -33,7 +33,7 @@ class FutureRetryProcessTest {
 
     @Test
     void shouldReturnSuccess_whenFunctionSucceeds() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         var retryProcess = new FutureRetryProcess<TestEntity, Object, String>("process", (e, i) -> completedFuture("content"));
 
         var future = retryProcess.execute(new ProcessContext<>(entity, "any"));
@@ -43,7 +43,7 @@ class FutureRetryProcessTest {
 
     @Test
     void shouldReturnFailure_whenFunctionFails() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         var retryProcess = new FutureRetryProcess<TestEntity, Object, String>("process", (e, i) -> CompletableFuture.failedFuture(new EdcException("error")));
 
         var future = retryProcess.execute(new ProcessContext<>(entity, "any"));
@@ -58,7 +58,7 @@ class FutureRetryProcessTest {
 
     @Test
     void shouldReturnUnrecoverable_whenFunctionThrowsException() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         var retryProcess = new FutureRetryProcess<TestEntity, Object, String>("process", (testEntity, o) -> {
             throw new RuntimeException("unexpected exception");
         });

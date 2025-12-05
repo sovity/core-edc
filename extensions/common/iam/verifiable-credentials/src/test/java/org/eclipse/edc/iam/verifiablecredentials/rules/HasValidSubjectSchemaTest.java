@@ -23,7 +23,7 @@ import org.eclipse.edc.iam.verifiablecredentials.spi.model.VerifiableCredential;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -61,7 +61,7 @@ class HasValidSubjectSchemaTest {
     void validate_oneSchema_multipleSubjects_oneValidates() {
         var cred = credential()
                 .credentialSubject(subject().build())
-                .credentialSubject(CredentialSubject.Builder.newInstance().id(UUID.randomUUID().toString())
+                .credentialSubject(CredentialSubject.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                         .claim("anotherClaim", "anotherValue")
                         .build())
                 .credentialSchema(new CredentialSchema(getResource("personSchema.json").toString(), "JsonSchemaValidator2018"))
@@ -121,7 +121,7 @@ class HasValidSubjectSchemaTest {
         var cred = credential()
                 .credentialSubject(subject().build()) // OK
                 .credentialSubject(CredentialSubject.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
                         .claim("name", "foo bar") // satisfies name schema, but violates person schema
                         .build())
                 .credentialSchema(new CredentialSchema(getResource("personSchema.json").toString(), "JsonSchemaValidator2018"))
@@ -184,15 +184,15 @@ class HasValidSubjectSchemaTest {
 
     private VerifiableCredential.Builder credential() {
         return VerifiableCredential.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .issuanceDate(Instant.now())
-                .issuer(new Issuer(UUID.randomUUID().toString()))
+                .issuer(new Issuer(UuidGenerator.INSTANCE.generate().toString()))
                 .type("VerifiableCredential");
     }
 
     private CredentialSubject.Builder subject() {
         return CredentialSubject.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .claim("type", "PersonSubject")
                 .claim("name", "Alice Smith")
                 .claim("birthDate", "2001-12-02T00:00:00Z");

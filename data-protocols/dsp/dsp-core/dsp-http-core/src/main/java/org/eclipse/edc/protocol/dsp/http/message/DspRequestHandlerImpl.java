@@ -37,7 +37,7 @@ import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class DspRequestHandlerImpl implements DspRequestHandler {
 
@@ -88,7 +88,7 @@ public class DspRequestHandlerImpl implements DspRequestHandler {
 
         var transformation = registry.transform(resource, JsonObject.class);
         if (transformation.failed()) {
-            var errorCode = UUID.randomUUID();
+            var errorCode = UuidGenerator.INSTANCE.generate();
             monitor.warning("Error transforming %s, error id %s: %s".formatted(request.getResultClass().getSimpleName(), errorCode, transformation.getFailureDetail()));
             return internalServerError(request, errorCode.toString());
         }
@@ -155,7 +155,7 @@ public class DspRequestHandlerImpl implements DspRequestHandler {
 
         var outputTransformation = registry.transform(resource, JsonObject.class);
         if (outputTransformation.failed()) {
-            var errorCode = UUID.randomUUID();
+            var errorCode = UuidGenerator.INSTANCE.generate();
             monitor.warning("Error transforming %s, error id %s: %s".formatted(request.getResultClass().getSimpleName(), errorCode, outputTransformation.getFailureDetail()));
             return internalServerError(request, errorCode.toString());
         }

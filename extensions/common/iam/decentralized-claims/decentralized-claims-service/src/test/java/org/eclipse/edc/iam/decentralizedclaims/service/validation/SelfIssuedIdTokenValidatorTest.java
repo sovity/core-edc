@@ -30,7 +30,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .subject(CONSUMER_DID)
 //                .issuer(CONSUMER_DID)
 //                .audience(EXPECTED_OWN_DID)
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim(PRESENTATION_ACCESS_TOKEN_CLAIM, "foobar")
 //                .claim("client_id", CONSUMER_DID)
 //                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
@@ -46,7 +46,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .subject("did:web:anotherconsumer")
 //                .issuer(CONSUMER_DID)
 //                .audience(EXPECTED_OWN_DID)
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim("client_id", CONSUMER_DID)
 //                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
 //                .build();
@@ -67,7 +67,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .subject(CONSUMER_DID)
 //                .issuer(CONSUMER_DID)
 //                .audience("invalid-audience")
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim("client_id", CONSUMER_DID)
 //                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
 //                .build();
@@ -84,7 +84,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .issuer(CONSUMER_DID)
 //                .audience(EXPECTED_OWN_DID)
 //                .claim("sub_jwk", "somejwk")
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim("client_id", CONSUMER_DID)
 //                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
 //                .build();
@@ -116,7 +116,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .subject(CONSUMER_DID)
 //                .issuer(CONSUMER_DID)
 //                .audience(EXPECTED_OWN_DID)
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim("client_id", CONSUMER_DID)
 //                .build();
 //
@@ -131,7 +131,7 @@ class SelfIssuedIdTokenValidatorTest {
 //                .subject(CONSUMER_DID)
 //                .issuer(CONSUMER_DID)
 //                .audience(EXPECTED_OWN_DID)
-//                .claim("jti", UUID.randomUUID().toString())
+//                .claim("jti", UuidGenerator.INSTANCE.generate().toString())
 //                .claim("client_id", CONSUMER_DID)
 //                .expirationTime(Date.from(Instant.now().minusSeconds(3600)))
 //                .build();

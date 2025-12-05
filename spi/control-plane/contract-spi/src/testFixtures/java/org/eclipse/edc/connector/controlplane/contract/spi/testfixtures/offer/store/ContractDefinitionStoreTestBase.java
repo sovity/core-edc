@@ -37,7 +37,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -347,7 +347,7 @@ public abstract class ContractDefinitionStoreTestBase {
 
             var definitionsExpected = createContractDefinitions(10);
 
-            var definition = createContractDefinitionBuilder(UUID.randomUUID().toString()).participantContextId("customParticipantContextId").build();
+            var definition = createContractDefinitionBuilder(UuidGenerator.INSTANCE.generate().toString()).participantContextId("customParticipantContextId").build();
 
             saveContractDefinitions(definitionsExpected);
             saveContractDefinitions(List.of(definition));

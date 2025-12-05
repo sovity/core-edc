@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -96,7 +96,7 @@ public class PollingHttpExtension implements ServiceExtension {
                 var request = new Request.Builder().url(dataAddress.getStringProperty("baseUrl")).get().build();
                 try {
                     var responseBody = edcHttpClient.execute(request).body();
-                    requestQueue.add(new PollingHttpPart(UUID.randomUUID().toString(), responseBody.byteStream(), "application/ octet-stream"));
+                    requestQueue.add(new PollingHttpPart(UuidGenerator.INSTANCE.generate().toString(), responseBody.byteStream(), "application/ octet-stream"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

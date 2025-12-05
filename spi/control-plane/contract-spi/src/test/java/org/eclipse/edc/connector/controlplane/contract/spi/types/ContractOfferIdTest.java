@@ -18,7 +18,7 @@ import org.eclipse.edc.connector.controlplane.contract.spi.ContractOfferId;
 import org.junit.jupiter.api.Test;
 
 import java.util.Base64;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ class ContractOfferIdTest {
 
     @Test
     void parseId_shouldNotDecodePartsIfTheyArentBase64() {
-        var result = ContractOfferId.parseId("not:base64:" + UUID.randomUUID());
+        var result = ContractOfferId.parseId("not:base64:" + UuidGenerator.INSTANCE.generate());
 
         assertThat(result).isSucceeded().satisfies(it -> {
             assertThat(it.definitionPart()).isEqualTo("not");

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,7 +112,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldStoreEntity_whenItDoesNotAlreadyExist() {
-            var entry = createInstanceBuilder(UUID.randomUUID().toString())
+            var entry = createInstanceBuilder(UuidGenerator.INSTANCE.generate().toString())
                     .allowedTransferType("transfer-type")
                     .allowedSourceType("source-type")
                     .build();
@@ -126,7 +126,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldUpdate_whenEntityAlreadyExist() {
-            var entry = createInstanceBuilder(UUID.randomUUID().toString()).build();
+            var entry = createInstanceBuilder(UuidGenerator.INSTANCE.generate().toString()).build();
             getStore().save(entry);
 
             entry.transitionToAvailable();
@@ -187,7 +187,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldLeaseAgainAfterTimePassed() {
-            var entry = createInstanceBuilder(UUID.randomUUID().toString()).state(REGISTERED.code()).build();
+            var entry = createInstanceBuilder(UuidGenerator.INSTANCE.generate().toString()).state(REGISTERED.code()).build();
             getStore().save(entry);
 
             leaseEntity(entry.getId(), CONNECTOR_NAME, Duration.ofMillis(100));
@@ -199,7 +199,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldReturnReleasedEntityByUpdate() {
-            var entry = createInstanceBuilder(UUID.randomUUID().toString()).state(REGISTERED.code()).build();
+            var entry = createInstanceBuilder(UuidGenerator.INSTANCE.generate().toString()).state(REGISTERED.code()).build();
             getStore().save(entry);
 
             var firstLeased = getStore().nextNotLeased(1, hasState(REGISTERED.code()));
@@ -228,7 +228,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
     class FindByIdAndLease {
         @Test
         void shouldReturnTheEntityAndLeaseIt() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createInstanceBuilder(id).state(REGISTERED.code()).build());
 
             var result = getStore().findByIdAndLease(id);
@@ -246,7 +246,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldReturnAlreadyLeased_whenEntityIsAlreadyLeased() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             getStore().save(createInstanceBuilder(id).state(REGISTERED.code()).build());
             leaseEntity(id, "other owner");
 
@@ -261,7 +261,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldDeleteDataPlaneInstanceById() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var instance = createInstanceBuilder(id).build();
             getStore().save(instance);
 
@@ -272,7 +272,7 @@ public abstract class DataPlaneInstanceStoreTestBase {
 
         @Test
         void shouldFail_whenInstanceDoesNotExist() {
-            var randomId = UUID.randomUUID().toString();
+            var randomId = UuidGenerator.INSTANCE.generate().toString();
 
             var result = getStore().deleteById(randomId);
 

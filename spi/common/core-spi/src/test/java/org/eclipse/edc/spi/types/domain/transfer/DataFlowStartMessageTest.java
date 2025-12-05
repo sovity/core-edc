@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,8 +35,8 @@ class DataFlowStartMessageTest {
         var request = DataFlowStartMessage.Builder.newInstance()
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("foo").build())
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("bar").build())
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .destinationType("test")
                 .callbackAddress(uri)
                 .properties(Map.of("key", "value"))

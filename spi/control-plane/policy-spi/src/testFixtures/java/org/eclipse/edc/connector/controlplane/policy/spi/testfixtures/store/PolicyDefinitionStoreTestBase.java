@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -50,7 +50,7 @@ public abstract class PolicyDefinitionStoreTestBase {
     protected abstract PolicyDefinitionStore getPolicyDefinitionStore();
 
     private String getRandomId() {
-        return UUID.randomUUID().toString();
+        return UuidGenerator.INSTANCE.generate().toString();
     }
 
     private PolicyDefinition createPolicyDef(String id, String target) {

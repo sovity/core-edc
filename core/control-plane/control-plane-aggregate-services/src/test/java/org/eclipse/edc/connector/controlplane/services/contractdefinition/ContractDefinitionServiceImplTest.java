@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -201,9 +201,9 @@ class ContractDefinitionServiceImplTest {
 
     private ContractDefinition createContractDefinition() {
         return ContractDefinition.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .accessPolicyId(UUID.randomUUID().toString())
-                .contractPolicyId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
     }
 }
