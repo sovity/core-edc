@@ -9,7 +9,7 @@ atomikos = "6.0.0"
 awaitility = "4.2.2"
 bouncyCastle-jdk18on = "1.81"
 cloudEvents = "4.0.1"
-edc = "0.14.0.1"
+edc = "0.14.1.1"
 failsafe = "3.3.2"
 guava = "31.1-jre"
 h2 = "2.3.232"
@@ -52,7 +52,7 @@ awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" 
 bouncyCastle-bcpkixJdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 bouncyCastle-bcprovJdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 dnsOverHttps = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp" }
-edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version = "0.14.0" }
+edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version = "0.14.1" }
 failsafe-core = { module = "dev.failsafe:failsafe", version.ref = "failsafe" }
 failsafe-okhttp = { module = "dev.failsafe:failsafe-okhttp", version.ref = "failsafe" }
 google-guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -131,6 +131,6 @@ jackson = ["jackson-annotations", "jackson-databind"]
 jersey-core = ["jersey-server", "jersey-common", "jersey-jackson", "jersey-multipart", "jersey-inject", "jersey-servlet", "jersey-servletcore"]
 
 [plugins]
-edc-build = { id = "org.eclipse.edc.edc-build", version = "0.1.0" }
+edc-build = { id = "org.eclipse.edc.edc-build", version = "1.1.1" }
 shadow = { id = "com.gradleup.shadow", version = "8.3.8" }
 swagger = { id = "io.swagger.core.v3.swagger-gradle-plugin", version.ref = "swagger" }
