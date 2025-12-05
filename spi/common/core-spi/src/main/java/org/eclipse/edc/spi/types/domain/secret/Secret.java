@@ -15,9 +15,9 @@
 package org.eclipse.edc.spi.types.domain.secret;
 
 import org.eclipse.edc.spi.entity.Entity;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Objects;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 

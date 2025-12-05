@@ -29,9 +29,8 @@ import org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.Con
 import org.eclipse.edc.connector.controlplane.contract.spi.types.protocol.ContractNegotiationAck;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.response.StatusResult;
-import org.eclipse.edc.statemachine.StateMachineManager;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
+import org.eclipse.edc.statemachine.StateMachineManager;
 
 import static java.lang.String.format;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.agreement.ContractNegotiationEventMessage.Type.ACCEPTED;

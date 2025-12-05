@@ -27,6 +27,7 @@ import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.jwt.signer.spi.JwsSignerProvider;
 import org.eclipse.edc.security.token.jwt.CryptoConverter;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.TokenDecorator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,6 @@ import java.security.Key;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import static com.nimbusds.jose.JWSAlgorithm.RS256;
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;

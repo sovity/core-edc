@@ -20,7 +20,6 @@ import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.random.RandomGenerator;
 
 /**
  * A remote message that conveys state modifications of a process. These messages are idempotent.

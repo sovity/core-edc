@@ -21,9 +21,8 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.ResourceDefinit
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-import org.jetbrains.annotations.Nullable;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
+import org.jetbrains.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 

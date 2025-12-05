@@ -18,10 +18,10 @@ import org.eclipse.edc.connector.policy.monitor.spi.PolicyMonitorEntry;
 import org.eclipse.edc.connector.policy.monitor.spi.PolicyMonitorEntryStates;
 import org.eclipse.edc.connector.policy.monitor.spi.PolicyMonitorStore;
 import org.eclipse.edc.spi.query.CriterionOperatorRegistry;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.store.InMemoryStatefulEntityStore;
 
 import java.time.Clock;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * In-memory implementation of the {@link PolicyMonitorStore}

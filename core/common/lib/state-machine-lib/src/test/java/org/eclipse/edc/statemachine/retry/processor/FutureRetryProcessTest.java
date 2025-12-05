@@ -15,11 +15,11 @@
 package org.eclipse.edc.statemachine.retry.processor;
 
 import org.eclipse.edc.spi.EdcException;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.statemachine.retry.TestEntity;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 

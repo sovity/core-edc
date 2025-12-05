@@ -17,9 +17,8 @@ package org.eclipse.edc.connector.dataplane.spi.provision;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.edc.json.JacksonTypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-import org.junit.jupiter.api.Test;
-
 import org.eclipse.edc.spi.uuid.UuidGenerator;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

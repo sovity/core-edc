@@ -24,9 +24,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.ECKeyGenerator;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Date;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 class KeyFunctions {
     public static RSAKey createRsa(int len) {

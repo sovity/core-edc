@@ -24,13 +24,13 @@ import org.eclipse.edc.connector.controlplane.services.spi.contractdefinition.Co
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 

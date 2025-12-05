@@ -27,11 +27,11 @@ import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.entity.ProtocolMessages;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 

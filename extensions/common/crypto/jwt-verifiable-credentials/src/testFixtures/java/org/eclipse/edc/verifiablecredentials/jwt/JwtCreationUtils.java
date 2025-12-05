@@ -21,11 +21,11 @@ import com.nimbusds.jose.crypto.ECDSASigner;
 import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.sql.Date;
 import java.time.Instant;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class JwtCreationUtils {
     public static String createJwt(ECKey privateKey, String issuerId, String subject, String audience, Map<String, Object> claims) {

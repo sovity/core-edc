@@ -17,12 +17,12 @@ package org.eclipse.edc.spi.entity;
 
 
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Base class for state machine persistent entities.

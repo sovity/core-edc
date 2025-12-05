@@ -19,10 +19,10 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess
 import org.eclipse.edc.spi.event.Event;
 import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.List;
 import java.util.Set;
-import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 public class TestFunctions {
 
