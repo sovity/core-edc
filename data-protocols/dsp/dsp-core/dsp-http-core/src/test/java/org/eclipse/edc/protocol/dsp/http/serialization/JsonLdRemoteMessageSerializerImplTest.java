@@ -81,7 +81,7 @@ class JsonLdRemoteMessageSerializerImplTest {
 
         verify(registry, times(1)).transform(message, JsonObject.class);
         verify(mapper, times(1))
-                .writeValueAsString(argThat(obj -> ((JsonObject) obj).get("schema:key") != null));
+                .writeValueAsString(argThat(obj -> ((JsonObject) obj).get("http://schema/key") != null));
     }
 
     @Test
