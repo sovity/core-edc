@@ -7,6 +7,7 @@
 #### Changes
 
 - JSON-LD is no longer compacted in JsonLdRemoteMessages
+- Conditionally add Bearer prefix to authorization header in DSP requests
 
 #### Details
 
