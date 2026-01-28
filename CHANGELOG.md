@@ -6,6 +6,8 @@
 
 #### Changes
 
+- JSON-LD is no longer compacted in JsonLdRemoteMessages
+
 #### Details
 
 #### Compatibility
