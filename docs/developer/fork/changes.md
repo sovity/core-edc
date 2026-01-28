@@ -1,18 +1,22 @@
-# Fork
+# Changes Implemented in `0.14.0`'s fork
 
-### 0.14.0.1
+## 0.14.0.2
 
-#### Changes from `0.11.1.1`
+- Omit Compaction of JSON-LD payloads to avoid missing context for Jupiter EDCs.
 
-##### Force `/`
+## 0.14.0.1
+
+### Changes from `0.11.1.1`
+
+#### Force `/`
 
 Discarded. The problem seems to be gone.
 
-##### Switch to UUIDv7
+#### Switch to UUIDv7
 
 Identical to the previous version. Followed the forking procedure.
 
-##### Catalog performance
+#### Catalog performance
 
 Added from `f7e46c618b276664b579cc884d5c94dc87a9f6b0`.
 
@@ -27,15 +31,15 @@ Added from `f7e46c618b276664b579cc884d5c94dc87a9f6b0`.
 - `core/control-plane/control-plane-core/src/main/java/org/eclipse/edc/connector/controlplane/query/asset/AssetPropertyLookup.java`
   - String manipulation optimizations
 
-##### OAuth caching
+#### OAuth caching
 
 Added from `8df1bacebf45c9a00b01fe65fa92d229f442afd9`
 
-### Code safety improvements.
+#### Code safety improvements.
 
 Added from `59c7798e5d915e82d8ab845efd14a7638cfdc3af`
 
-## Changes implemented in `0.11.1`'s fork
+## Previous changes from `0.11.1`'s fork
 
 ### 0.11.1.2
 
