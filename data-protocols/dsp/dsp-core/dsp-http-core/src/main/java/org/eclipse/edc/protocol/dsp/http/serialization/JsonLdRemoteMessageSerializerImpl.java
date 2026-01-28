@@ -78,5 +78,3 @@ public class JsonLdRemoteMessageSerializerImpl implements JsonLdRemoteMessageSer
         throw new EdcException(format("Failed to transform %s: %s", message.getClass().getSimpleName(), join(", ", transformResult.getFailureMessages())));
     }
 }
-
-}
