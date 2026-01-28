@@ -1,6 +1,10 @@
 # Fork
 
-### 0.14.0.1
+### 0.14.0.2
+
+### Fixes for Saturn-Jupiter Interoperability
+
+- Omit Compaction of JSON-LD payloads to avoid missing context for Jupiter EDCs.
 
 #### Changes from `0.11.1.1`
 
