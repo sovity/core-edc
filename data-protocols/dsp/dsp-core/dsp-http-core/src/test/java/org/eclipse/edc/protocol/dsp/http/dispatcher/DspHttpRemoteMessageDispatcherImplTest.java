@@ -296,7 +296,7 @@ class DspHttpRemoteMessageDispatcherImplTest {
 
         var captor = ArgumentCaptor.forClass(TokenParameters.class);
         verify(identityService).obtainClientCredentials(captor.capture());
-        verify(httpClient).executeAsync(argThat(r -> authToken.equals(r.headers().get("Authorization"))), isA(List.class));
+        verify(httpClient).executeAsync(argThat(r -> ("Bearer " + authToken).equals(r.headers().get("Authorization"))), isA(List.class));
         verify(rqFactory).createRequest(message);
         verify(policyEngine).evaluate(any(), and(isA(RequestPolicyContext.class), argThat(ctx -> {
             var requestContext = ctx.requestContext();
