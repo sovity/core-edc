@@ -23,6 +23,8 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
+import static java.lang.String.format;
+import static java.lang.String.join;
 
 /**
  * Serializes {@link RemoteMessage}s to JSON-LD.
