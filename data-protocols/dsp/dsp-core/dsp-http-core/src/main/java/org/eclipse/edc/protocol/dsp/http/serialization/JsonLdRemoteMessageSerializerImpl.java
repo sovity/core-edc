@@ -77,12 +77,11 @@ public class JsonLdRemoteMessageSerializerImpl implements JsonLdRemoteMessageSer
                     throw new EdcException(format("No protocol version found for protocol: %s", message.getProtocol()));
                 }
                 // omit compaction of JSON-LD to not need @context
-                var result = transformResult.getContent();
-                return typeManager.getMapper(typeContext).writeValueAsString(result);
+                return typeManager.getMapper(typeContext).writeValueAsString(transformResult.getContent());
             }
             throw new EdcException(format("Failed to transform %s: %s", message.getClass().getSimpleName(), join(", ", transformResult.getFailureMessages())));
         } catch (JsonProcessingException e) {
-            throw new EdcException(format("Failed to serialize %s: %s", message.getClass().getSimpleName(), e.getMessage()), e);
+            throw new EdcException(format("Failed to serialize %s", message.getClass().getSimpleName()), e);
         }
     }
 }
