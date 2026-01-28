@@ -24,6 +24,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspHttpRemoteMessageDispatcher;
 import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspHttpRequestFactory;
 import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.response.DspHttpResponseBodyExtractor;
+import org.eclipse.edc.protocol.dsp.http.spi.types.HttpMessageProtocol;
 import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.iam.AudienceResolver;
 import org.eclipse.edc.spi.iam.IdentityService;
@@ -117,8 +118,12 @@ public class DspHttpRemoteMessageDispatcherImpl implements DspHttpRemoteMessageD
                 .map(audience -> tokenDecorator.decorate(tokenParametersBuilder).claims(AUDIENCE_CLAIM, audience).build()) // enforce the audience, ignore anything a decorator might have set
                 .compose(identityService::obtainClientCredentials)
                 .map(token -> {
+                    var normalizedToken = token.getToken().replace("Bearer ", "");
+                    String protocol = message.getProtocol();
+                    var useBearerToken = protocol != null && !protocol.equals(HttpMessageProtocol.DATASPACE_PROTOCOL_HTTP);
+                    var versionedToken = useBearerToken ? "Bearer " + normalizedToken : normalizedToken;
                     var requestWithAuth = request.newBuilder()
-                            .header("Authorization", token.getToken())
+                            .header("Authorization", versionedToken)
                             .build();
 
                     return httpClient.executeAsync(requestWithAuth, List.of(retryWhenStatusNot2xxOr4xx()))
