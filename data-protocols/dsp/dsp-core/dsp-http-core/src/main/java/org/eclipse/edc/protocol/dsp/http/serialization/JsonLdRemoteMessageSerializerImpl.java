@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.protocol.dsp.http.serialization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.protocol.dsp.http.spi.serialization.JsonLdRemoteMessageSerializer;
@@ -24,10 +23,6 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.message.RemoteMessage;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
-
-import static java.lang.String.format;
-import static java.lang.String.join;
-import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_CONTEXT_SEPARATOR;
 
 /**
  * Serializes {@link RemoteMessage}s to JSON-LD.
@@ -61,32 +56,27 @@ public class JsonLdRemoteMessageSerializerImpl implements JsonLdRemoteMessageSer
      */
     @Override
     public String serialize(RemoteMessage message) {
-        try {
-            var transformerRegistryResult = dspTransformerRegistry.forProtocol(message.getProtocol());
-            if (transformerRegistryResult.failed()) {
-                throw new EdcException(format("Failed to serialize %s: %s", message.getClass().getSimpleName(), join(", ", transformerRegistryResult.getFailureMessages())));
+        var transformerRegistryResult = dspTransformerRegistry.forProtocol(message.getProtocol());
+        if (transformerRegistryResult.failed()) {
+            throw new EdcException(format("Failed to serialize %s: %s", message.getClass().getSimpleName(), join(", ", transformerRegistryResult.getFailureMessages())));
 
-            }
-
-            var transformerRegistry = transformerRegistryResult.getContent();
-            var transformResult = transformerRegistry.transform(message, JsonObject.class);
-
-            if (transformResult.succeeded()) {
-
-                var protocolVersion = dataspaceProfileContextRegistry.getProtocolVersion(message.getProtocol());
-                if (protocolVersion == null) {
-                    throw new EdcException(format("No protocol version found for protocol: %s", message.getProtocol()));
-                }
-                var compacted = jsonLdService.compact(transformResult.getContent(), scopePrefix + DSP_CONTEXT_SEPARATOR + protocolVersion.version());
-                if (compacted.succeeded()) {
-                    return typeManager.getMapper(typeContext).writeValueAsString(compacted.getContent());
-                }
-                throw new EdcException("Failed to compact JSON-LD: " + compacted.getFailureDetail());
-            }
-            throw new EdcException(format("Failed to transform %s: %s", message.getClass().getSimpleName(), join(", ", transformResult.getFailureMessages())));
-        } catch (JsonProcessingException e) {
-            throw new EdcException(format("Failed to serialize %s", message.getClass().getSimpleName()), e);
         }
+
+        var transformerRegistry = transformerRegistryResult.getContent();
+        var transformResult = transformerRegistry.transform(message, JsonObject.class);
+
+        if (transformResult.succeeded()) {
+
+            var protocolVersion = dataspaceProfileContextRegistry.getProtocolVersion(message.getProtocol());
+            if (protocolVersion == null) {
+                throw new EdcException(format("No protocol version found for protocol: %s", message.getProtocol()));
+            }
+            // omit compaction of JSON-LD to not need @context
+            var result = transformResult.getContent();
+            return typeManager.getMapper(typeContext).writeValueAsString(result);
+        }
+        throw new EdcException(format("Failed to transform %s: %s", message.getClass().getSimpleName(), join(", ", transformResult.getFailureMessages())));
     }
+}
 
 }
