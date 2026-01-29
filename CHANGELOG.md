@@ -6,14 +6,28 @@
 
 #### Changes
 
-- JSON-LD is no longer compacted in JsonLdRemoteMessages
-- Conditionally add Bearer prefix to authorization header in DSP requests
-
 #### Details
 
 #### Compatibility
 
 #### Resolution plan
+
+---
+
+## [0.14.0.2] - 2026-01-29
+
+### Overview
+
+Fix compatibility issues with Jupiter EDCs.
+
+#### Changes
+
+- JSON-LD is no longer compacted in JsonLdRemoteMessages
+- Conditionally add Bearer prefix to authorization header in DSP requests
+
+#### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
 
 ---
 
