@@ -3,6 +3,7 @@
 ## 0.14.0.2
 
 - Omit Compaction of JSON-LD payloads to avoid missing context for Jupiter EDCs.
+- Conditionally add Bearer prefix to authorization header in DSP requests.
 
 ## 0.14.0.1
 

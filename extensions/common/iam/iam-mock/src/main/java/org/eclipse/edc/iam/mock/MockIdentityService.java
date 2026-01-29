@@ -51,7 +51,7 @@ public class MockIdentityService implements IdentityService {
 
     @Override
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, VerificationContext context) {
-        var token = typeManager.readValue(tokenRepresentation.getToken(), MockToken.class);
+        var token = typeManager.readValue(tokenRepresentation.getToken().replace("Bearer ", ""), MockToken.class);
 
         if (faultyClientId.equals(token.clientId)) {
             return Result.failure("Unauthorized");

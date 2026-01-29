@@ -128,13 +128,9 @@ public class IdentityAndTrustService implements IdentityService {
 
     @Override
     public Result<ClaimToken> verifyJwtToken(TokenRepresentation tokenRepresentation, VerificationContext context) {
-        // strip out the "Bearer " prefix
         var token = tokenRepresentation.getToken();
-        if (!token.startsWith("Bearer ")) {
-            return failure("Token is not a Bearer token");
-        }
-        token = token.replace("Bearer ", "").trim();
-        tokenRepresentation = tokenRepresentation.toBuilder().token(token).build();
+        var normalizedToken = token.replace("Bearer ", "").trim();
+        tokenRepresentation = tokenRepresentation.toBuilder().token(normalizedToken).build();
         var claimTokenResult = tokenValidationAction.apply(tokenRepresentation);
 
         if (claimTokenResult.failed()) {
