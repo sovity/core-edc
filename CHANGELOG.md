@@ -6,6 +6,8 @@
 
 #### Changes
 
+- Support Legacy fields in PresentationResponseMessage JSON-LD
+
 #### Details
 
 #### Compatibility

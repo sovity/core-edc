@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.3
+
+- Support Legacy fields in PresentationResponseMessage JSON-LD for Jupiter EDC compatibility.
+
 ## 0.14.0.2
 
 - Omit Compaction of JSON-LD payloads to avoid missing context for Jupiter EDCs.
