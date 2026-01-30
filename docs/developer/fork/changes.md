@@ -1,5 +1,11 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.3
+
+- The names of the fields in the PresentationResponseMessage JSON-LD changed in between the Jupiter and Saturn Version. To allow a Saturn EDC to be able to communicate with both a Jupiter and Saturn compatible DIM-Wallet, the old field names should still be supported.
+  - Otherwise, `edc.dcp.v08.forced` would need to be set to `true` to allow communication with older versions of the DIM-Wallet.
+  - This is in particular a problem with the DIM-Stub-Wallet on staging used for testing. Here, for Saturn-EDCs, the old version needs to be used to have correct DIDs being returned. This fix allows the above property to be set to `false` even when using this old Stub-Wallet.
+
 ## 0.14.0.2
 
 - Omit Compaction of JSON-LD payloads to avoid missing context for Jupiter EDCs.
