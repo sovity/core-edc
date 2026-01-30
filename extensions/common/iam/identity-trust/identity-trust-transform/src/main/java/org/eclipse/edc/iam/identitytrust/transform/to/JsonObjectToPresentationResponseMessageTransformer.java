@@ -33,6 +33,8 @@ import java.util.List;
 
 import static org.eclipse.edc.iam.identitytrust.spi.DcpConstants.DSPACE_DCP_NAMESPACE_V_0_8;
 import static org.eclipse.edc.iam.identitytrust.spi.model.PresentationResponseMessage.Builder;
+import static org.eclipse.edc.iam.identitytrust.spi.model.PresentationResponseMessage.PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_PROPERTY;
+import static org.eclipse.edc.iam.identitytrust.spi.model.PresentationResponseMessage.PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_SUBMISSION_PROPERTY;
 import static org.eclipse.edc.iam.identitytrust.spi.model.PresentationResponseMessage.PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_SUBMISSION_TERM;
 import static org.eclipse.edc.iam.identitytrust.spi.model.PresentationResponseMessage.PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_TERM;
 
@@ -58,13 +60,17 @@ public class JsonObjectToPresentationResponseMessageTransformer extends Abstract
     public @Nullable PresentationResponseMessage transform(@NotNull JsonObject jsonObject, @NotNull TransformerContext context) {
         var builder = Builder.newinstance();
         var submission = jsonObject.get(forNamespace(PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_SUBMISSION_TERM));
-        if (submission != null) {
-            builder.presentationSubmission(readPresentationSubmission(submission, context));
+        var legacySubmission = jsonObject.get(PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_SUBMISSION_PROPERTY);
+        if (submission != null || legacySubmission != null) {
+            var submissionValue = submission != null ? submission : legacySubmission;
+            builder.presentationSubmission(readPresentationSubmission(submissionValue, context));
         }
 
         var presentation = jsonObject.get(forNamespace(PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_TERM));
-        if (presentation != null) {
-            builder.presentation(readPresentation(presentation, context));
+        var legacyPresentation = jsonObject.get(PRESENTATION_RESPONSE_MESSAGE_PRESENTATION_PROPERTY);
+        if (presentation != null || legacyPresentation != null) {
+            var presentationValue = presentation != null ? presentation : legacyPresentation;
+            builder.presentation(readPresentation(presentationValue, context));
         }
 
         return builder.build();
