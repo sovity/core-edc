@@ -7,6 +7,7 @@
 #### Changes
 
 - Support Legacy fields in PresentationResponseMessage JSON-LD
+  - Enables the EDC to parse responses from DIM-Wallets compatible with both Saturn- and Jupiter-EDCs
 
 #### Details
 

@@ -2,7 +2,8 @@
 
 ## 0.14.0.3
 
-- Support Legacy fields in PresentationResponseMessage JSON-LD for Jupiter EDC compatibility.
+- The names of the fields in the PresentationResponseMessage JSON-LD changed in between the Jupiter and Saturn Version. To allow a Saturn EDC to be able to communicate with both a Jupiter and Saturn compatible DIM-Wallet, the old field names should still be supported.
+  - Otherwise, `edc.dcp.v08.forced` would need to be set to `true` to allow communication with older versions of the DIM-Wallet.
 
 ## 0.14.0.2
 
