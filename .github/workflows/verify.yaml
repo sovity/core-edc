@@ -23,14 +23,14 @@ env:
 
 jobs:
 #  CodeQL:
-#    uses: sovity/core-edc-github/.github/workflows/codeql-analysis.yml@0.11.1_2025-03-10_2
+#    uses: sovity/core-edc-github/.github/workflows/codeql-analysis.yml@0.11.1_2025-03-10_3
 #    secrets: inherit
 
   Checkstyle:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
 
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Run Javadoc
         run: ./gradlew javadoc
 
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Run unit tests
         run: ./gradlew test
 
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Postgresql Tests
         run: ./gradlew test -DincludeTags="PostgresqlIntegrationTest"
 
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: End to End Integration Tests
         run: ./gradlew test -DincludeTags="EndToEndTest"
 
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ComponentTest"
 
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_3
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ApiTest"
 
@@ -98,7 +98,7 @@ jobs:
 
 #  Verify-OpenApi:
 #    if: github.event_name == 'pull_request'
-#    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@0.11.1_2025-03-10_2
+#    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@0.11.1_2025-03-10_3
 #    secrets: inherit
 
   Publish-Artifacts:
