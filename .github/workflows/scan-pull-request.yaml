@@ -11,6 +11,6 @@ concurrency:
 
 jobs:
   trigger-workflow:
-    uses: sovity/core-edc-github/.github/workflows/scan-pull-request.yml@0.15.0_2025-12-05_1
+    uses: sovity/core-edc-github/.github/workflows/scan-pull-request.yml@0.15.0_2025-12-05_2
     secrets:
       envGH: ${{ secrets.GITHUB_TOKEN }}
