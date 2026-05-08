@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.4
+
+- Remove the `updateFlowLease` function from the State Machine in the DataPlaneManagerImpl.java. This function is not needed since we only have a single data-plane and only negatively impacts the performance. Removing it reduces the number of lease queries.
+
 ## 0.14.0.3
 
 - The names of the fields in the PresentationResponseMessage JSON-LD changed in between the Jupiter and Saturn Version. To allow a Saturn EDC to be able to communicate with both a Jupiter and Saturn compatible DIM-Wallet, the old field names should still be supported.

@@ -257,15 +257,12 @@ public class DataPlaneManagerImpl extends AbstractStateEntityManager<DataFlow, D
 
     @Override
     protected StateMachineManager.Builder configureStateMachineManager(StateMachineManager.Builder builder) {
-        Supplier<Criterion> ownedByThisRuntime = () -> new Criterion("runtimeId", "=", runtimeId);
         Supplier<Criterion> ownedByAnotherRuntime = () -> new Criterion("runtimeId", "!=", runtimeId);
-        Supplier<Criterion> flowLeaseNeedsToBeUpdated = () -> new Criterion("updatedAt", "<", clock.millis() - flowLeaseConfiguration.time());
         Supplier<Criterion> danglingTransfer = () -> new Criterion("updatedAt", "<", clock.millis() - flowLeaseConfiguration.abandonTime());
 
         return builder
                 .processor(processDataFlowInState(PROVISIONING, this::processProvisioning))
                 .processor(processDataFlowInState(PROVISION_NOTIFYING, this::processProvisionNotifying))
-                .processor(processDataFlowInState(STARTED, this::updateFlowLease, ownedByThisRuntime, flowLeaseNeedsToBeUpdated))
                 .processor(processDataFlowInState(STARTED, this::restartFlow, ownedByAnotherRuntime, danglingTransfer))
                 .processor(processDataFlowInState(RECEIVED, this::processReceived))
                 .processor(processDataFlowInState(COMPLETED, this::processCompleted))
@@ -314,13 +311,6 @@ public class DataPlaneManagerImpl extends AbstractStateEntityManager<DataFlow, D
         }
 
         update(dataFlow);
-    }
-
-    private boolean updateFlowLease(DataFlow dataFlow) {
-        dataFlow.transitToReceived(runtimeId);
-        dataFlow.transitionToStarted(runtimeId);
-        store.save(dataFlow);
-        return true;
     }
 
     private boolean restartFlow(DataFlow dataFlow) {
