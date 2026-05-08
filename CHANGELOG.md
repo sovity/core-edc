@@ -6,6 +6,8 @@
 
 #### Changes
 
+- Remove the `updateFlowLease` function from DataPlaneManagerImpl to reduce lease queries
+
 #### Details
 
 #### Compatibility
