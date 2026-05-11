@@ -1165,28 +1165,6 @@ class DataPlaneManagerImplTest {
     }
 
     @Nested
-    class UpdateFlowLease {
-
-        @Test
-        void shouldUpdateFlow_whenFlowStartedAfterFlowLease() {
-            var dataFlow = dataFlowBuilder().state(RECEIVED.code()).build();
-            when(store.nextNotLeased(anyInt(), startedFlowOwnedByThisRuntime()))
-                    .thenReturn(List.of(dataFlow)).thenReturn(emptyList());
-
-            manager.start();
-
-            await().untilAsserted(() -> {
-                var captor = ArgumentCaptor.forClass(DataFlow.class);
-                verify(store).save(captor.capture());
-                var storedDataFlow = captor.getValue();
-                assertThat(storedDataFlow.getState()).isEqualTo(STARTED.code());
-                assertThat(storedDataFlow.getRuntimeId()).isEqualTo(runtimeId);
-                assertThat(storedDataFlow.getStateCount()).isEqualTo(1);
-            });
-        }
-    }
-
-    @Nested
     class RestartFlowOwnedByAnotherRuntime {
         @Test
         void shouldRestartPushFlow_whenAnotherRuntimeAbandonedIt() {

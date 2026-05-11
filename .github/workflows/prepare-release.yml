@@ -10,7 +10,7 @@ on:
 
 jobs:
   Prepare-Release:
-    uses: sovity/core-edc-github/.github/workflows/prepare-release.yml@0.14.0_2025-08-21_1
+    uses: sovity/core-edc-github/.github/workflows/prepare-release.yml@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
     secrets: inherit
     with:
       version: ${{ inputs.version }}
