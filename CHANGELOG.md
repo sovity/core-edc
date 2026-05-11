@@ -6,13 +6,27 @@
 
 #### Changes
 
-- Remove the `updateFlowLease` function from DataPlaneManagerImpl to reduce lease queries
-
 #### Details
 
 #### Compatibility
 
 #### Resolution plan
+
+---
+
+## [0.14.0.4] - 2026-05-08
+
+### Overview
+
+Performance improvements in the data flow state machine.
+
+#### Changes
+
+- Remove the `updateFlowLease` function from DataPlaneManagerImpl to reduce lease queries
+
+#### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
 
 ---
 
