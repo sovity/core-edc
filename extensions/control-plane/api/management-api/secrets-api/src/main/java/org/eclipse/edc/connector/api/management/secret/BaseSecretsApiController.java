@@ -57,15 +57,6 @@ public abstract class BaseSecretsApiController {
                 .orElseThrow(f -> new EdcException(f.getFailureDetail()));
     }
 
-    public JsonObject getSecret(String id) {
-        var secret = of(id)
-                .map(it -> service.findById(id))
-                .orElseThrow(() -> new ObjectNotFoundException(Secret.class, id));
-
-        return transformerRegistry.transform(secret, JsonObject.class)
-                .orElseThrow(f -> new EdcException(f.getFailureDetail()));
-    }
-
     public void removeSecret(String id) {
         service.delete(id).orElseThrow(exceptionMapper(Secret.class, id));
     }

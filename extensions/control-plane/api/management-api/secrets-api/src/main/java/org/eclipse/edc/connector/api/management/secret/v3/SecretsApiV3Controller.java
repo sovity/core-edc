@@ -45,13 +45,6 @@ public class SecretsApiV3Controller extends BaseSecretsApiController implements 
         return createSecret(secretJson);
     }
 
-    @GET
-    @Path("{id}")
-    @Override
-    public JsonObject getSecretV3(@PathParam("id") String id) {
-        return getSecret(id);
-    }
-
     @DELETE
     @Path("{id}")
     @Override
