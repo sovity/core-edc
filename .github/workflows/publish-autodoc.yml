@@ -13,7 +13,7 @@ on:
 
 jobs:
   publish:
-    uses: sovity/core-edc-github/.github/workflows/publish-autodoc.yml@0.11.1_2025-03-10_1
+    uses: sovity/core-edc-github/.github/workflows/publish-autodoc.yml@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
     secrets: inherit
     with:
       version: ${{ github.event.inputs.version }}

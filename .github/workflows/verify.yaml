@@ -23,30 +23,30 @@ env:
 
 jobs:
 #  CodeQL:
-#    uses: sovity/core-edc-github/.github/workflows/codeql-analysis.yml@0.11.1_2025-03-10_1
+#    uses: sovity/core-edc-github/.github/workflows/codeql-analysis.yml@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
 #    secrets: inherit
 
   Checkstyle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
 
   Javadoc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Run Javadoc
         run: ./gradlew javadoc
 
   Unit-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Run unit tests
         run: ./gradlew test
 
@@ -62,32 +62,32 @@ jobs:
           POSTGRES_PASSWORD: password
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Postgresql Tests
         run: ./gradlew test -DincludeTags="PostgresqlIntegrationTest"
 
   End-To-End-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: End to End Integration Tests
         run: ./gradlew test -DincludeTags="EndToEndTest"
 
   Component-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ComponentTest"
 
   API-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: sovity/core-edc-github/.github/actions/setup-build@0.11.1_2025-03-10_1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ApiTest"
 
@@ -98,7 +98,7 @@ jobs:
 
 #  Verify-OpenApi:
 #    if: github.event_name == 'pull_request'
-#    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@0.11.1_2025-03-10_1
+#    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@2a8d5ee91db61fa80792b75cd9f821179a17e683 #0.11.1_2025-03-10
 #    secrets: inherit
 
   Publish-Artifacts:
@@ -116,7 +116,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: "Gradle: Publish to Production"
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
