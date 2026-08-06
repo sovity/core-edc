@@ -31,8 +31,6 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_PREFIX;
 import static org.eclipse.edc.spi.types.domain.secret.Secret.EDC_SECRET_TYPE;
 import static org.eclipse.edc.spi.types.domain.secret.Secret.EDC_SECRET_VALUE;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -42,22 +40,6 @@ import static org.hamcrest.Matchers.notNullValue;
 public class SecretsApiEndToEndTest {
 
     abstract static class Tests {
-
-        @Test
-        void getSecretById(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UuidGenerator.INSTANCE.generate().toString();
-            var value = "secret-value";
-            vault.storeSecret(id, value);
-
-            context.baseRequest()
-                    .get("/v3/secrets/" + id)
-                    .then()
-                    .statusCode(200)
-                    .body(notNullValue())
-                    .body(CONTEXT, hasEntry(EDC_PREFIX, EDC_NAMESPACE))
-                    .body(ID, equalTo(id))
-                    .body("value", equalTo(value));
-        }
 
         @Test
         void createSecret_shouldBeStored(ManagementEndToEndTestContext context, Vault vault) {

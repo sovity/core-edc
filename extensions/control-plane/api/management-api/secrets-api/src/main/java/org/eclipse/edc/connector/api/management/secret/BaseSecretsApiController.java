@@ -22,10 +22,8 @@ import org.eclipse.edc.spi.types.domain.secret.Secret;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.web.spi.exception.InvalidRequestException;
-import org.eclipse.edc.web.spi.exception.ObjectNotFoundException;
 import org.eclipse.edc.web.spi.exception.ValidationFailureException;
 
-import static java.util.Optional.of;
 import static org.eclipse.edc.spi.types.domain.secret.Secret.EDC_SECRET_TYPE;
 import static org.eclipse.edc.web.spi.exception.ServiceResultHandler.exceptionMapper;
 
