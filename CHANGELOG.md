@@ -8,15 +8,13 @@
 
 #### Details
 
-- Remove `GET /v3/secrets/{secretId}` endpoint from the secrets API
-
 #### Compatibility
 
 #### Resolution plan
 
 ---
 
-## [0.14.0.5] - UNRELEASED
+## [0.14.0.5] - 2026-08-10
 
 ### Overview
 
