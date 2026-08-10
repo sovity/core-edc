@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.5
+
+- Remove the `/v3/secrets/{secretId}` endpoint from the secrets API. This endpoint makes it possible to read secrets from the vault as soon as a user has access to the management API. This is a security risk since it allows a user to read secrets that they should not have access to, in particular for the test EDCs on Sirius with unsecure API protection.
+
 ## 0.14.0.4
 
 - Remove the `updateFlowLease` function from the State Machine in the DataPlaneManagerImpl.java. This function is not needed since we only have a single data-plane and only negatively impacts the performance. Removing it reduces the number of lease queries.
