@@ -8,6 +8,8 @@
 
 #### Details
 
+- Remove `GET /v3/secrets/{secretId}` endpoint from the secrets API
+
 #### Compatibility
 
 #### Resolution plan

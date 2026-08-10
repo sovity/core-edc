@@ -77,44 +77,6 @@ public abstract class BaseSecretsApiControllerTest extends RestControllerTestBas
     }
 
     @Test
-    void getSecret() {
-        var secret = Secret.Builder.newInstance().id(TEST_SECRET_ID).value(TEST_SECRET_VALUE).build();
-        when(service.findById(TEST_SECRET_ID)).thenReturn(secret);
-        var secretJson = createSecretJson().build();
-        when(transformerRegistry.transform(isA(Secret.class), eq(JsonObject.class))).thenReturn(Result.success(secretJson));
-
-        baseRequest()
-                .get("/secrets/%s".formatted(TEST_SECRET_ID))
-                .then()
-                .statusCode(200)
-                .contentType(JSON);
-
-        verify(transformerRegistry).transform(isA(Secret.class), eq(JsonObject.class));
-        verifyNoMoreInteractions(transformerRegistry);
-    }
-
-    @Test
-    void getSecret_notFound() {
-        when(service.findById(any())).thenReturn(null);
-
-        baseRequest()
-                .get("/secrets/not-existent-id")
-                .then()
-                .statusCode(404);
-    }
-
-    @Test
-    void getSecretById_shouldReturnNotFound_whenTransformFails() {
-        when(service.findById("id")).thenReturn(Secret.Builder.newInstance().id(TEST_SECRET_ID).value(TEST_SECRET_VALUE).build());
-        when(transformerRegistry.transform(isA(Secret.class), eq(JsonObject.class))).thenReturn(Result.failure("failure"));
-
-        baseRequest()
-                .get("/secrets/id")
-                .then()
-                .statusCode(500);
-    }
-
-    @Test
     void createSecret() {
         var secret = createSecretBuilder().build();
         when(transformerRegistry.transform(any(JsonObject.class), eq(Secret.class))).thenReturn(Result.success(secret));
