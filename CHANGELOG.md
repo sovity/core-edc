@@ -16,6 +16,22 @@
 
 ---
 
+## [0.14.0.5] - UNRELEASED
+
+### Overview
+
+Remove endpoint for reading Vault secrets.
+
+#### Changes
+
+- Remove `GET /v3/secrets/{secretId}` endpoint from the secrets API
+
+#### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
+
+---
+
 ## [0.14.0.4] - 2026-05-08
 
 ### Overview
