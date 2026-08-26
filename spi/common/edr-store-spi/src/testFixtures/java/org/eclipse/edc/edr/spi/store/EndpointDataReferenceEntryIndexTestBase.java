@@ -20,6 +20,7 @@ import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.query.SortOrder;
 import org.eclipse.edc.spi.result.StoreFailure;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,7 +34,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.edr.spi.TestFunctions.edrEntry;
 import static org.eclipse.edc.edr.spi.TestFunctions.edrEntryBuilder;
@@ -50,7 +50,7 @@ public abstract class EndpointDataReferenceEntryIndexTestBase {
         var tpId = "tp1";
         var assetId = "asset1";
 
-        var entry = edrEntry(assetId, randomUUID().toString(), tpId, randomUUID().toString());
+        var entry = edrEntry(assetId, UuidGenerator.INSTANCE.generate().toString(), tpId, UuidGenerator.INSTANCE.generate().toString());
 
         getStore().save(entry);
 
@@ -66,14 +66,14 @@ public abstract class EndpointDataReferenceEntryIndexTestBase {
         var tpId = "tp1";
         var assetId = "asset1";
 
-        var entry = edrEntry(assetId, randomUUID().toString(), tpId, randomUUID().toString());
+        var entry = edrEntry(assetId, UuidGenerator.INSTANCE.generate().toString(), tpId, UuidGenerator.INSTANCE.generate().toString());
 
         getStore().save(entry);
 
         var dbEntry = getStore().findById(entry.getTransferProcessId());
         assertThat(dbEntry).isNotNull().usingRecursiveComparison().isEqualTo(entry);
 
-        entry = edrEntry(assetId, randomUUID().toString(), tpId, randomUUID().toString());
+        entry = edrEntry(assetId, UuidGenerator.INSTANCE.generate().toString(), tpId, UuidGenerator.INSTANCE.generate().toString());
         getStore().save(entry);
 
         dbEntry = getStore().findById(entry.getTransferProcessId());

@@ -17,8 +17,7 @@ package org.eclipse.edc.connector.controlplane.contract.spi.types.command;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractRequest;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.command.EntityCommand;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Initiates a new Contract Negotiation
@@ -29,7 +28,7 @@ public class InitiateNegotiationCommand extends EntityCommand {
     private final ContractRequest request;
 
     public InitiateNegotiationCommand(ParticipantContext participantContext, ContractRequest request) {
-        super(UUID.randomUUID().toString());
+        super(UuidGenerator.INSTANCE.generate().toString());
         this.participantContext = participantContext;
         this.request = request;
     }

@@ -24,6 +24,7 @@ import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.ManagementEndToEndTestContext;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
@@ -35,7 +36,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,9 +82,9 @@ public class ContractAgreementApiV4EndToEndTest {
         void getById(ManagementEndToEndTestContext context, ContractNegotiationStore store) {
             var agreement = ContractAgreement.Builder.newInstance()
                     .id("cn1")
-                    .assetId(UUID.randomUUID().toString())
-                    .consumerId(UUID.randomUUID() + "-consumer")
-                    .providerId(UUID.randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().assignee("assignee").assigner("assigner").build())
                     .participantContextId("participantContextId")
                     .claims(Map.of("http://example.com/key", "value"))
@@ -130,7 +130,7 @@ public class ContractAgreementApiV4EndToEndTest {
         private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
             return ContractNegotiation.Builder.newInstance()
                     .id(negotiationId)
-                    .counterPartyId(UUID.randomUUID().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("address")
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                             .uri("local://test")
@@ -152,9 +152,9 @@ public class ContractAgreementApiV4EndToEndTest {
         private ContractAgreement createContractAgreement(String negotiationId) {
             return ContractAgreement.Builder.newInstance()
                     .id(negotiationId)
-                    .assetId(UUID.randomUUID().toString())
-                    .consumerId(UUID.randomUUID() + "-consumer")
-                    .providerId(UUID.randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().assignee("assignee").assigner("assigner").build())
                     .participantContextId("participantContextId")
                     .build();

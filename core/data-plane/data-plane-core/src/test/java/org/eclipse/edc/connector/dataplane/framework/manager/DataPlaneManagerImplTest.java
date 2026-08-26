@@ -44,6 +44,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowProvisionMessage;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowResponseMessage;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.statemachine.retry.EntityRetryProcessConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -55,7 +56,6 @@ import java.time.Clock;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.emptyList;
@@ -117,7 +117,7 @@ class DataPlaneManagerImplTest {
     private final EndpointDataReferenceServiceRegistry endpointDataReferenceServiceRegistry = mock();
     private final ResourceDefinitionGeneratorManager resourceDefinitionGeneratorManager = mock();
     private final ProvisionerManager provisionerManager = mock();
-    private final String runtimeId = UUID.randomUUID().toString();
+    private final String runtimeId = UuidGenerator.INSTANCE.generate().toString();
     private DataPlaneManager manager;
 
     @BeforeEach
@@ -1258,8 +1258,8 @@ class DataPlaneManagerImplTest {
 
     private DataFlowStartMessage.Builder dataFlowStartMessageBuilder() {
         return DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("type").build())
                 .destinationDataAddress(DataAddress.Builder.newInstance().type("type").build())
                 .callbackAddress(URI.create("http://any"))

@@ -41,6 +41,7 @@ import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.TypeManager;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.TypeTransformerRegistryImpl;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.transform.transformer.edc.to.JsonValueToGenericTypeTransformer;
@@ -53,7 +54,6 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.time.Duration.ofSeconds;
 import static java.util.Map.entry;
@@ -148,7 +148,7 @@ class FederatedCatalogTest {
         typeTransformerRegistry.register(new JsonValueToGenericTypeTransformer(mapper, JSON_LD));
 
         var node = new TargetNode(
-                "connector", "did:web:" + UUID.randomUUID(),
+                "connector", "did:web:" + UuidGenerator.INSTANCE.generate(),
                 "http://localhost:%s%s".formatted(CONNECTOR_PROTOCOL.port(), CONNECTOR_PROTOCOL.path() + "/" + V_2025_1_VERSION),
                 List.of(DATASPACE_PROTOCOL_HTTP_V_2025_1)
         );
@@ -157,7 +157,7 @@ class FederatedCatalogTest {
 
     @Test
     void crawl_whenOfferAvailable_shouldContainOffer(TestInfo testInfo) {
-        var id = testInfo.getDisplayName() + "-" + UUID.randomUUID();
+        var id = testInfo.getDisplayName() + "-" + UuidGenerator.INSTANCE.generate();
         var asset = TestFunctions.createAssetJson(id);
         var r = apiClient.postAsset(asset);
         assertThat(r).withFailMessage(getError(r)).isSucceeded();

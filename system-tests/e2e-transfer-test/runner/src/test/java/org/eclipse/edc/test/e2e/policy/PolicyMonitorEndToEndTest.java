@@ -20,6 +20,7 @@ import org.eclipse.edc.junit.annotations.Runtime;
 import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.utils.Endpoints;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.Runtimes;
 import org.eclipse.edc.test.e2e.TransferEndToEndParticipant;
@@ -33,7 +34,6 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -154,7 +154,7 @@ class PolicyMonitorEndToEndTest {
 
             var noConstraintPolicyId = provider.createPolicyDefinition(noConstraintPolicy());
             var assetId = provider.createAsset(createAssetRequestBody);
-            provider.createContractDefinition(assetId, UUID.randomUUID().toString(), noConstraintPolicyId, contractPolicyId);
+            provider.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), noConstraintPolicyId, contractPolicyId);
             return assetId;
         }
     }

@@ -37,6 +37,7 @@ import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowTerminateMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.TypeTransformerRegistryImpl;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.transform.transformer.dspace.from.JsonObjectFromDataAddressDspaceTransformer;
@@ -48,7 +49,6 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,7 +93,7 @@ public class DataPlaneSignalingApiEndToEndTest extends AbstractDataPlaneTest {
         seedVault();
         var jsonLd = runtime.getService(JsonLd.class);
 
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var flowMessage = DataFlowStartMessage.Builder.newInstance()
                 .processId(processId)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("HttpData").property(EDC_NAMESPACE + "baseUrl", "http://foo.bar/").build())
@@ -139,7 +139,7 @@ public class DataPlaneSignalingApiEndToEndTest extends AbstractDataPlaneTest {
         seedVault();
         var jsonLd = runtime.getService(JsonLd.class);
 
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var flowMessage = DataFlowStartMessage.Builder.newInstance()
                 .processId(processId)
                 .sourceDataAddress(DataAddress.Builder.newInstance().type("HttpData").property(EDC_NAMESPACE + "baseUrl", "http://foo.bar/").build())
@@ -180,7 +180,7 @@ public class DataPlaneSignalingApiEndToEndTest extends AbstractDataPlaneTest {
         seedVault();
         var jsonLd = runtime.getService(JsonLd.class);
 
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
 
         var sourceDataAddress = DataAddress.Builder.newInstance()
                 .type("HttpData")
@@ -239,7 +239,7 @@ public class DataPlaneSignalingApiEndToEndTest extends AbstractDataPlaneTest {
         seedVault();
         var jsonLd = runtime.getService(JsonLd.class);
 
-        var processId = UUID.randomUUID().toString();
+        var processId = UuidGenerator.INSTANCE.generate().toString();
         var sourceDataAddress = DataAddress.Builder.newInstance()
                 .type("HttpData")
                 .property(EDC_NAMESPACE + "baseUrl", "http://foo.bar/")

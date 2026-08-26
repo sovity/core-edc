@@ -42,12 +42,12 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -355,7 +355,7 @@ public class TestFunctions {
                 .state(REQUESTED.code())
                 .type(ContractNegotiation.Type.PROVIDER)
                 .contractOffer(ContractOffer.Builder.newInstance()
-                        .id(UUID.randomUUID().toString())
+                        .id(UuidGenerator.INSTANCE.generate().toString())
                         .assetId("assetId")
                         .policy(Policy.Builder.newInstance().build())
                         .build())

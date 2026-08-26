@@ -31,6 +31,7 @@ import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
@@ -43,7 +44,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -197,14 +197,14 @@ class AssetServiceImplTest {
             var asset = createAsset("assetId");
             when(index.deleteById("assetId")).thenReturn(StoreResult.success(asset));
             var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
-                    .counterPartyId(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("address")
                     .protocol("protocol")
                     .contractAgreement(ContractAgreement.Builder.newInstance()
-                            .id(UUID.randomUUID().toString())
-                            .providerId(UUID.randomUUID().toString())
-                            .consumerId(UUID.randomUUID().toString())
+                            .id(UuidGenerator.INSTANCE.generate().toString())
+                            .providerId(UuidGenerator.INSTANCE.generate().toString())
+                            .consumerId(UuidGenerator.INSTANCE.generate().toString())
                             .assetId(asset.getId())
                             .policy(Policy.Builder.newInstance().build())
                             .build())
@@ -225,8 +225,8 @@ class AssetServiceImplTest {
             var asset = createAsset("assetId");
             when(index.deleteById("assetId")).thenReturn(StoreResult.success(asset));
             var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
-                    .counterPartyId(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("address")
                     .protocol("protocol")
                     .state(state.code())

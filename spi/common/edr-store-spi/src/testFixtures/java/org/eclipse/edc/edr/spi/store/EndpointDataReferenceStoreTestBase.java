@@ -19,12 +19,12 @@ import org.eclipse.edc.edr.spi.types.EndpointDataReferenceEntry;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.spi.result.StoreFailure.Reason.GENERAL_ERROR;
 
@@ -39,7 +39,7 @@ public abstract class EndpointDataReferenceStoreTestBase {
         var tpId = "tp1";
         var assetId = "asset1";
 
-        var entry = TestFunctions.edrEntry(assetId, randomUUID().toString(), tpId, randomUUID().toString());
+        var entry = TestFunctions.edrEntry(assetId, UuidGenerator.INSTANCE.generate().toString(), tpId, UuidGenerator.INSTANCE.generate().toString());
 
         getStore().save(entry, TestFunctions.dataAddress());
 

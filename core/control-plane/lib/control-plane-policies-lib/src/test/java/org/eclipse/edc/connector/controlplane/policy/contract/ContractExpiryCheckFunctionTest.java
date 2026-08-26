@@ -20,6 +20,7 @@ import org.eclipse.edc.policy.engine.spi.PolicyContextImpl;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,7 +30,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.time.Instant.now;
@@ -199,10 +199,10 @@ class ContractExpiryCheckFunctionTest {
 
     private ContractAgreement createAgreement(Instant signingTime) {
         return ContractAgreement.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .providerId(UUID.randomUUID().toString())
-                .consumerId(UUID.randomUUID().toString())
-                .assetId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .providerId(UuidGenerator.INSTANCE.generate().toString())
+                .consumerId(UuidGenerator.INSTANCE.generate().toString())
+                .assetId(UuidGenerator.INSTANCE.generate().toString())
                 .contractSigningDate(signingTime.getEpochSecond())
                 .policy(Policy.Builder.newInstance().build())
                 .build();

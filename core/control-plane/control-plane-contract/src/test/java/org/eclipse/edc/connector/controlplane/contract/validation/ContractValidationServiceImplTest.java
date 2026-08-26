@@ -36,6 +36,7 @@ import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import static java.time.Instant.MIN;
 import static java.util.Collections.emptyMap;
@@ -393,6 +393,6 @@ class ContractValidationServiceImplTest {
                 .providerId(PROVIDER_ID)
                 .consumerId(CONSUMER_ID)
                 .policy(Policy.Builder.newInstance().build())
-                .assetId(UUID.randomUUID().toString());
+                .assetId(UuidGenerator.INSTANCE.generate().toString());
     }
 }

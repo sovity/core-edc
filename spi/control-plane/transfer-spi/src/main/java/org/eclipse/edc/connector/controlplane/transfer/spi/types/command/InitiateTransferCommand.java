@@ -17,8 +17,7 @@ package org.eclipse.edc.connector.controlplane.transfer.spi.types.command;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferRequest;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.command.EntityCommand;
-
-import java.util.UUID;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 /**
  * Initiates a TransferProcess on the Consumer side
@@ -29,7 +28,7 @@ public class InitiateTransferCommand extends EntityCommand {
     private final TransferRequest request;
 
     public InitiateTransferCommand(ParticipantContext participantContext, TransferRequest request) {
-        super(UUID.randomUUID().toString());
+        super(UuidGenerator.INSTANCE.generate().toString());
         this.participantContext = participantContext;
         this.request = request;
     }

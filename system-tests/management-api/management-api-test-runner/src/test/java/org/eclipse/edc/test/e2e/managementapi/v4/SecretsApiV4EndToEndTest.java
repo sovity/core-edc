@@ -19,13 +19,12 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.spi.security.Vault;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.test.e2e.managementapi.ManagementEndToEndTestContext;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -47,7 +46,7 @@ public class SecretsApiV4EndToEndTest {
 
         @Test
         void getSecretById(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var value = "secret-value";
             vault.storeSecret(id, value);
 
@@ -63,7 +62,7 @@ public class SecretsApiV4EndToEndTest {
 
         @Test
         void createSecret_shouldBeStored(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var value = "secret-value";
             var secretJson = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -106,7 +105,7 @@ public class SecretsApiV4EndToEndTest {
 
         @Test
         void updateSecret(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var newValue = "new-value";
             vault.storeSecret(id, "secret-value");
 

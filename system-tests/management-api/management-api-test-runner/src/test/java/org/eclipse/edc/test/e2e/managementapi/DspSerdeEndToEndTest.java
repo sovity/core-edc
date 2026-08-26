@@ -47,6 +47,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.domain.message.ErrorMessage;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -59,7 +60,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,7 +117,7 @@ public class DspSerdeEndToEndTest {
         var tp = TransferProcess.Builder.newInstance()
                 .type(TransferProcess.Type.PROVIDER)
                 .state(TransferProcessStates.valueOf(state).code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
         var expanded = serialize(tp);
 
@@ -138,11 +138,11 @@ public class DspSerdeEndToEndTest {
     void ser_ContractNegotiation(String state) {
         var cn = ContractNegotiation.Builder.newInstance()
                 .type(ContractNegotiation.Type.PROVIDER)
-                .counterPartyId(UUID.randomUUID().toString())
+                .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                 .counterPartyAddress("address")
                 .protocol("protocol")
                 .state(ContractNegotiationStates.valueOf(state).code())
-                .correlationId(UUID.randomUUID().toString())
+                .correlationId(UuidGenerator.INSTANCE.generate().toString())
                 .build();
 
         var expanded = serialize(cn);
@@ -182,7 +182,7 @@ public class DspSerdeEndToEndTest {
 
         var policy = deserialize(standAlonePolicy, Policy.class);
 
-        var dataService = DataService.Builder.newInstance().id(UUID.randomUUID().toString())
+        var dataService = DataService.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                 .endpointDescription("connector")
                 .endpointUrl("http://myconnector")
                 .build();
@@ -191,7 +191,7 @@ public class DspSerdeEndToEndTest {
                 .dataService(dataService)
                 .build();
 
-        var dataset = Dataset.Builder.newInstance().id(UUID.randomUUID().toString())
+        var dataset = Dataset.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                 .offer(offerId, policy)
                 .distribution(distribution).build();
 

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.Json;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.monitor.ConsoleMonitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.auth.HashicorpVaultTokenProviderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +31,6 @@ import org.testcontainers.vault.VaultContainer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +107,7 @@ class HashicorpVaultTokenRenewServiceIntegrationTest {
     class LastKnownFoss extends Tests {
         @Container
         static final VaultContainer<?> VAULT_CONTAINER = new VaultContainer<>("vault:1.9.6")
-                .withVaultToken(UUID.randomUUID().toString());
+                .withVaultToken(UuidGenerator.INSTANCE.generate().toString());
 
         @BeforeEach
         void beforeEach() throws IOException, InterruptedException {
@@ -151,7 +151,7 @@ class HashicorpVaultTokenRenewServiceIntegrationTest {
     class Latest extends Tests {
         @Container
         static final VaultContainer<?> VAULT_CONTAINER = new VaultContainer<>("hashicorp/vault:1.18.3")
-                .withVaultToken(UUID.randomUUID().toString());
+                .withVaultToken(UuidGenerator.INSTANCE.generate().toString());
 
         @BeforeEach
         void beforeEach() throws IOException, InterruptedException {

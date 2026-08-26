@@ -21,6 +21,7 @@ import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.gen.ECKeyGenerator;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -31,7 +32,6 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.any;
@@ -155,7 +155,7 @@ public class OauthServerEndToEndExtension implements BeforeAllCallback, AfterAll
         public OauthServerEndToEndExtension build() {
             ext.wireMockServer = Objects.requireNonNullElseGet(ext.wireMockServer, () -> new WireMockServer(wireMockConfig().dynamicPort()));
             ext.issuer = Objects.requireNonNullElseGet(ext.issuer, () -> "test-issuer");
-            ext.signingKeyId = Objects.requireNonNullElseGet(ext.signingKeyId, () -> UUID.randomUUID().toString());
+            ext.signingKeyId = Objects.requireNonNullElseGet(ext.signingKeyId, () -> UuidGenerator.INSTANCE.generate().toString());
             ext.key = Objects.requireNonNullElseGet(ext.key, () -> ext.generateEcKey(ext.signingKeyId));
             ext.authServer = new OauthServer(ext.key, ext.issuer, ext.scopes);
             return ext;

@@ -33,6 +33,7 @@ import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspHttpRemoteMessageDisp
 import org.eclipse.edc.spi.message.RemoteMessageDispatcherRegistry;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +45,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.String.format;
@@ -307,7 +307,7 @@ public class CatalogRuntimeComponentTest {
         var numTargets = 50;
         range(0, numTargets)
                 .forEach(i -> {
-                    var nodeId = "did:web:" + UUID.randomUUID();
+                    var nodeId = "did:web:" + UuidGenerator.INSTANCE.generate();
                     var nodeUrl = format("http://test-node%s.com", i);
                     var node = new TargetNode("test-node-" + i, nodeId, nodeUrl, singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
                     directory.insert(node);
@@ -331,8 +331,8 @@ public class CatalogRuntimeComponentTest {
     @Test
     @DisplayName("Crawl multiple targets with conflicting asset IDs")
     void crawlMultiple_whenConflictingAssetIds_shouldOverwrite(RemoteMessageDispatcherRegistry reg, TypeTransformerRegistry ttr, TargetNodeDirectory directory, JsonLd jsonLd) {
-        var node1 = new TargetNode("test-node1", "did:web:" + UUID.randomUUID(), "http://test-node1.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
-        var node2 = new TargetNode("test-node2", "did:web:" + UUID.randomUUID(), "http://test-node2.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        var node1 = new TargetNode("test-node1", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node1.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        var node2 = new TargetNode("test-node2", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node2.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
 
         directory.insert(node1);
         directory.insert(node2);
@@ -373,7 +373,7 @@ public class CatalogRuntimeComponentTest {
     }
 
     private @NotNull TargetNode targetNode() {
-        return new TargetNode("test-node", "did:web:" + UUID.randomUUID(), "http://test-node.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        return new TargetNode("test-node", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
     }
 
 }
