@@ -72,16 +72,19 @@ class PolicyMonitorEndToEndTest {
             consumer.registerDataPlane(consumerDataPlane.getDataPlaneRegistrationMessage(consumerControlPlaneOauth2Profile));
             provider.registerDataPlane(providerDataPlane.getDataPlaneRegistrationMessage(providerControlPlaneOauth2Profile));
 
+            // "authorization" is a single object, not an array: dataplane-sdk changed
+            // ControlPlaneRegistrationMessage#authorization from List<AuthorizationProfile>
+            // to a single AuthorizationProfile after 0.0.8-SNAPSHOT
             providerDataPlane.registerControlPlane(createObjectBuilder()
                     .add("controlplaneId", provider.getId())
                     .add("endpoint", provider.getSignalingEndpointUrl().toString())
-                    .add("authorization", createArrayBuilder().add(providerDataPlaneOauth2Profile))
+                    .add("authorization", providerDataPlaneOauth2Profile)
                     .build());
 
             consumerDataPlane.registerControlPlane(createObjectBuilder()
                     .add("controlplaneId", consumer.getId())
                     .add("endpoint", consumer.getSignalingEndpointUrl().toString())
-                    .add("authorization", createArrayBuilder().add(consumerDataPlaneOauth2Profile))
+                    .add("authorization", consumerDataPlaneOauth2Profile)
                     .build());
         }
 

@@ -7,5 +7,5 @@ on:
 
 jobs:
   publish:
-    uses: eclipse-edc/.github/.github/workflows/publish-openapi-ui.yml@main
+    uses: sovity/core-edc-github/.github/workflows/publish-openapi-ui.yml@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
     secrets: inherit
