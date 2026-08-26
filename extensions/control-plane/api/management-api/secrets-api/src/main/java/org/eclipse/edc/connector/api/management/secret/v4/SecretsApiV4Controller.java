@@ -17,7 +17,6 @@ package org.eclipse.edc.connector.api.management.secret.v4;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -45,13 +44,6 @@ public class SecretsApiV4Controller extends BaseSecretsApiController implements 
     @Override
     public JsonObject createSecretV4(@SchemaType(EDC_SECRET_TYPE_TERM) JsonObject secretJson) {
         return createSecret(secretJson);
-    }
-
-    @GET
-    @Path("{id}")
-    @Override
-    public JsonObject getSecretV4(@PathParam("id") String id) {
-        return getSecret(id);
     }
 
     @DELETE

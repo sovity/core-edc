@@ -12,6 +12,7 @@
 - Add @Nullable markers ([#95](https://github.com/sovity/core-edc/issues/95))
 - Omit JSON-LD compaction for remote messages ([#68](https://github.com/sovity/core-edc/issues/68))
 - Remove unnecessary data flow updates in state machine ([#97](https://github.com/sovity/core-edc/issues/97))
+- Remove GET secrets endpoint from Secrets API ([#98](https://github.com/sovity/core-edc/issues/98))
 
 #### Compatibility
 
