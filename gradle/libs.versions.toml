@@ -9,8 +9,8 @@ atomikos = "6.0.0"
 awaitility = "4.2.2"
 bouncyCastle-jdk18on = "1.84"
 cloudEvents = "4.0.1"
-dataplane-sdk = "0.0.8-SNAPSHOT"
-edc = "0.17.0"
+dataplane-sdk = "1.0.0-RC2"
+edc = "0.17.0.0-rc1"
 failsafe = "3.3.2"
 h2 = "2.4.240"
 jakarta-annotation = "3.0.0"
@@ -55,7 +55,7 @@ bouncyCastle-bcpkixJdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", versi
 bouncyCastle-bcprovJdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncyCastle-jdk18on" }
 dataplane-sdk = { module = "org.eclipse.dataplane-core:dataplane-sdk", version.ref = "dataplane-sdk" }
 dnsOverHttps = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp" }
-edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version.ref = "edc" }
+edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version = "0.17.0" }
 failsafe-core = { module = "dev.failsafe:failsafe", version.ref = "failsafe" }
 failsafe-okhttp = { module = "dev.failsafe:failsafe-okhttp", version.ref = "failsafe" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }

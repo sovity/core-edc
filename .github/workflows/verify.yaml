@@ -4,14 +4,19 @@ on:
   workflow_call:
   workflow_dispatch:
   push:
-    branches: [ main, release/*, bugfix/* ]
+    branches: [ main, release/*, bugfix/*, sovity/* ]
+    tags: '*'
   pull_request:
-    branches: [ main, release/*, bugfix/* ]
+    branches: [ main, release/*, bugfix/*, sovity/* ]
     paths-ignore:
       - "**.md"
       - "docs/**"
       - "CODEOWNERS"
       - "LICENSE"
+
+env:
+  # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+  AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,75 +24,157 @@ concurrency:
 
 jobs:
   CodeQL:
-    uses: eclipse-edc/.github/.github/workflows/codeql-analysis.yml@main
+    uses: sovity/core-edc-github/.github/workflows/codeql-analysis.yml@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
     secrets: inherit
 
   Checkstyle:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
 
   Javadoc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Run Javadoc
         run: ./gradlew javadoc
 
   Unit-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Run unit tests
         run: ./gradlew test
 
   Postgresql-Integration-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Postgresql Tests
         run: ./gradlew test -DincludeTags="PostgresqlIntegrationTest"
 
   End-To-End-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: End to End Integration Tests
         run: ./gradlew test -DincludeTags="EndToEndTest"
 
   Component-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ComponentTest"
 
   API-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: Component Tests
         run: ./gradlew test -DincludeTags="ApiTest"
 
   Tck-Tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: eclipse-edc/.github/.github/actions/setup-build@main
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
       - name: TCK Tests
-        run: ./gradlew compileJava test -DincludeTags="TckTest" -PverboseTest=true
+        run: ./gradlew compileJava compileTestJava test -DincludeTags="TckTest" -PverboseTest=true
 
   Verify-OpenApi:
     if: github.event_name == 'pull_request'
-    uses: eclipse-edc/.github/.github/workflows/verify-openapi.yml@main
+    uses: sovity/core-edc-github/.github/workflows/verify-openapi.yml@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
     secrets: inherit
 
+  Publish-Artifacts:
+    needs:
+      - API-Tests
+      - Component-Tests
+      - End-To-End-Tests
+      - Postgresql-Integration-Tests
+      - Unit-Tests
+
+    name: Publish artefacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: "Gradle: Publish to Production"
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          export IS_RELEASE=true
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/tags/v}"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureProdRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
+      - name: "Gradle: Publish to Test"
+        if: ${{ startsWith(github.ref, 'refs/heads/sovity/') }}
+        run: |
+          export IS_RELEASE=false
+          GRADLE_ARGS="-Pversion=${GITHUB_REF#refs/heads/sovity/}.0.$(date '+%Y%m%d.%H%M%S')"
+          ./gradlew --parallel "$GRADLE_ARGS" publishAllPublicationsToAzureTestRepository
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+
+  Promote-Artifacts:
+    needs:
+      - Publish-Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Promote artifacts"
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          # AZURE_TOKEN with Packaging (Read, write, & manage); Release (Read, write, execute, & manage)
+          AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
+        run: |
+          # Core EDC https://dev.azure.com/sovity/Core%20EDC
+          PROJECT="41799556-91c8-4df6-8ddb-4471d6f15953"
+          #core-edc feed https://dev.azure.com/sovity/Core%20EDC/_artifacts/feed/core-edc
+          FEED="core-edc"
+          
+          curl -u ":$AZURE_TOKEN" \
+          "https://feeds.dev.azure.com/sovity/$PROJECT/_apis/packaging/Feeds/$FEED/packages?protocolType=maven&includeUrls=false&includeAllVersions=true&includeDeleted=false&api-version=7.0" \
+          | jq --raw-output '.value[].name' | cut -d ':' -f 2 | while read -r arti
+          do
+            echo "Promoting $arti ..."
+            curl \
+              -X PATCH \
+              -u ":$AZURE_TOKEN" \
+              "https://pkgs.dev.azure.com/sovity/$PROJECT/_apis/packaging/feeds/core-edc/maven/groups/org.eclipse.edc/artifacts/${arti}/versions/${VERSION}?api-version=7.1-preview.1" \
+              --json @- <<"EOF"
+          {
+            "views": {
+              "op": "add",
+              "path": "/views/-",
+              "value": "Release"
+            }
+          }
+          
+          EOF
+          
+          if [[ $? -ne 0 ]]
+          then
+            echo "Failed to promote $arti"
+            exit 1
+          else
+            echo "Promoted $arti"
+          fi
+          
+          done

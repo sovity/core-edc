@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.COMPLETED;
@@ -86,16 +85,19 @@ public abstract class VirtualTransferEndToEndTestBase {
 
         connectorClient.dataplanes().registerDataPlane(participants.provider().contextId(), providerDp);
 
+        // "authorization" is a single object, not an array: dataplane-sdk changed
+        // ControlPlaneRegistrationMessage#authorization from List<AuthorizationProfile>
+        // to a single AuthorizationProfile after 0.0.8-SNAPSHOT
         providerDataPlane.registerControlPlane(createObjectBuilder()
                 .add("controlplaneId", participants.provider().contextId())
                 .add("endpoint", participants.provider().getSignalingEndpointUrl())
-                .add("authorization", createArrayBuilder().add(providerDataPlaneOauth2Profile))
+                .add("authorization", providerDataPlaneOauth2Profile)
                 .build());
 
         consumerDataPlane.registerControlPlane(createObjectBuilder()
                 .add("controlplaneId", participants.consumer().contextId())
                 .add("endpoint", participants.consumer().getSignalingEndpointUrl())
-                .add("authorization", createArrayBuilder().add(consumerDataPlaneOauth2Profile))
+                .add("authorization", consumerDataPlaneOauth2Profile)
                 .build());
     }
 
