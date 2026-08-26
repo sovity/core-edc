@@ -15,6 +15,7 @@
 package org.eclipse.edc.transaction.datasource.spi;
 
 import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 
@@ -37,6 +38,6 @@ public interface DataSourceRegistry {
     /**
      * Returns the datasource registered for the name or null if not found.
      */
-    DataSource resolve(String name);
+    @Nullable DataSource resolve(String name);
 
 }

@@ -92,7 +92,7 @@ public class ContractNegotiation extends StatefulEntity<ContractNegotiation> imp
     /**
      * Returns the correlation id sent by the client or null if this is a client-side negotiation.
      */
-    public String getCorrelationId() {
+    public @Nullable String getCorrelationId() {
         return correlationId;
     }
 
@@ -157,6 +157,7 @@ public class ContractNegotiation extends StatefulEntity<ContractNegotiation> imp
     /**
      * Returns the finalized agreement or null if the negotiation has not been confirmed.
      */
+    @Nullable
     public ContractAgreement getContractAgreement() {
         return contractAgreement;
     }

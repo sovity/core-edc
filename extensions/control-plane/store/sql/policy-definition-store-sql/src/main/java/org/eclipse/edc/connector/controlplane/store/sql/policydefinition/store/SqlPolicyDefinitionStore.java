@@ -34,6 +34,7 @@ import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.sql.store.AbstractSqlStore;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,7 +70,7 @@ public class SqlPolicyDefinitionStore extends AbstractSqlStore implements Policy
     }
 
     @Override
-    public PolicyDefinition findById(String id) {
+    public @Nullable PolicyDefinition findById(String id) {
         return transactionContext.execute(() -> {
             var query = QuerySpec.Builder.newInstance().filter(List.of(new Criterion("id", "=", id))).build();
             try {
