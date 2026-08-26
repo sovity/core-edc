@@ -39,8 +39,8 @@ import static org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult.erro
 import static org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult.success;
 
 public class HttpDataSource implements DataSource {
-    private static final int FORBIDDEN = 401;
-    private static final int NOT_AUTHORIZED = 403;
+    private static final int UNAUTHORIZED = 401;
+    private static final int FORBIDDEN = 403;
     private static final int NOT_FOUND = 404;
     private static final long ERROR_BODY_LOG_LIMIT = 4096;
 
@@ -76,7 +76,7 @@ public class HttpDataSource implements DataSource {
                     monitor.warning(format("Error {%s: %s} received reading HTTP data %s from endpoint %s %s. Response body: %s",
                             response.code(), response.message(), name, request.method(), request.url().url(), readErrorBody(response)));
 
-                    if (NOT_AUTHORIZED == response.code() || FORBIDDEN == response.code()) {
+                    if (UNAUTHORIZED == response.code() || FORBIDDEN == response.code()) {
                         return StreamResult.notAuthorized();
                     } else if (NOT_FOUND == response.code()) {
                         return StreamResult.notFound();
