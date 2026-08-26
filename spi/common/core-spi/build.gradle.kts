@@ -23,6 +23,7 @@ dependencies {
     api(libs.failsafe.core)
     api(project(":spi:common:boot-spi"))
     api(project(":spi:common:policy-model"))
+    implementation(libs.uuid)
 
     testImplementation(project(":core:common:junit-base"))
     testImplementation(project(":core:common:lib:json-lib"))

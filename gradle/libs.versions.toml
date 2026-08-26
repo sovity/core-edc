@@ -45,6 +45,7 @@ junit = "6.0.3"
 wiremock = "3.13.2"
 cel = "0.11.1"
 nats = "2.25.2"
+uuid = "5.1.0"
 
 [libraries]
 iron-vc = { module = "com.apicatalog:iron-verifiable-credentials", version.ref = "apicatalog" }
@@ -101,6 +102,8 @@ testcontainers-vault = { module = "org.testcontainers:testcontainers-vault", ver
 tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 cel = { module = "dev.cel:cel", version.ref = "cel" }
 nats-client = { module = "io.nats:jnats", version.ref = "nats" }
+uuid = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid" }
+
 
 # other technology extensions
 apache-commons-pool = { module = "org.apache.commons:commons-pool2", version.ref = "apacheCommonsPool2" }
