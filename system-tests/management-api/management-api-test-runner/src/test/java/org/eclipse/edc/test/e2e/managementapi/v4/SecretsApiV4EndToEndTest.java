@@ -34,8 +34,6 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2;
 import static org.eclipse.edc.spi.types.domain.secret.Secret.EDC_SECRET_TYPE_TERM;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -43,22 +41,6 @@ public class SecretsApiV4EndToEndTest {
 
     @SuppressWarnings("JUnitMalformedDeclaration")
     abstract static class Tests {
-
-        @Test
-        void getSecretById(ManagementEndToEndTestContext context, Vault vault) {
-            var id = UuidGenerator.INSTANCE.generate().toString();
-            var value = "secret-value";
-            vault.storeSecret(id, value);
-
-            context.baseRequest()
-                    .get("/v4/secrets/" + id)
-                    .then()
-                    .statusCode(200)
-                    .body(notNullValue())
-                    .body(CONTEXT, contains(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
-                    .body(ID, equalTo(id))
-                    .body("value", equalTo(value));
-        }
 
         @Test
         void createSecret_shouldBeStored(ManagementEndToEndTestContext context, Vault vault) {

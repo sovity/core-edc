@@ -43,18 +43,6 @@ public interface SecretsApiV4 {
     )
     JsonObject createSecretV4(JsonObject secret);
 
-    @Operation(description = "Gets a secret with the given ID",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "The secret",
-                            content = @Content(schema = @Schema(ref = ManagementApiJsonSchema.V4.SECRET))),
-                    @ApiResponse(responseCode = "400", description = "Request was malformed, e.g. id was null",
-                            content = @Content(array = @ArraySchema(schema = @Schema(ref = ManagementApiJsonSchema.V4.API_ERROR)))),
-                    @ApiResponse(responseCode = "404", description = "A secret with the given ID does not exist",
-                            content = @Content(array = @ArraySchema(schema = @Schema(ref = ManagementApiJsonSchema.V4.API_ERROR))))
-            }
-    )
-    JsonObject getSecretV4(String id);
-
     @Operation(description = "Removes a secret with the given ID if possible.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Secret was deleted successfully"),
