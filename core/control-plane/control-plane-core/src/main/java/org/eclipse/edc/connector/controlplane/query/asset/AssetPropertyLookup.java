@@ -20,7 +20,6 @@ import org.eclipse.edc.spi.query.PropertyLookup;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Map.entry;
@@ -32,14 +31,18 @@ public class AssetPropertyLookup implements PropertyLookup {
     @Override
     public Object getProperty(String key, Object object) {
         if (object instanceof Asset asset) {
-            Stream<Map.Entry<String, Function<Asset, Map<String, Object>>>> mappings = Stream.of(
-                    entry("%s", Asset::getProperties),
-                    entry("'%s'", Asset::getProperties),
-                    entry("%s", Asset::getPrivateProperties),
-                    entry("'%s'", Asset::getPrivateProperties));
+            var singleQuotedKey = "'" + key + "'";
+            Map<String, Object> properties = asset.getProperties();
+            Map<String, Object> privateProperties = asset.getPrivateProperties();
+
+            Stream<Map.Entry<String, Map<String, Object>>> mappings = Stream.of(
+                    entry(key, properties),
+                    entry(singleQuotedKey, properties),
+                    entry(key, privateProperties),
+                    entry(singleQuotedKey, privateProperties));
 
             return mappings
-                    .map(entry -> fallbackPropertyLookup.getProperty(entry.getKey().formatted(key), entry.getValue().apply(asset)))
+                    .map(entry -> fallbackPropertyLookup.getProperty(entry.getKey(), entry.getValue()))
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElseGet(() -> fallbackPropertyLookup.getProperty(key, asset));

@@ -14,6 +14,10 @@
 
 package org.eclipse.edc.util.reflection;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,21 @@ import java.util.List;
  */
 public class PathItem {
 
+    private static final int MAX_CACHE_SIZE = 256;
+
+    private static final LoadingCache<String, List<PathItem>> CACHE = CacheBuilder.newBuilder()
+            .maximumSize(MAX_CACHE_SIZE)
+            .build(CacheLoader.from(PathItem::parseInternal));
+
     public static List<PathItem> parse(String propertyName) {
+        try {
+            return CACHE.get(propertyName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static List<PathItem> parseInternal(String propertyName) {
         var result = new ArrayList<PathItem>();
         result.add(new PathItem());
         for (var i = 0; i < propertyName.length(); i++) {
