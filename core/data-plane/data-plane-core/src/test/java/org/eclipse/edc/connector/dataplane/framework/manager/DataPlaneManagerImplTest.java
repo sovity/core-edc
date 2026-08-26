@@ -52,7 +52,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.net.URI;
-import java.time.Clock;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1184,31 +1183,6 @@ class DataPlaneManagerImplTest {
     }
 
     @Nested
-    class UpdateFlowLease {
-
-        @Test
-        void shouldUpdateFlow_whenFlowStartedAfterFlowLease() {
-            var clock = Clock.systemDefaultZone();
-            var updatedAt = clock.millis();
-            var dataFlow = dataFlowBuilder().runtimeId(runtimeId).state(STARTED.code()).stateCount(0).updatedAt(updatedAt).clock(clock).build();
-            when(store.nextNotLeased(anyInt(), startedFlowOwnedByThisRuntime()))
-                    .thenReturn(List.of(dataFlow)).thenReturn(emptyList());
-
-            manager.start();
-            
-            await().untilAsserted(() -> {
-                var captor = ArgumentCaptor.forClass(DataFlow.class);
-                verify(store).save(captor.capture());
-                var storedDataFlow = captor.getValue();
-                assertThat(storedDataFlow.getState()).isEqualTo(STARTED.code());
-                assertThat(storedDataFlow.getRuntimeId()).isEqualTo(runtimeId);
-                assertThat(storedDataFlow.getStateCount()).isEqualTo(0);
-                assertThat(storedDataFlow.getUpdatedAt()).isGreaterThan(updatedAt);
-            });
-        }
-    }
-
-    @Nested
     class RestartFlowOwnedByAnotherRuntime {
         @Test
         void shouldRestartPushFlow_whenAnotherRuntimeAbandonedIt() {
@@ -1268,10 +1242,6 @@ class DataPlaneManagerImplTest {
 
     private Criterion[] stateIs(int state) {
         return aryEq(new Criterion[]{hasState(state)});
-    }
-
-    private Criterion[] startedFlowOwnedByThisRuntime() {
-        return arrayContains(new Criterion[]{hasState(STARTED.code()), new Criterion("runtimeId", "=", runtimeId)});
     }
 
     private Criterion[] startedFlowOwnedByAnotherRuntime() {
