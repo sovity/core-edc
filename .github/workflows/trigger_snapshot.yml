@@ -9,9 +9,9 @@ on:
 jobs:
   Publish-Snapshot:
     # This workflow will abort if the required secrets don't exist
-    uses: eclipse-edc/.github/.github/workflows/publish-snapshot.yml@main
+    uses: sovity/core-edc-github/.github/workflows/publish-snapshot.yml@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
     secrets: inherit
 
   Publish-Dependencies:
-    uses: eclipse-edc/.github/.github/workflows/publish-dependencies.yml@main
+    uses: sovity/core-edc-github/.github/workflows/publish-dependencies.yml@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
     secrets: inherit
