@@ -17,9 +17,8 @@ package org.eclipse.edc.connector.dataplane.spi.provision;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.edc.json.JacksonTypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,12 +29,12 @@ class ProvisionResourceTest {
     @Test
     void serdes() throws JsonProcessingException {
         var resource = ProvisionResource.Builder.newInstance()
-                .flowId(UUID.randomUUID().toString())
+                .flowId(UuidGenerator.INSTANCE.generate().toString())
                 .dataAddress(DataAddress.Builder.newInstance().type("any").build())
                 .property("any", "any")
                 .build();
 
-        resource.transitionProvisioned(ProvisionedResource.Builder.from(resource).pending(true).dataAddress(DataAddress.Builder.newInstance().type(UUID.randomUUID().toString()).build()).build());
+        resource.transitionProvisioned(ProvisionedResource.Builder.from(resource).pending(true).dataAddress(DataAddress.Builder.newInstance().type(UuidGenerator.INSTANCE.generate().toString()).build()).build());
         resource.transitionDeprovisioned(DeprovisionedResource.Builder.from(resource).pending(true).build());
 
         var json = typeManager.getMapper().writeValueAsString(resource);

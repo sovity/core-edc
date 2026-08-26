@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.sql.testfixtures;
 
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.DriverManagerConnectionFactory;
 import org.eclipse.edc.sql.QueryExecutor;
 import org.eclipse.edc.sql.SqlQueryExecutor;
@@ -35,7 +36,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * Extension for running PostgreSQL store implementation tests. It starts a database container and provides all the base
@@ -50,7 +50,7 @@ public class PostgresqlStoreSetupExtension implements BeforeEachCallback, Before
     private final QueryExecutor queryExecutor = new SqlQueryExecutor();
     private final TransactionContext transactionContext = new NoopTransactionContext();
     private final DataSourceRegistry dataSourceRegistry = new DefaultDataSourceRegistry();
-    private final String datasourceName = UUID.randomUUID().toString();
+    private final String datasourceName = UuidGenerator.INSTANCE.generate().toString();
 
     public PostgresqlStoreSetupExtension() {
         this(DEFAULT_IMAGE);

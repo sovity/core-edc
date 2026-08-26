@@ -24,13 +24,13 @@ import org.eclipse.edc.policy.model.Duty;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.policy.model.Prohibition;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.ProblemBuilder;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
@@ -55,7 +55,7 @@ import static org.mockito.Mockito.when;
 
 class JsonObjectFromContractAgreementMessageTransformerTest {
 
-    public static final String AGREEMENT_ID = UUID.randomUUID().toString();
+    public static final String AGREEMENT_ID = UuidGenerator.INSTANCE.generate().toString();
     private static final String PROVIDER_ID = "providerId";
     private static final String CONSUMER_ID = "consumerId";
     private static final String TIMESTAMP = "1970-01-01T00:00:00Z";

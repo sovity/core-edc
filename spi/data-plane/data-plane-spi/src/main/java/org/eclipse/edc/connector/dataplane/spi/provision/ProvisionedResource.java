@@ -15,10 +15,10 @@
 package org.eclipse.edc.connector.dataplane.spi.provision;
 
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Provisioned resource
@@ -76,7 +76,7 @@ public class ProvisionedResource {
 
         public ProvisionedResource build() {
             if (resource.id == null) {
-                resource.id = UUID.randomUUID().toString();
+                resource.id = UuidGenerator.INSTANCE.generate().toString();
             }
             return resource;
         }

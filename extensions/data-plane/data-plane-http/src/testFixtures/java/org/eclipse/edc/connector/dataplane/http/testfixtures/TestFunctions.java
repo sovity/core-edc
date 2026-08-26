@@ -24,11 +24,11 @@ import org.eclipse.edc.connector.dataplane.spi.schema.DataFlowRequestSchema;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.Collections.emptyMap;
 import static okhttp3.Protocol.HTTP_2;
@@ -49,8 +49,8 @@ public class TestFunctions {
 
     public static DataFlowStartMessage.Builder createRequest(Map<String, String> properties, DataAddress source, DataAddress destination) {
         return DataFlowStartMessage.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
-                .processId(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
+                .processId(UuidGenerator.INSTANCE.generate().toString())
                 .properties(properties)
                 .sourceDataAddress(source)
                 .flowType(FlowType.PUSH)

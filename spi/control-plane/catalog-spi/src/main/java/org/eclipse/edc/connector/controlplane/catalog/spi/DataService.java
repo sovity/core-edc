@@ -17,10 +17,9 @@ package org.eclipse.edc.connector.controlplane.catalog.spi;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Objects;
-
-import static java.util.UUID.randomUUID;
 
 /**
  * Models the DataService class of the DCAT spec. A DataService is defined as a collection
@@ -102,7 +101,7 @@ public class DataService {
 
         public DataService build() {
             if (dataService.id == null) {
-                dataService.id = randomUUID().toString();
+                dataService.id = UuidGenerator.INSTANCE.generate().toString();
             }
 
             return dataService;

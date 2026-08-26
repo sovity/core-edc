@@ -20,11 +20,11 @@ import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.api.auth.spi.ParticipantPrincipal;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.nimbusds.jose.JWSAlgorithm.ES256;
 
@@ -62,7 +62,7 @@ public class OauthServer implements OauthTokenProvider {
                 "iss", issuer,
                 "iat", Instant.now().getEpochSecond(),
                 "exp", Instant.now().plusSeconds(3600).getEpochSecond(),
-                "jti", UUID.randomUUID().toString(),
+                "jti", UuidGenerator.INSTANCE.generate().toString(),
                 "scope", scopes,
                 "role", role
         ));

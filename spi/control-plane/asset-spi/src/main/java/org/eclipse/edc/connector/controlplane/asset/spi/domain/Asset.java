@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.participantcontext.spi.types.AbstractParticipantResource;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static java.util.Optional.ofNullable;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -162,7 +162,7 @@ public class Asset extends AbstractParticipantResource {
             super.build();
 
             if (entity.getId() == null) {
-                id(UUID.randomUUID().toString());
+                id(UuidGenerator.INSTANCE.generate().toString());
             }
 
             return entity;

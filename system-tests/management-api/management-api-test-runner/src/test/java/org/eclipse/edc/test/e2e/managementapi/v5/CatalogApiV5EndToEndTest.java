@@ -38,6 +38,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
@@ -287,7 +287,7 @@ public class CatalogApiV5EndToEndTest {
                                                                                   ContractDefinitionStore contractDefinitionStore) {
 
             // create CatalogAsset
-            var catalogAssetId = "catalog-asset-" + UUID.randomUUID();
+            var catalogAssetId = "catalog-asset-" + UuidGenerator.INSTANCE.generate();
             var httpData = createAsset(catalogAssetId, "HttpData")
                     .property(Asset.PROPERTY_IS_CATALOG, true)
                     .participantContextId(COUNTER_PARTY_ID)
@@ -296,7 +296,7 @@ public class CatalogApiV5EndToEndTest {
             assetIndex.create(httpData);
 
             // create conventional asset
-            var normalAssetId = "normal-asset-" + UUID.randomUUID();
+            var normalAssetId = "normal-asset-" + UuidGenerator.INSTANCE.generate();
             assetIndex.create(createAsset(normalAssetId, "test-type").participantContextId(COUNTER_PARTY_ID).build());
 
             var assetSelectorCriteria = List.of(Criterion.criterion("id", "in", List.of(catalogAssetId, normalAssetId)));
@@ -523,13 +523,13 @@ public class CatalogApiV5EndToEndTest {
 
         private void createContractOffer(PolicyDefinitionStore policyStore, ContractDefinitionStore contractDefStore, List<Criterion> assetsSelectorCritera) {
 
-            var policyId = UUID.randomUUID().toString();
+            var policyId = UuidGenerator.INSTANCE.generate().toString();
 
             var policy = Policy.Builder.newInstance()
                     .build();
 
             var contractDefinition = ContractDefinition.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .contractPolicyId(policyId)
                     .accessPolicyId(policyId)
                     .assetsSelector(assetsSelectorCritera)

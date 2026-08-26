@@ -27,6 +27,7 @@ import org.eclipse.edc.policy.cel.model.CelExpression;
 import org.eclipse.edc.policy.cel.service.CelPolicyExpressionService;
 import org.eclipse.edc.policy.cel.store.CelExpressionStore;
 import org.eclipse.edc.spi.query.QuerySpec;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createObjectBuilder;
@@ -66,7 +66,7 @@ public class CelExpressionApiV5EndToEndTest {
         private String adminToken;
 
         private CelExpression expression(String leftOperand, String expr) {
-            return CelExpression.Builder.newInstance().id(UUID.randomUUID().toString())
+            return CelExpression.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                     .leftOperand(leftOperand)
                     .expression(expr)
                     .description("description")

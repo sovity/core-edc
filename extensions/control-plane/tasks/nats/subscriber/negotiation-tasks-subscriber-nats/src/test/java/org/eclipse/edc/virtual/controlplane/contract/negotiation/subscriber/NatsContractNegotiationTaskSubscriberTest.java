@@ -34,6 +34,7 @@ import org.eclipse.edc.controlplane.tasks.TaskService;
 import org.eclipse.edc.controlplane.tasks.TaskTypes;
 import org.eclipse.edc.nats.testfixtures.NatsEndToEndExtension;
 import org.eclipse.edc.spi.response.StatusResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,7 +50,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
 import java.time.Duration;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.awaitility.Awaitility.await;
@@ -142,7 +142,7 @@ public class NatsContractNegotiationTaskSubscriberTest {
 
     @Test
     void handleRetryMessage_withLimit() throws JsonProcessingException {
-        var payload = baseBuilder(RequestNegotiation.Builder.newInstance(), UUID.randomUUID().toString(), INITIAL, CONSUMER).build();
+        var payload = baseBuilder(RequestNegotiation.Builder.newInstance(), UuidGenerator.INSTANCE.generate().toString(), INITIAL, CONSUMER).build();
         var task = Task.Builder.newInstance().at(System.currentTimeMillis())
                 .payload(payload)
                 .build();

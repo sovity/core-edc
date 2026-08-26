@@ -25,6 +25,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.keys.spi.PublicKeyResolver;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.TokenValidationServiceImpl;
 import org.eclipse.edc.token.spi.TokenValidationRule;
 import org.eclipse.edc.token.spi.TokenValidationService;
@@ -35,7 +36,6 @@ import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static com.nimbusds.jwt.JWTClaimNames.EXPIRATION_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +57,7 @@ class TokenValidationServiceImplTest {
     public void setUp() throws JOSEException {
         key = testKey();
         var publicKey = (RSAPublicKey) key.toPublicKey();
-        publicKeyId = UUID.randomUUID().toString();
+        publicKeyId = UuidGenerator.INSTANCE.generate().toString();
 
         when(publicKeyResolver.resolveKey(any())).thenReturn(Result.failure("not found"));
         when(publicKeyResolver.resolveKey(eq(publicKeyId))).thenReturn(Result.success(publicKey));
@@ -133,7 +133,7 @@ class TokenValidationServiceImplTest {
     private RSAKey testKey() throws JOSEException {
         return new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
-                .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID
                 .generate();
     }
 

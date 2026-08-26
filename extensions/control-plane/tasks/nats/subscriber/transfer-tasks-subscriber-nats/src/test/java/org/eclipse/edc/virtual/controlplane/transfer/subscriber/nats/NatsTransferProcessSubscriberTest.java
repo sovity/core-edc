@@ -34,6 +34,7 @@ import org.eclipse.edc.controlplane.transfer.spi.tasks.TerminateDataFlow;
 import org.eclipse.edc.controlplane.transfer.spi.tasks.TransferProcessTaskPayload;
 import org.eclipse.edc.nats.testfixtures.NatsEndToEndExtension;
 import org.eclipse.edc.spi.response.StatusResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,7 +50,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.time.Clock;
 import java.time.Duration;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.awaitility.Awaitility.await;
@@ -150,7 +150,7 @@ class NatsTransferProcessSubscriberTest {
 
     @Test
     void handleRetryMessage_withLimit() throws JsonProcessingException {
-        var payload = baseBuilder(PrepareTransfer.Builder.newInstance(), UUID.randomUUID().toString(), INITIAL, CONSUMER).build();
+        var payload = baseBuilder(PrepareTransfer.Builder.newInstance(), UuidGenerator.INSTANCE.generate().toString(), INITIAL, CONSUMER).build();
         var task = Task.Builder.newInstance().at(System.currentTimeMillis())
                 .payload(payload)
                 .build();
@@ -177,7 +177,7 @@ class NatsTransferProcessSubscriberTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             return Stream.of(
                     arguments(baseBuilder(PrepareTransfer.Builder.newInstance(), id, INITIAL, CONSUMER).build(), REQUESTING),
                     arguments(baseBuilder(SendTransferRequest.Builder.newInstance(), id, REQUESTING, CONSUMER).build(), REQUESTED),

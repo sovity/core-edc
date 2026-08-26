@@ -22,6 +22,7 @@ import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.policy.cel.model.CelExpression;
 import org.eclipse.edc.policy.cel.service.CelPolicyExpressionService;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.Runtimes;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static jakarta.json.Json.createObjectBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +74,7 @@ class ContractNegotiationEndToEndTest {
 
         protected void createResourcesOnProvider(ManagementApiClientV4 provider, String assetId, Map<String, Object> dataAddressProperties, String accessPolicyId, String contractPolicyId) {
             provider.createAsset(assetId, Map.of("description", "description"), dataAddressProperties);
-            provider.createContractDefinition(assetId, UUID.randomUUID().toString(), accessPolicyId, contractPolicyId);
+            provider.createContractDefinition(assetId, UuidGenerator.INSTANCE.generate().toString(), accessPolicyId, contractPolicyId);
         }
 
         protected void createResourcesOnProvider(ManagementApiClientV4 provider, String assetId, Map<String, Object> dataAddressProperties) {
@@ -83,7 +83,7 @@ class ContractNegotiationEndToEndTest {
 
         @Test
         void contractNegotiation(@Runtime(PROVIDER_NAME) ManagementApiClientV4 provider, @Runtime(CONSUMER_NAME) ManagementApiClientV4 consumer) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var agreementId = consumer.negotiateContract(provider.asCounterParty(), assetId);
@@ -115,10 +115,10 @@ class ContractNegotiationEndToEndTest {
         void contractNegotiation_withCelExpression(@Runtime(PROVIDER_NAME) ManagementApiClientV4 provider,
                                                    @Runtime(CONSUMER_NAME) ManagementApiClientV4 consumer,
                                                    @Runtime(PROVIDER_NAME) CelPolicyExpressionService expressionService) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
 
             expressionService.create(CelExpression.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .actions(Set.of("custom"))
                     .scopes(Set.of("catalog", "contract.negotiation"))
                     .leftOperand("test")
@@ -166,10 +166,10 @@ class ContractNegotiationEndToEndTest {
         void contractNegotiation_withCelExpression_failure(@Runtime(PROVIDER_NAME) ManagementApiClientV4 provider,
                                                            @Runtime(CONSUMER_NAME) ManagementApiClientV4 consumer,
                                                            @Runtime(PROVIDER_NAME) CelPolicyExpressionService expressionService) {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
 
             expressionService.create(CelExpression.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .actions(Set.of("custom"))
                     .scopes(Set.of("catalog", "contract.negotiation"))
                     .leftOperand("test-failure")

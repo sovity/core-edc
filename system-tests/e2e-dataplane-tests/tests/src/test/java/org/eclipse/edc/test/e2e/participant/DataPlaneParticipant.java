@@ -20,12 +20,12 @@ import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 import org.eclipse.edc.junit.utils.LazySupplier;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static java.io.File.separator;
@@ -51,7 +51,7 @@ public class DataPlaneParticipant extends Participant {
     public Map<String, String> dataPlaneConfiguration() {
         return new HashMap<>() {
             {
-                put("edc.component.id", UUID.randomUUID().toString());
+                put("edc.component.id", UuidGenerator.INSTANCE.generate().toString());
                 put("web.http.port", String.valueOf(getFreePort()));
                 put("web.http.path", "/api");
                 put("web.http.control.port", String.valueOf(dataPlaneControl.get().getPort()));

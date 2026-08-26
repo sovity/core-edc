@@ -31,6 +31,7 @@ import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +45,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -86,7 +86,7 @@ class TransferPullEndToEndTest {
         @Test
         void httpPull_dataTransfer_withCallbacks(@Runtime(CONSUMER_CP) TransferEndToEndParticipant consumer,
                                                  @Runtime(PROVIDER_CP) TransferEndToEndParticipant provider) throws IOException {
-            var assetId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             createResourcesOnProvider(provider, assetId, httpSourceDataAddress());
 
             var callbackUrl = String.format("http://localhost:%d/hooks", callbacksEndpoint.getPort());
@@ -113,7 +113,7 @@ class TransferPullEndToEndTest {
             var event = MAPPER.readValue(request.getBody(), new TypeReference<EventEnvelope<TransferProcessStarted>>() {
             });
 
-            var msg = UUID.randomUUID().toString();
+            var msg = UuidGenerator.INSTANCE.generate().toString();
             await().atMost(timeout).untilAsserted(() -> consumer.pullData(event.getPayload().getDataAddress(), Map.of("message", msg), body -> assertThat(body).isEqualTo("data")));
 
         }

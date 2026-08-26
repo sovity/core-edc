@@ -15,9 +15,9 @@
 package org.eclipse.edc.connector.controlplane.contract.spi;
 
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Base64;
-import java.util.UUID;
 
 import static java.lang.String.format;
 
@@ -43,7 +43,7 @@ public final class ContractOfferId {
     }
 
     public static ContractOfferId create(String definitionId, String assetId) {
-        return new ContractOfferId(definitionId, assetId, UUID.randomUUID().toString());
+        return new ContractOfferId(definitionId, assetId, UuidGenerator.INSTANCE.generate().toString());
     }
 
     /**

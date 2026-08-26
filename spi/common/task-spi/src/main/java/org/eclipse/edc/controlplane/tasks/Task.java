@@ -16,9 +16,9 @@ package org.eclipse.edc.controlplane.tasks;
 
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Represents a task that can be scheduled for execution. A task has a payload, which contains the data needed to execute the task, and metadata such as the time at which the task should be executed and the number of times it has been retried.
@@ -110,7 +110,7 @@ public class Task {
 
         public Task build() {
             if (task.id == null) {
-                task.id = UUID.randomUUID().toString();
+                task.id = UuidGenerator.INSTANCE.generate().toString();
             }
             Objects.requireNonNull(task.payload, "Task payload must be set");
 

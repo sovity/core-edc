@@ -30,6 +30,7 @@ import org.eclipse.edc.jsonld.spi.JsonLdKeywords;
 import org.eclipse.edc.security.signature.jws2020.JsonWebKeyPair;
 import org.eclipse.edc.security.signature.jws2020.Jws2020ProofDraft;
 import org.eclipse.edc.security.signature.jws2020.Jws2020SignatureSuite;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,7 +47,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.jsonld.util.JacksonJsonLd.createObjectMapper;
@@ -114,7 +114,7 @@ class LdpIssuerTest {
             var jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                     .privateKey((RSAPrivateKey) keyPair.getPrivate())
                     .keyUse(KeyUse.SIGNATURE)
-                    .keyID(UUID.randomUUID().toString())
+                    .keyID(UuidGenerator.INSTANCE.generate().toString())
                     .issueTime(new Date())
                     .build();
             var keypair = createKeyPair(jwk);

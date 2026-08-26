@@ -47,6 +47,7 @@ import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.eclipse.edc.spi.retry.ExponentialWaitStrategy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.statemachine.retry.EntityRetryProcessConfiguration;
 import org.eclipse.edc.statemachine.retry.EntityRetryProcessFactory;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
@@ -61,7 +62,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Clock;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
@@ -263,7 +263,7 @@ class TransferProcessTaskExecutorImplTest {
     @Test
     void handle_shouldTransitionWhenHandlerSucceeds() {
         var transferProcess = createTransferProcess("transfer-123", INITIAL);
-        var dataPlaneId = UUID.randomUUID().toString();
+        var dataPlaneId = UuidGenerator.INSTANCE.generate().toString();
         var dataFlowResponse = DataFlowResponse.Builder.newInstance()
                 .dataPlaneId(dataPlaneId)
                 .async(true)
@@ -311,7 +311,7 @@ class TransferProcessTaskExecutorImplTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             return Stream.of(
                     arguments(baseBuilder(PrepareTransfer.Builder.newInstance(), id, INITIAL, CONSUMER).build(), REQUESTING),
                     arguments(baseBuilder(SendTransferRequest.Builder.newInstance(), id, REQUESTING, CONSUMER).build(), REQUESTED),

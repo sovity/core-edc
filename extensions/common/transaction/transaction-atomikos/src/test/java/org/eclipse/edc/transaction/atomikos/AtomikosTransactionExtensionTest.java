@@ -18,6 +18,7 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.datasource.spi.DataSourceRegistry;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.eq;
@@ -45,7 +45,7 @@ class AtomikosTransactionExtensionTest {
     @Test
     void verifyEndToEndTransactions() {
         var extensionContext = mock(ServiceExtensionContext.class);
-        when(extensionContext.getRuntimeId()).thenReturn(randomUUID().toString());
+        when(extensionContext.getRuntimeId()).thenReturn(UuidGenerator.INSTANCE.generate().toString());
         when(extensionContext.getConfig()).thenReturn(ConfigFactory.fromMap(Map.of(AtomikosTransactionExtension.LOGGING, "false")));
 
         when(extensionContext.getConfig(isA(String.class))).thenAnswer(a -> JdbcTestFixtures.createDataSourceConfig());

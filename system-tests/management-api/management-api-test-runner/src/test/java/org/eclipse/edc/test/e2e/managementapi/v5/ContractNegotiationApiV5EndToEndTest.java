@@ -33,6 +33,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -46,12 +47,10 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.AGREED;
 import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.REQUESTED;
@@ -135,7 +134,7 @@ public class ContractNegotiationApiV5EndToEndTest {
         void initiate_tokenBearerWrong(ManagementEndToEndV5TestContext context, OauthServer authServer, ParticipantContextService service) {
             var requestJson = contractRequestJson();
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -156,7 +155,7 @@ public class ContractNegotiationApiV5EndToEndTest {
         void initiate_tokenLacksWriteScope(ManagementEndToEndV5TestContext context, OauthServer authServer, ParticipantContextService service) {
             var requestJson = contractRequestJson();
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -214,7 +213,7 @@ public class ContractNegotiationApiV5EndToEndTest {
                                                    ContractNegotiationStore store, ParticipantContextService srv) {
             store.save(createContractNegotiationBuilder("cn1").contractAgreement(createContractAgreement("cn1")).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -259,7 +258,7 @@ public class ContractNegotiationApiV5EndToEndTest {
             var state = ContractNegotiationStates.FINALIZED.code();
             store.save(createContractNegotiationBuilder("cn1").state(state).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -312,7 +311,7 @@ public class ContractNegotiationApiV5EndToEndTest {
             var agreement = createContractAgreement("cn1");
             store.save(createContractNegotiationBuilder("cn1").contractAgreement(agreement).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -343,8 +342,8 @@ public class ContractNegotiationApiV5EndToEndTest {
 
         @Test
         void query(ManagementEndToEndV5TestContext context, ContractNegotiationStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id1).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
             store.save(createContractNegotiationBuilder(id2).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
 
@@ -393,8 +392,8 @@ public class ContractNegotiationApiV5EndToEndTest {
         @Test
         void query_tokenBearerIsAdmin_shouldReturnAll(ManagementEndToEndV5TestContext context, OauthServer authServer, ContractNegotiationStore store) {
 
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id1).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
             store.save(createContractNegotiationBuilder(id2).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
 
@@ -433,10 +432,10 @@ public class ContractNegotiationApiV5EndToEndTest {
 
         @Test
         void query_shouldLimitToResourceOwner(ManagementEndToEndV5TestContext context, ContractNegotiationStore store) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id1).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
             store.save(createContractNegotiationBuilder(id2).participantContextId(otherParticipantId).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
 
@@ -475,10 +474,10 @@ public class ContractNegotiationApiV5EndToEndTest {
 
         @Test
         void query_tokenBearerNotEqualResourceOwner(ManagementEndToEndV5TestContext context, OauthServer authServer, ContractNegotiationStore store, ParticipantContextService srv) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             srv.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractNegotiationBuilder(id).counterPartyAddress(context.providerProtocolUrl(COUNTER_PARTY_ID)).build());
 
             var query = createObjectBuilder()
@@ -542,7 +541,7 @@ public class ContractNegotiationApiV5EndToEndTest {
                     .add("reason", "any good reason")
                     .build();
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -612,7 +611,7 @@ public class ContractNegotiationApiV5EndToEndTest {
                                                   ParticipantContextService srv) {
             store.save(createContractNegotiationBuilder("cn1").build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -654,7 +653,7 @@ public class ContractNegotiationApiV5EndToEndTest {
             return ContractNegotiation.Builder.newInstance()
                     .id(negotiationId)
                     .correlationId(negotiationId)
-                    .counterPartyId(randomUUID().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("http://counter-party/address")
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                             .uri("local://test")
@@ -669,16 +668,16 @@ public class ContractNegotiationApiV5EndToEndTest {
         private ContractOffer.Builder contractOfferBuilder() {
             return ContractOffer.Builder.newInstance()
                     .id("test-offer-id")
-                    .assetId(randomUUID().toString())
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
                     .policy(Policy.Builder.newInstance().build());
         }
 
         private ContractAgreement createContractAgreement(String negotiationId) {
             return ContractAgreement.Builder.newInstance()
                     .id(negotiationId)
-                    .assetId(randomUUID().toString())
-                    .consumerId(randomUUID() + "-consumer")
-                    .providerId(randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().type(PolicyType.CONTRACT).build())
                     .participantContextId(PARTICIPANT_CONTEXT_ID)
                     .build();

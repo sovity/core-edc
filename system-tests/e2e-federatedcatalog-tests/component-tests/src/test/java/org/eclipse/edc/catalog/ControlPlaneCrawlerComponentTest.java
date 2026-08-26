@@ -32,6 +32,7 @@ import org.eclipse.edc.protocol.dsp.http.spi.dispatcher.DspHttpRemoteMessageDisp
 import org.eclipse.edc.spi.message.RemoteMessageDispatcherRegistry;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.lang.String.valueOf;
 import static java.time.Duration.ofSeconds;
@@ -159,8 +159,8 @@ public class ControlPlaneCrawlerComponentTest {
     @Test
     @DisplayName("Verify crawler inside control plane: crawl multiple targets with distinct catalogs")
     void crawlMultiple_shouldCollectAll(RemoteMessageDispatcherRegistry reg, TypeTransformerRegistry ttr, TargetNodeDirectory directory, JsonLd jsonLd) {
-        var node1 = new TargetNode("test-node1", "did:web:" + UUID.randomUUID(), "http://test-node1.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
-        var node2 = new TargetNode("test-node2", "did:web:" + UUID.randomUUID(), "http://test-node2.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        var node1 = new TargetNode("test-node1", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node1.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        var node2 = new TargetNode("test-node2", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node2.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
         directory.insert(node1);
         directory.insert(node2);
         reg.register(DATASPACE_PROTOCOL_HTTP_V_2025_1, dispatcher);
@@ -220,6 +220,6 @@ public class ControlPlaneCrawlerComponentTest {
     }
 
     private @NotNull TargetNode targetNode() {
-        return new TargetNode("test-node", "did:web:" + UUID.randomUUID(), "http://test-node.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
+        return new TargetNode("test-node", "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test-node.com", singletonList(DATASPACE_PROTOCOL_HTTP_V_2025_1));
     }
 }

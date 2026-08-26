@@ -16,13 +16,13 @@ package org.eclipse.edc.iam.oauth2.spi;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import org.eclipse.edc.spi.iam.TokenParameters;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.token.spi.KeyIdDecorator;
 import org.eclipse.edc.token.spi.TokenDecorator;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.AUDIENCE;
 import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.EXPIRATION_TIME;
@@ -49,7 +49,7 @@ public class Oauth2AssertionDecorator implements TokenDecorator {
         return tokenParameters.claims(AUDIENCE, List.of(audience))
                 .claims(ISSUER, clientId)
                 .claims(SUBJECT, clientId)
-                .claims(JWT_ID, UUID.randomUUID().toString())
+                .claims(JWT_ID, UuidGenerator.INSTANCE.generate().toString())
                 .claims(ISSUED_AT, clock.instant().getEpochSecond())
                 .claims(EXPIRATION_TIME, clock.instant().plusSeconds(validity).getEpochSecond());
     }

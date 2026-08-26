@@ -23,11 +23,11 @@ import org.eclipse.edc.connector.controlplane.catalog.spi.Dataset;
 import org.eclipse.edc.connector.controlplane.catalog.spi.Distribution;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -71,8 +71,8 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void save_shouldReturnUniqueElement() {
-            var contractOfferId = UUID.randomUUID().toString();
-            var assetId = UUID.randomUUID().toString();
+            var contractOfferId = UuidGenerator.INSTANCE.generate().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var catalogEntry = createCatalog(contractOfferId, createAsset(assetId));
 
             getStore().save(catalogEntry);
@@ -89,8 +89,8 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void save_shouldReturnLastInsertedContractOfferOnly() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var assetId = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalog(contractOfferId1, createAsset(assetId));
             var entry2 = createCatalog(contractOfferId1, createAsset(assetId));
 
@@ -109,10 +109,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void save_shouldReturnBothContractOffers() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalog(contractOfferId1, createAsset(assetId1));
             var entry2 = createCatalog(contractOfferId2, createAsset(assetId2));
 
@@ -133,10 +133,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void queryByParticipantId() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalogBuilder(contractOfferId1, createAsset(assetId1)).participantId("participant1").build();
             var entry2 = createCatalogBuilder(contractOfferId2, createAsset(assetId2)).participantId("participant2").build();
 
@@ -153,10 +153,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void queryByDatasetId() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalogBuilder(contractOfferId1, createAsset(assetId1)).build();
             var entry2 = createCatalogBuilder(contractOfferId2, createAsset(assetId2)).build();
 
@@ -173,10 +173,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void queryByCatalogProperty() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalogBuilder(contractOfferId1, createAsset(assetId1)).property("name", "value").build();
             var entry2 = createCatalogBuilder(contractOfferId2, createAsset(assetId2)).build();
 
@@ -193,11 +193,11 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void queryByDataServiceEndpoint() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
             var endpoint = "http://endpoint";
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalogBuilder(contractOfferId1, createAsset(assetId1), endpoint).build();
             var entry2 = createCatalogBuilder(contractOfferId2, createAsset(assetId2)).build();
 
@@ -218,10 +218,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void removedMarked_noneMarked() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalog(contractOfferId1, createAsset(assetId1));
             var entry2 = createCatalog(contractOfferId2, createAsset(assetId2));
 
@@ -237,10 +237,10 @@ public abstract class FederatedCatalogCacheTestBase {
 
         @Test
         void removedMarked_shouldDeleteMarked() {
-            var contractOfferId1 = UUID.randomUUID().toString();
-            var contractOfferId2 = UUID.randomUUID().toString();
-            var assetId1 = UUID.randomUUID().toString();
-            var assetId2 = UUID.randomUUID().toString();
+            var contractOfferId1 = UuidGenerator.INSTANCE.generate().toString();
+            var contractOfferId2 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId1 = UuidGenerator.INSTANCE.generate().toString();
+            var assetId2 = UuidGenerator.INSTANCE.generate().toString();
             var entry1 = createCatalog(contractOfferId1, createAsset(assetId1));
             var entry2 = createCatalog(contractOfferId2, createAsset(assetId2));
 
@@ -250,7 +250,7 @@ public abstract class FederatedCatalogCacheTestBase {
             assertThat(getStore().query(QuerySpec.none())).hasSize(2);
 
             getStore().expireAll(); // two items marked
-            getStore().save(createCatalog(UUID.randomUUID().toString(), createAsset(UUID.randomUUID().toString())));
+            getStore().save(createCatalog(UuidGenerator.INSTANCE.generate().toString(), createAsset(UuidGenerator.INSTANCE.generate().toString())));
             getStore().deleteExpired(); // should delete only marked items
             assertThat(getStore().query(QuerySpec.none())).hasSize(1)
                     .doesNotContain(entry1, entry2);

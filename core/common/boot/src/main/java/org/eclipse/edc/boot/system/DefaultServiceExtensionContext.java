@@ -19,10 +19,10 @@ import org.eclipse.edc.spi.EdcException;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.system.configuration.Config;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static java.util.Optional.ofNullable;
 import static org.eclipse.edc.boot.BootServicesExtension.COMPONENT_ID;
@@ -107,7 +107,7 @@ public class DefaultServiceExtensionContext implements ServiceExtensionContext {
             getMonitor().warning("A configuration value for '%s' was found. Explicitly configuring this is not supported anymore and may get removed in the future. A random value will be assigned.".formatted(RUNTIME_ID));
         } else {
             // runtime-id should always be randomized to guarantee a working lease mechanism
-            runtimeId = UUID.randomUUID().toString();
+            runtimeId = UuidGenerator.INSTANCE.generate().toString();
         }
 
         componentId = getSetting(COMPONENT_ID, null);
@@ -115,7 +115,7 @@ public class DefaultServiceExtensionContext implements ServiceExtensionContext {
             componentId = ofNullable(runtimeId)
                     .orElseGet(() -> {
                         getMonitor().warning("%s is not configured so a random UUID is used. It is recommended to provide a static one.".formatted(COMPONENT_ID));
-                        return UUID.randomUUID().toString();
+                        return UuidGenerator.INSTANCE.generate().toString();
                     });
         }
 

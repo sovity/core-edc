@@ -25,6 +25,7 @@ import okio.Buffer;
 import org.eclipse.edc.http.spi.EdcHttpClient;
 import org.eclipse.edc.http.spi.FallbackFactory;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.auth.HashicorpVaultTokenProviderImpl;
 import org.eclipse.edc.vault.hashicorp.spi.auth.HashicorpVaultTokenProvider;
 import org.junit.jupiter.api.Nested;
@@ -40,7 +41,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +57,7 @@ public class HashicorpVaultTokenRenewServiceTest {
     
     private static final String VAULT_URL = "https://mock.url";
     private static final String HEALTH_PATH = "sys/health";
-    private static final String VAULT_TOKEN = UUID.randomUUID().toString();
+    private static final String VAULT_TOKEN = UuidGenerator.INSTANCE.generate().toString();
     private static final long VAULT_TOKEN_TTL = 5L;
     private static final long RENEW_BUFFER = 4L;
     private static final String CUSTOM_SECRET_PATH = "v1/test/secret";

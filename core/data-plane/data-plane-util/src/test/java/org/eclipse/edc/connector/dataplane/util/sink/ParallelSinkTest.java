@@ -18,6 +18,7 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.InputStreamDataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamFailure;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -28,7 +29,6 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 class ParallelSinkTest {
 
     private final Duration timeout = Duration.of(500, MILLIS);
-    private final String dataFlowRequestId = randomUUID().toString();
+    private final String dataFlowRequestId = UuidGenerator.INSTANCE.generate().toString();
     private final FakeParallelSink fakeSink = new FakeParallelSink.Builder().monitor(mock())
             .executorService(Executors.newFixedThreadPool(2))
             .requestId(dataFlowRequestId).build();

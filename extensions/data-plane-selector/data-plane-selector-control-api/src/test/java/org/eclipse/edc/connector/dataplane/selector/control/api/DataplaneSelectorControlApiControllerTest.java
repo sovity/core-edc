@@ -22,6 +22,7 @@ import org.eclipse.edc.junit.annotations.ApiTest;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.validator.spi.JsonObjectValidatorRegistry;
 import org.eclipse.edc.validator.spi.ValidationResult;
@@ -32,7 +33,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.time.Clock;
 import java.util.List;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -166,7 +166,7 @@ class DataplaneSelectorControlApiControllerTest extends RestControllerTestBase {
         @Test
         void shouldUnregisterInstance() {
             when(service.unregister(any())).thenReturn(ServiceResult.success());
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
 
             given()
                     .port(port)
@@ -180,7 +180,7 @@ class DataplaneSelectorControlApiControllerTest extends RestControllerTestBase {
         @Test
         void shouldReturnNotFound_whenServiceReturnsNotFound() {
             when(service.unregister(any())).thenReturn(ServiceResult.notFound("not found"));
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
 
             given()
                     .port(port)
@@ -196,7 +196,7 @@ class DataplaneSelectorControlApiControllerTest extends RestControllerTestBase {
         @Test
         void shouldDeleteInstance() {
             when(service.delete(any())).thenReturn(ServiceResult.success());
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
 
             given()
                     .port(port)
@@ -210,7 +210,7 @@ class DataplaneSelectorControlApiControllerTest extends RestControllerTestBase {
         @Test
         void shouldReturnNotFound_whenServiceReturnsNotFound() {
             when(service.delete(any())).thenReturn(ServiceResult.notFound("not found"));
-            var instanceId = UUID.randomUUID().toString();
+            var instanceId = UuidGenerator.INSTANCE.generate().toString();
 
             given()
                     .port(port)

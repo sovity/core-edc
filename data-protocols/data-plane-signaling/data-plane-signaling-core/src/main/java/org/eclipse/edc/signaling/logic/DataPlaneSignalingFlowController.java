@@ -30,13 +30,13 @@ import org.eclipse.edc.signaling.port.ClientFactory;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.Set;
-import java.util.UUID;
 
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
@@ -76,7 +76,7 @@ public class DataPlaneSignalingFlowController implements DataFlowController {
         }
 
         var builder = DataFlowPrepareMessage.Builder.newInstance()
-                .messageId(UUID.randomUUID().toString())
+                .messageId(UuidGenerator.INSTANCE.generate().toString())
                 .participantId(policy.getAssignee())
                 .counterPartyId(policy.getAssigner())
                 .dataspaceContext(transferProcess.getProtocol())
@@ -111,7 +111,7 @@ public class DataPlaneSignalingFlowController implements DataFlowController {
         }
 
         var builder = DataFlowStartMessage.Builder.newInstance()
-                .messageId(UUID.randomUUID().toString())
+                .messageId(UuidGenerator.INSTANCE.generate().toString())
                 .participantId(policy.getAssignee())
                 .counterPartyId(policy.getAssigner())
                 .dataspaceContext(transferProcess.getProtocol())

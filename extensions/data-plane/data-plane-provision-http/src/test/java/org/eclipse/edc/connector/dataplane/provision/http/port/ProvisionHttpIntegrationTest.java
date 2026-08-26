@@ -34,6 +34,7 @@ import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.any;
@@ -107,7 +107,7 @@ public class ProvisionHttpIntegrationTest {
 
     @Test
     void shouldProvision_andDeprovision(DataPlaneManager dataPlaneManager) {
-        var flowId = UUID.randomUUID().toString();
+        var flowId = UuidGenerator.INSTANCE.generate().toString();
         var startMessage = DataFlowStartMessage.Builder.newInstance()
                 .processId(flowId)
                 .sourceDataAddress(DataAddress.Builder.newInstance()

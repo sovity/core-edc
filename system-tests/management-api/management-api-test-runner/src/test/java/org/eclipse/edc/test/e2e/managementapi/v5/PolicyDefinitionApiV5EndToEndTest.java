@@ -27,6 +27,7 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.participantcontext.spi.service.ParticipantContextService;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.query.QuerySpec;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static io.restassured.http.ContentType.JSON;
@@ -294,7 +294,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
         void get_tokenBearerDoesNotOwnResource(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                                PolicyDefinitionStore store, ParticipantContextService srv) {
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var policy = PolicyDefinition.Builder.newInstance()
@@ -409,7 +409,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
 
         @Test
         void query_shouldLimitToResourceOwner(ManagementEndToEndV5TestContext context, OauthServer authServer, PolicyDefinitionStore store) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             var ownPolicy = store.create(PolicyDefinition.Builder.newInstance().policy(Policy.Builder.newInstance().build())
                             .participantContextId(PARTICIPANT_CONTEXT_ID).build())
@@ -436,7 +436,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
         @Test
         void query_tokenBearerNotEqualResourceOwner(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                                     PolicyDefinitionStore store, ParticipantContextService srv) {
-            var participantId = UUID.randomUUID().toString();
+            var participantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, participantId);
 
             var token = authServer.createToken(participantId);
@@ -574,7 +574,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
                     .add(TYPE, "PolicyDefinition")
                     .add("policy", sampleOdrlPolicy())
                     .build();
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 
@@ -693,7 +693,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
             var stored = store.create(policy)
                     .orElseThrow(f -> new AssertionError(f.getFailureDetail()));
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 
@@ -807,7 +807,7 @@ public class PolicyDefinitionApiV5EndToEndTest {
             var stored = store.create(policy)
                     .orElseThrow(f -> new AssertionError(f.getFailureDetail()));
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 

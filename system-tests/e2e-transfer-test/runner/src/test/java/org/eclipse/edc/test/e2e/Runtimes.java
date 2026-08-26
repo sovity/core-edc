@@ -17,12 +17,12 @@ package org.eclipse.edc.test.e2e;
 import org.eclipse.edc.junit.utils.Endpoints;
 import org.eclipse.edc.spi.system.configuration.Config;
 import org.eclipse.edc.spi.system.configuration.ConfigFactory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static org.eclipse.edc.util.io.Ports.getFreePort;
 
@@ -141,7 +141,7 @@ public interface Runtimes {
                 .endpoint("default", () -> URI.create("http://localhost:" + getFreePort() + "/api"));
 
         static Config config() {
-            return ConfigFactory.fromMap(Map.of("dataplane.id", UUID.randomUUID().toString()));
+            return ConfigFactory.fromMap(Map.of("dataplane.id", UuidGenerator.INSTANCE.generate().toString()));
         }
     }
 }

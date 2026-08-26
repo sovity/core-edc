@@ -16,6 +16,7 @@ package org.eclipse.edc.connector.controlplane.transfer.spi.types;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -23,7 +24,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,7 +43,7 @@ class TransferProcessTest {
     void verifyDeserialization() throws IOException {
         var mapper = new ObjectMapper();
 
-        var process = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).build();
         var writer = new StringWriter();
         mapper.writeValue(writer, process);
 
@@ -56,7 +56,7 @@ class TransferProcessTest {
     void verifyCopy() {
         var process = TransferProcess.Builder
                 .newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .type(TransferProcess.Type.PROVIDER)
                 .createdAt(3)
                 .updatedAt(1234)
@@ -86,7 +86,7 @@ class TransferProcessTest {
 
     @Test
     void verifyConsumerTransitions() {
-        var process = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).type(CONSUMER).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).type(CONSUMER).build();
 
         process.transitionRequesting();
         process.transitionRequested();
@@ -108,7 +108,7 @@ class TransferProcessTest {
     @EnumSource(value = TransferProcessStates.class, mode = INCLUDE, names = {"STARTING", "SUSPENDED"})
     void shouldNotSetDataPlaneIdOnStart_whenTransferIsConsumer(TransferProcessStates fromState) {
         var process = TransferProcess.Builder.newInstance()
-                .id(UUID.randomUUID().toString()).type(CONSUMER)
+                .id(UuidGenerator.INSTANCE.generate().toString()).type(CONSUMER)
                 .state(fromState.code())
                 .build();
 
@@ -120,7 +120,7 @@ class TransferProcessTest {
 
     @Test
     void verifyProviderTransitions() {
-        var process = TransferProcess.Builder.newInstance().id(UUID.randomUUID().toString()).type(TransferProcess.Type.PROVIDER).build();
+        var process = TransferProcess.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).type(TransferProcess.Type.PROVIDER).build();
 
         assertThrows(IllegalStateException.class, process::transitionRequesting, "REQUESTING is not a valid state for provider");
         assertThrows(IllegalStateException.class, process::transitionRequested, "REQUESTED is not a valid state for provider");
@@ -140,7 +140,7 @@ class TransferProcessTest {
     )
     void verifyTerminating_validStates(TransferProcessStates state) {
         var transferProcess = TransferProcess.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .state(state.code())
                 .build();
 
@@ -153,7 +153,7 @@ class TransferProcessTest {
     @EnumSource(value = TransferProcessStates.class, mode = INCLUDE, names = {"COMPLETED", "TERMINATED"})
     void verifyTerminating_invalidStates(TransferProcessStates state) {
         var process = TransferProcess.Builder.newInstance()
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .state(state.code())
                 .build();
 

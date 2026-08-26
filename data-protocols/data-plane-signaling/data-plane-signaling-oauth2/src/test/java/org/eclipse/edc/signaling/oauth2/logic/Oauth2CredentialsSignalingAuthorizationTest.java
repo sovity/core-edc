@@ -27,13 +27,13 @@ import org.eclipse.edc.connector.dataplane.selector.spi.instance.AuthorizationPr
 import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.spi.iam.TokenRepresentation;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +52,7 @@ class Oauth2CredentialsSignalingAuthorizationTest {
         authorization = new Oauth2CredentialsSignalingAuthorization(oauth2Client);
         signingKey = new RSAKeyGenerator(2048)
                 .keyUse(KeyUse.SIGNATURE)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(UuidGenerator.INSTANCE.generate().toString())
                 .generate();
     }
 

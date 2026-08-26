@@ -25,6 +25,7 @@ import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.participantcontext.spi.service.ParticipantContextService;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -36,7 +37,6 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
@@ -99,7 +99,7 @@ public class DataPlaneRegistrationApiV5EndToEndTest {
 
             var message = createDataPlaneRegistrationMessage("dataplane-1", null);
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 
@@ -165,7 +165,7 @@ public class DataPlaneRegistrationApiV5EndToEndTest {
         @Test
         void delete(ManagementEndToEndV5TestContext context, DataPlaneSelectorService selectorService) {
 
-            var instance = DataPlaneInstance.Builder.newInstance().id(UUID.randomUUID().toString())
+            var instance = DataPlaneInstance.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                     .participantContextId(PARTICIPANT_CONTEXT_ID)
                     .url("http://example.com/dataflows")
                     .build();
@@ -187,13 +187,13 @@ public class DataPlaneRegistrationApiV5EndToEndTest {
                                                   OauthServer authServer) {
 
 
-            var instance = DataPlaneInstance.Builder.newInstance().id(UUID.randomUUID().toString())
+            var instance = DataPlaneInstance.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                     .participantContextId(PARTICIPANT_CONTEXT_ID)
                     .url("http://example.com/dataflows")
                     .build();
             selectorService.register(instance).orElseThrow(f -> new AssertionError("Failed to register data plane instance for test setup: " + f.getFailureDetail()));
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 
@@ -210,7 +210,7 @@ public class DataPlaneRegistrationApiV5EndToEndTest {
         void delete_tokenLacksRequiredScope(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                             DataPlaneSelectorService selectorService) {
 
-            var instance = DataPlaneInstance.Builder.newInstance().id(UUID.randomUUID().toString())
+            var instance = DataPlaneInstance.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString())
                     .participantContextId(PARTICIPANT_CONTEXT_ID)
                     .url("http://example.com/dataflows")
                     .build();

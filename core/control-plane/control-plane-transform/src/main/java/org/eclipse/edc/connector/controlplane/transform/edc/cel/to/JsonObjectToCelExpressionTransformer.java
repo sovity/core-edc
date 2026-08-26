@@ -17,12 +17,12 @@ package org.eclipse.edc.connector.controlplane.transform.edc.cel.to;
 import jakarta.json.JsonObject;
 import org.eclipse.edc.jsonld.spi.transformer.AbstractJsonLdTransformer;
 import org.eclipse.edc.policy.cel.model.CelExpression;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TransformerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
-import java.util.UUID;
 
 import static java.util.Optional.ofNullable;
 import static org.eclipse.edc.policy.cel.model.CelExpression.CEL_EXPRESSION_ACTIONS_IRI;
@@ -43,7 +43,7 @@ public class JsonObjectToCelExpressionTransformer extends AbstractJsonLdTransfor
         var id = nodeId(object);
 
         if (id == null) {
-            id = UUID.randomUUID().toString();
+            id = UuidGenerator.INSTANCE.generate().toString();
         }
         var scopes = new HashSet<String>();
         var actions = new HashSet<String>();
