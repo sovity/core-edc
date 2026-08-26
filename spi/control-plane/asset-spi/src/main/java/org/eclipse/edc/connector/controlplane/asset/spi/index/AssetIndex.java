@@ -21,6 +21,7 @@ import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -59,7 +60,7 @@ public interface AssetIndex extends DataAddressResolver {
      * @return The {@link Asset} if one was found, or null otherwise.
      * @throws NullPointerException If {@code assetId} was null or empty.
      */
-    Asset findById(String assetId);
+    @Nullable Asset findById(String assetId);
 
     /**
      * Stores a {@link Asset} in the asset index, if no asset with the same ID already exists.
