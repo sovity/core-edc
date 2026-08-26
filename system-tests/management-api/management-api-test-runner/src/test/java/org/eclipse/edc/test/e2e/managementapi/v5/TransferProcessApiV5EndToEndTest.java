@@ -35,6 +35,7 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -53,7 +54,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static jakarta.json.Json.createArrayBuilder;
@@ -105,10 +105,10 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void initiate(ManagementEndToEndV5TestContext context, TransferProcessStore transferProcessStore, ContractNegotiationStore contractNegotiationStore) {
-            var assetId = UUID.randomUUID().toString();
-            var contractId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
+            var contractId = UuidGenerator.INSTANCE.generate().toString();
             var contractNegotiation = ContractNegotiation.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyId("counterPartyId")
                     .counterPartyAddress("http://counterparty")
                     .protocol("dataspace-protocol-http")
@@ -171,11 +171,11 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void initiate_tokenBearerWrong(ManagementEndToEndV5TestContext context, OauthServer authServer, ParticipantContextService service) {
-            var assetId = UUID.randomUUID().toString();
-            var contractId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
+            var contractId = UuidGenerator.INSTANCE.generate().toString();
             var requestBody = createTransferRequestJson(contractId, assetId);
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -193,8 +193,8 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void initiate_tokenLacksWriteScope(ManagementEndToEndV5TestContext context, OauthServer authServer) {
-            var assetId = UUID.randomUUID().toString();
-            var contractId = UUID.randomUUID().toString();
+            var assetId = UuidGenerator.INSTANCE.generate().toString();
+            var contractId = UuidGenerator.INSTANCE.generate().toString();
             var requestBody = createTransferRequestJson(contractId, assetId);
 
             var token = authServer.createToken(PARTICIPANT_CONTEXT_ID, Map.of("scope", "management-api:read"));
@@ -227,7 +227,7 @@ public class TransferProcessApiV5EndToEndTest {
                                       TransferProcessStore store, ParticipantContextService service) {
             store.save(createTransferProcess("tp1"));
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -271,7 +271,7 @@ public class TransferProcessApiV5EndToEndTest {
                                        TransferProcessStore store, ParticipantContextService service) {
             store.save(createTransferProcess("tp1"));
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -299,7 +299,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void terminate(ManagementEndToEndV5TestContext context, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -319,7 +319,7 @@ public class TransferProcessApiV5EndToEndTest {
         @Test
         void terminate_tokenBearerWrong(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                         TransferProcessStore store, ParticipantContextService service) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -327,7 +327,7 @@ public class TransferProcessApiV5EndToEndTest {
                     .add("reason", "any")
                     .build();
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -345,7 +345,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void terminate_tokenLacksWriteScope(ManagementEndToEndV5TestContext context, OauthServer authServer, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(REQUESTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -366,7 +366,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void suspend(ManagementEndToEndV5TestContext context, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(STARTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -386,7 +386,7 @@ public class TransferProcessApiV5EndToEndTest {
         @Test
         void suspend_tokenBearerWrong(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                       TransferProcessStore store, ParticipantContextService service) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(STARTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, createArrayBuilder().add(EDC_CONNECTOR_MANAGEMENT_CONTEXT_V2))
@@ -394,7 +394,7 @@ public class TransferProcessApiV5EndToEndTest {
                     .add("reason", "any")
                     .build();
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -412,7 +412,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void suspend_tokenLacksWriteScope(ManagementEndToEndV5TestContext context, OauthServer authServer, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(STARTED.code()).build());
             var requestBody = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
@@ -433,7 +433,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void resume(ManagementEndToEndV5TestContext context, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(SUSPENDED.code()).build());
 
             context.baseRequest(participantTokenJwt)
@@ -447,10 +447,10 @@ public class TransferProcessApiV5EndToEndTest {
         @Test
         void resume_tokenBearerWrong(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                      TransferProcessStore store, ParticipantContextService service) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(SUSPENDED.code()).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             service.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
@@ -467,7 +467,7 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void resume_tokenLacksWriteScope(ManagementEndToEndV5TestContext context, OauthServer authServer, TransferProcessStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcessBuilder(id).state(SUSPENDED.code()).build());
 
             var token = authServer.createToken(PARTICIPANT_CONTEXT_ID, Map.of("scope", "management-api:read"));
@@ -482,8 +482,8 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void query(ManagementEndToEndV5TestContext context, TransferProcessStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcess(id1));
             store.save(createTransferProcess(id2));
 
@@ -586,8 +586,8 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void query_tokenBearerIsAdmin_shouldReturnAll(ManagementEndToEndV5TestContext context, OauthServer authServer, TransferProcessStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcess(id1));
             store.save(createTransferProcess(id2));
 
@@ -606,10 +606,10 @@ public class TransferProcessApiV5EndToEndTest {
 
         @Test
         void query_shouldLimitToResourceOwner(ManagementEndToEndV5TestContext context, TransferProcessStore store) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcess(id1));
             store.save(createTransferProcessBuilder(id2).participantContextId(otherParticipantId).build());
 
@@ -628,11 +628,11 @@ public class TransferProcessApiV5EndToEndTest {
         @Test
         void query_tokenBearerNotEqualResourceOwner(ManagementEndToEndV5TestContext context, OauthServer authServer,
                                                     TransferProcessStore store, ParticipantContextService srv) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             srv.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
 
-            var id1 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
             store.save(createTransferProcess(id1));
 
             var token = authServer.createToken(otherParticipantId);
@@ -656,7 +656,7 @@ public class TransferProcessApiV5EndToEndTest {
             return TransferProcess.Builder.newInstance()
                     .id(id)
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance().uri("http://any").events(emptySet()).build()))
-                    .correlationId(UUID.randomUUID().toString())
+                    .correlationId(UuidGenerator.INSTANCE.generate().toString())
                     .dataDestination(DataAddress.Builder.newInstance()
                             .type("type")
                             .build())

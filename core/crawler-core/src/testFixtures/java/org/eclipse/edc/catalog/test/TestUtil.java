@@ -17,10 +17,10 @@ package org.eclipse.edc.catalog.test;
 import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractOffer;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.UUID;
 
 public class TestUtil {
 
@@ -39,6 +39,6 @@ public class TestUtil {
 
     @NotNull
     public static TargetNode createNode() {
-        return new TargetNode("testnode" + UUID.randomUUID(), "did:web:" + UUID.randomUUID(), "http://test.com", List.of(TEST_PROTOCOL));
+        return new TargetNode("testnode" + UuidGenerator.INSTANCE.generate(), "did:web:" + UuidGenerator.INSTANCE.generate(), "http://test.com", List.of(TEST_PROTOCOL));
     }
 }

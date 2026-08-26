@@ -21,13 +21,13 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.spi.telemetry.TraceCarrier;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.Polymorphic;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
@@ -275,7 +275,7 @@ public class DataFlowStartMessage implements Polymorphic, TraceCarrier {
 
         public DataFlowStartMessage build() {
             if (request.id == null) {
-                request.id = UUID.randomUUID().toString();
+                request.id = UuidGenerator.INSTANCE.generate().toString();
             }
             if (request.traceContext == null) {
                 request.traceContext = new HashMap<>();

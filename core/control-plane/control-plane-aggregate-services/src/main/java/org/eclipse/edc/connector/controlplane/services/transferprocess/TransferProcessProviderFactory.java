@@ -22,10 +22,10 @@ import org.eclipse.edc.participant.spi.ParticipantAgent;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantContext;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.spi.telemetry.Telemetry;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.time.Clock;
 
-import static java.util.UUID.randomUUID;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess.Type.PROVIDER;
 
 /**
@@ -63,7 +63,7 @@ public class TransferProcessProviderFactory {
         }
 
         var process = TransferProcess.Builder.newInstance()
-                .id(randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .protocol(message.getProtocol())
                 .correlationId(message.getConsumerPid())
                 .counterPartyAddress(message.getCallbackAddress())

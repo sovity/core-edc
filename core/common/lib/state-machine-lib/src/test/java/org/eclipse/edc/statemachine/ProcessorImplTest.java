@@ -17,6 +17,7 @@ package org.eclipse.edc.statemachine;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.retry.WaitStrategy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.statemachine.retry.EntityRetryProcessConfiguration;
 import org.eclipse.edc.statemachine.retry.TestEntity;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -64,7 +64,7 @@ class ProcessorImplTest {
 
     @Test
     void shouldProcessAndLog_whenItShouldRetryButNotDelay() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldNotDelayTime)
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldNotDelayTime)
                 .stateCount(2).build();
 
         var processor = ProcessorImpl.Builder.newInstance(() -> List.of(entity), configuration, clock, monitor)
@@ -79,7 +79,7 @@ class ProcessorImplTest {
 
     @Test
     void shouldNotProcessAndCallOnNotProcessed_whenItShouldDelay() {
-        var entity = TestEntity.Builder.newInstance().id(UUID.randomUUID().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
+        var entity = TestEntity.Builder.newInstance().id(UuidGenerator.INSTANCE.generate().toString()).stateTimestamp(shouldDelayTime).stateCount(2).build();
         Consumer<TestEntity> onNotProcessed = mock();
 
         var processor = ProcessorImpl.Builder.newInstance(() -> List.of(entity), configuration, clock, monitor)

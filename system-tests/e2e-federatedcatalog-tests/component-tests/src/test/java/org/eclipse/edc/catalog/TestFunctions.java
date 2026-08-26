@@ -31,12 +31,12 @@ import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.result.Result;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -74,7 +74,7 @@ public class TestFunctions {
     public static Catalog.Builder catalogBuilder() {
         return Catalog.Builder.newInstance()
                 .participantId("test-participant")
-                .id(UUID.randomUUID().toString())
+                .id(UuidGenerator.INSTANCE.generate().toString())
                 .properties(new HashMap<>())
                 .dataServices(new ArrayList<>())
                 .datasets(new ArrayList<>());
@@ -87,7 +87,7 @@ public class TestFunctions {
     public static CompletableFuture<StatusResult<byte[]>> randomCatalog(Function<Catalog, StatusResult<byte[]>> transformationFunction, String id, int howManyDatasets) {
         return completedFuture(transformationFunction.apply(catalogBuilder()
                 .id(id)
-                .datasets(IntStream.range(0, howManyDatasets).mapToObj(i -> createDataset("DataSet_" + UUID.randomUUID())).collect(toList()))
+                .datasets(IntStream.range(0, howManyDatasets).mapToObj(i -> createDataset("DataSet_" + UuidGenerator.INSTANCE.generate())).collect(toList()))
                 .build()));
     }
 

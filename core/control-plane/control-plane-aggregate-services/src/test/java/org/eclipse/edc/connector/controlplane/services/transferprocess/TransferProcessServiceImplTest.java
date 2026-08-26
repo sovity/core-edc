@@ -38,6 +38,7 @@ import org.eclipse.edc.spi.result.ServiceFailure;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.transfer.FlowType;
 import org.eclipse.edc.spi.types.domain.transfer.TransferType;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transaction.spi.NoopTransactionContext;
 import org.eclipse.edc.transaction.spi.TransactionContext;
 import org.eclipse.edc.validator.spi.DataAddressValidatorRegistry;
@@ -46,7 +47,6 @@ import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
 
 class TransferProcessServiceImplTest {
 
-    private final String id = UUID.randomUUID().toString();
+    private final String id = UuidGenerator.INSTANCE.generate().toString();
     private final TransferProcess process1 = transferProcess();
     private final TransferProcess process2 = transferProcess();
     private final QuerySpec query = QuerySpec.Builder.newInstance().limit(5).offset(2).build();
@@ -156,7 +156,7 @@ class TransferProcessServiceImplTest {
 
     private TransferProcess transferProcess() {
         var state = TransferProcessStates.values()[ThreadLocalRandom.current().nextInt(TransferProcessStates.values().length)];
-        return transferProcess(state, UUID.randomUUID().toString());
+        return transferProcess(state, UuidGenerator.INSTANCE.generate().toString());
     }
 
     private TransferProcess transferProcess(TransferProcessStates state, String id) {
@@ -180,8 +180,8 @@ class TransferProcessServiceImplTest {
     private ContractAgreement createContractAgreement(String agreementId, String assetId) {
         return ContractAgreement.Builder.newInstance()
                 .id(agreementId)
-                .providerId(UUID.randomUUID().toString())
-                .consumerId(UUID.randomUUID().toString())
+                .providerId(UuidGenerator.INSTANCE.generate().toString())
+                .consumerId(UuidGenerator.INSTANCE.generate().toString())
                 .assetId(assetId)
                 .policy(Policy.Builder.newInstance().build())
                 .build();

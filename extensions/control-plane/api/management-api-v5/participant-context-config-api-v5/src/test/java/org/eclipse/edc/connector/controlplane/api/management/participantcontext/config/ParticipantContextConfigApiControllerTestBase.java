@@ -21,13 +21,13 @@ import org.eclipse.edc.participantcontext.spi.config.model.ParticipantContextCon
 import org.eclipse.edc.participantcontext.spi.config.service.ParticipantContextConfigService;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.result.ServiceResult;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 import org.eclipse.edc.web.jersey.testfixtures.RestControllerTestBase;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -58,7 +58,7 @@ public abstract class ParticipantContextConfigApiControllerTestBase extends Rest
 
     private ParticipantContextConfiguration createParticipantContextConfig() {
         return createParticipantContextBuilder()
-                .participantContextId(UUID.randomUUID().toString())
+                .participantContextId(UuidGenerator.INSTANCE.generate().toString())
                 .entries(Map.of())
                 .build();
     }

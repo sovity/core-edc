@@ -29,6 +29,7 @@ import org.eclipse.edc.participantcontext.spi.service.ParticipantContextService;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,7 +112,7 @@ public class ContractAgreementApiV5EndToEndTest {
             var agreement = createContractAgreement("agreement-id");
             store.save(createContractNegotiationBuilder("cn1").contractAgreement(agreement).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -164,7 +164,7 @@ public class ContractAgreementApiV5EndToEndTest {
             var agreement = createContractAgreement("agreement-id");
             store.save(createContractNegotiationBuilder("cn1").contractAgreement(agreement).build());
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
 
             var token = authServer.createToken(otherParticipantId);
@@ -242,7 +242,7 @@ public class ContractAgreementApiV5EndToEndTest {
 
         @Test
         void query_shouldLimitToResourceOwner(ManagementEndToEndV5TestContext context, OauthServer authServer, ContractNegotiationStore store) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             store.save(createContractNegotiationBuilder("cn1").contractAgreement(createContractAgreement("cn1")).build());
             store.save(createContractNegotiationBuilder("cn2")
@@ -270,7 +270,7 @@ public class ContractAgreementApiV5EndToEndTest {
         void query_tokenBearerNotEqualResourceOwner(ManagementEndToEndV5TestContext context,
                                                     OauthServer authServer,
                                                     ContractNegotiationStore store, ParticipantContextService srv) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             srv.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError("ParticipantContext " + otherParticipantId + " not created."));
 
@@ -290,7 +290,7 @@ public class ContractAgreementApiV5EndToEndTest {
         private ContractNegotiation.Builder createContractNegotiationBuilder(String negotiationId) {
             return ContractNegotiation.Builder.newInstance()
                     .id(negotiationId)
-                    .counterPartyId(UUID.randomUUID().toString())
+                    .counterPartyId(UuidGenerator.INSTANCE.generate().toString())
                     .counterPartyAddress("address")
                     .callbackAddresses(List.of(CallbackAddress.Builder.newInstance()
                             .uri("local://test")
@@ -317,9 +317,9 @@ public class ContractAgreementApiV5EndToEndTest {
         private ContractAgreement.Builder createContractAgreementBuilder(String id) {
             return ContractAgreement.Builder.newInstance()
                     .id(id)
-                    .assetId(UUID.randomUUID().toString())
-                    .consumerId(UUID.randomUUID() + "-consumer")
-                    .providerId(UUID.randomUUID() + "-provider")
+                    .assetId(UuidGenerator.INSTANCE.generate().toString())
+                    .consumerId(UuidGenerator.INSTANCE.generate() + "-consumer")
+                    .providerId(UuidGenerator.INSTANCE.generate() + "-provider")
                     .policy(Policy.Builder.newInstance().assignee("assignee").assigner("assigner").build())
                     .participantContextId(PARTICIPANT_CONTEXT_ID);
         }

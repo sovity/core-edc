@@ -23,6 +23,7 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.annotations.PostgresqlIntegrationTest;
 import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.ManagementEndToEndTestContext;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
@@ -33,7 +34,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -59,7 +59,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void queryContractDefinitions_noQuerySpec(ManagementEndToEndTestContext context, ContractDefinitionStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             store.save(createContractDefinition(id).build());
 
             var body = context.baseRequest()
@@ -80,7 +80,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void queryPolicyDefinitionWithSimplePrivateProperties(ManagementEndToEndTestContext context) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var requestJson = createDefinitionBuilder(id)
                     .add("privateProperties", createObjectBuilder()
                             .add("newKey", createObjectBuilder().add(ID, "newValue"))
@@ -127,9 +127,9 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void queryContractDefinitions_sortByCreatedDate(ManagementEndToEndTestContext context, ContractDefinitionStore store) {
-            var id1 = UUID.randomUUID().toString();
-            var id2 = UUID.randomUUID().toString();
-            var id3 = UUID.randomUUID().toString();
+            var id1 = UuidGenerator.INSTANCE.generate().toString();
+            var id2 = UuidGenerator.INSTANCE.generate().toString();
+            var id3 = UuidGenerator.INSTANCE.generate().toString();
             var createdAtTime = new AtomicLong(1000L);
             Stream.of(id1, id2, id3).forEach(id -> store.save(createContractDefinition(id).createdAt(createdAtTime.getAndIncrement()).build()));
 
@@ -160,7 +160,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void shouldCreateAndRetrieve(ManagementEndToEndTestContext context, ContractDefinitionStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var requestJson = createDefinitionBuilder(id)
                     .build();
 
@@ -181,7 +181,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void delete(ManagementEndToEndTestContext context, ContractDefinitionStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var entity = createContractDefinition(id).build();
             store.save(entity);
 
@@ -197,7 +197,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void update_whenExists(ManagementEndToEndTestContext context, ContractDefinitionStore store) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var entity = createContractDefinition(id).build();
             store.save(entity);
 
@@ -219,7 +219,7 @@ public class ContractDefinitionApiV4EndToEndTest {
 
         @Test
         void update_whenNotExists(ManagementEndToEndTestContext context) {
-            var updated = createDefinitionBuilder(UUID.randomUUID().toString())
+            var updated = createDefinitionBuilder(UuidGenerator.INSTANCE.generate().toString())
                     .add("accessPolicyId", "new-policy")
                     .build();
 
@@ -236,8 +236,8 @@ public class ContractDefinitionApiV4EndToEndTest {
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "ContractDefinition")
                     .add(ID, id)
-                    .add("accessPolicyId", UUID.randomUUID().toString())
-                    .add("contractPolicyId", UUID.randomUUID().toString())
+                    .add("accessPolicyId", UuidGenerator.INSTANCE.generate().toString())
+                    .add("contractPolicyId", UuidGenerator.INSTANCE.generate().toString())
                     .add("assetsSelector", createArrayBuilder()
                             .add(createCriterionBuilder("foo", "=", "bar"))
                             .add(createCriterionBuilder("bar", "=", "baz")).build());
@@ -254,8 +254,8 @@ public class ContractDefinitionApiV4EndToEndTest {
         private ContractDefinition.Builder createContractDefinition(String id) {
             return ContractDefinition.Builder.newInstance()
                     .id(id)
-                    .accessPolicyId(UUID.randomUUID().toString())
-                    .contractPolicyId(UUID.randomUUID().toString())
+                    .accessPolicyId(UuidGenerator.INSTANCE.generate().toString())
+                    .contractPolicyId(UuidGenerator.INSTANCE.generate().toString())
                     .participantContextId("participantContextId")
                     .assetsSelectorCriterion(criterion("foo", "=", "bar"))
                     .assetsSelectorCriterion(criterion("bar", "=", "baz"));

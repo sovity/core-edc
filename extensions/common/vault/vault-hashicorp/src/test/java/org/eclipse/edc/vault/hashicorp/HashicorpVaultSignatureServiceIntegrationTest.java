@@ -23,6 +23,7 @@ import okhttp3.RequestBody;
 import org.eclipse.edc.http.client.EdcHttpClientImpl;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.auth.HashicorpVaultTokenProviderImpl;
 import org.eclipse.edc.vault.hashicorp.client.HashicorpVaultConfig;
 import org.eclipse.edc.vault.hashicorp.spi.auth.HashicorpVaultTokenProvider;
@@ -36,7 +37,6 @@ import org.testcontainers.vault.VaultContainer;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -98,7 +98,7 @@ class HashicorpVaultSignatureServiceIntegrationTest {
     @BeforeEach
     void setUp() throws IOException {
 
-        vaultKey = UUID.randomUUID().toString();
+        vaultKey = UuidGenerator.INSTANCE.generate().toString();
         service = new HashicorpVaultSignatureService(monitor, settings, httpClient, new ObjectMapper(), tokenProvider);
 
 

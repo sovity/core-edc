@@ -20,11 +20,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.eclipse.edc.participantcontext.spi.types.ParticipantResource;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
@@ -238,10 +238,10 @@ public class ContractAgreement implements ParticipantResource {
 
         public ContractAgreement build() {
             if (instance.id == null) {
-                instance.id = UUID.randomUUID().toString();
+                instance.id = UuidGenerator.INSTANCE.generate().toString();
             }
             if (instance.agreementId == null) {
-                instance.agreementId = UUID.randomUUID().toString();
+                instance.agreementId = UuidGenerator.INSTANCE.generate().toString();
             }
             requireNonNull(instance.providerId, "providerId cannot be null");
             requireNonNull(instance.consumerId, "consumerId cannot be null");

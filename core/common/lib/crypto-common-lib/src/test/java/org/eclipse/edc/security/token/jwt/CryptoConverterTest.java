@@ -33,6 +33,7 @@ import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
@@ -59,7 +60,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -415,7 +415,7 @@ class CryptoConverterTest {
                 return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
                         .privateKey((RSAPrivateKey) keyPair.getPrivate())
                         .keyUse(KeyUse.SIGNATURE)
-                        .keyID(UUID.randomUUID().toString())
+                        .keyID(UuidGenerator.INSTANCE.generate().toString())
                         .issueTime(new Date())
                         .build();
 
@@ -428,7 +428,7 @@ class CryptoConverterTest {
             try {
                 return new OctetKeyPairGenerator(Curve.Ed25519)
                         .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key (optional)
-                        .keyID(UUID.randomUUID().toString()) // give the key a unique ID (optional)
+                        .keyID(UuidGenerator.INSTANCE.generate().toString()) // give the key a unique ID (optional)
                         .issueTime(new Date()) // issued-at timestamp (optional)
                         .generate();
             } catch (JOSEException e) {

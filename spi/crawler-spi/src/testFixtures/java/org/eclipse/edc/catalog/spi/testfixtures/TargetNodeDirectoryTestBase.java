@@ -16,11 +16,11 @@ package org.eclipse.edc.catalog.spi.testfixtures;
 
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +29,7 @@ public abstract class TargetNodeDirectoryTestBase {
     protected abstract TargetNodeDirectory getStore();
 
     private TargetNode createTargetNode(String id) {
-        return new TargetNode(UUID.randomUUID().toString(), id, "http://example.com", List.of());
+        return new TargetNode(UuidGenerator.INSTANCE.generate().toString(), id, "http://example.com", List.of());
     }
 
     @Nested
@@ -37,7 +37,7 @@ public abstract class TargetNodeDirectoryTestBase {
 
         @Test
         void insert_notExisting_shouldInsert() {
-            var node = createTargetNode(UUID.randomUUID().toString());
+            var node = createTargetNode(UuidGenerator.INSTANCE.generate().toString());
 
             getStore().insert(node);
 
@@ -50,7 +50,7 @@ public abstract class TargetNodeDirectoryTestBase {
 
         @Test
         void insert_existing_shouldUpdate() {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var node1 = createTargetNode(id);
             var node2 = createTargetNode(id);
 
@@ -70,7 +70,7 @@ public abstract class TargetNodeDirectoryTestBase {
 
         @Test
         void getAll() {
-            var nodes = List.of(createTargetNode(UUID.randomUUID().toString()), createTargetNode(UUID.randomUUID().toString()));
+            var nodes = List.of(createTargetNode(UuidGenerator.INSTANCE.generate().toString()), createTargetNode(UuidGenerator.INSTANCE.generate().toString()));
 
             nodes.forEach(getStore()::insert);
 
@@ -88,7 +88,7 @@ public abstract class TargetNodeDirectoryTestBase {
 
         @Test
         void remove_shouldRemoveAndReturnNode() {
-            var node = createTargetNode(UUID.randomUUID().toString());
+            var node = createTargetNode(UuidGenerator.INSTANCE.generate().toString());
             getStore().insert(node);
 
             var removed = getStore().remove(node.id());

@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient;
 import org.eclipse.edc.http.client.EdcHttpClientImpl;
 import org.eclipse.edc.junit.annotations.ComponentTest;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.vault.hashicorp.auth.HashicorpVaultTokenProviderImpl;
 import org.eclipse.edc.vault.hashicorp.client.HashicorpVaultConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +33,6 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.vault.VaultContainer;
-
-import java.util.UUID;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static java.lang.String.format;
@@ -48,9 +47,9 @@ import static org.mockito.Mockito.mock;
 class HashicorpVaultIntegrationTest {
     static final String DOCKER_IMAGE_NAME = "hashicorp/vault:1.18.3";
     static final String VAULT_ENTRY_KEY = "testing";
-    static final String VAULT_ENTRY_VALUE = UUID.randomUUID().toString();
+    static final String VAULT_ENTRY_VALUE = UuidGenerator.INSTANCE.generate().toString();
     static final String VAULT_DATA_ENTRY_NAME = "content";
-    static final String TOKEN = UUID.randomUUID().toString();
+    static final String TOKEN = UuidGenerator.INSTANCE.generate().toString();
     @Container
     private static final VaultContainer<?> VAULTCONTAINER = new VaultContainer<>(DOCKER_IMAGE_NAME)
             .withVaultToken(TOKEN)
@@ -110,9 +109,9 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Update a secret that exists")
     void testSetSecret_exists() {
-        var key = UUID.randomUUID().toString();
-        var value1 = UUID.randomUUID().toString();
-        var value2 = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value1 = UuidGenerator.INSTANCE.generate().toString();
+        var value2 = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value1);
         vault.storeSecret(key, value2);
@@ -123,8 +122,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Create a secret that does not exist")
     void testSetSecret_doesNotExist() {
-        var key = UUID.randomUUID().toString();
-        var value = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value);
         var secretValue = vault.resolveSecret(key);
@@ -134,8 +133,8 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Delete a secret that exists")
     void testDeleteSecret_exists() {
-        var key = UUID.randomUUID().toString();
-        var value = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
+        var value = UuidGenerator.INSTANCE.generate().toString();
 
         vault.storeSecret(key, value);
         assertThat(vault.deleteSecret(key)).isSucceeded();
@@ -147,7 +146,7 @@ class HashicorpVaultIntegrationTest {
     @Test
     @DisplayName("Try to delete a secret that does not exist")
     void testDeleteSecret_doesNotExist() {
-        var key = UUID.randomUUID().toString();
+        var key = UuidGenerator.INSTANCE.generate().toString();
 
         assertThat(vault.deleteSecret(key)).isSucceeded();
         assertThat(vault.resolveSecret(key)).isNull();

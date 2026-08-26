@@ -21,6 +21,7 @@ import org.eclipse.edc.spi.event.EventEnvelope;
 import org.eclipse.edc.spi.types.TypeManager;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.callback.CallbackAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,7 +31,6 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.time.Clock;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +79,7 @@ class TransferProcessEventTest {
                     .map(it -> baseProperties(it).build())
                     .map(it -> EventEnvelope.Builder.newInstance()
                             .at(Clock.systemUTC().millis())
-                            .id(UUID.randomUUID().toString()).payload(it)
+                            .id(UuidGenerator.INSTANCE.generate().toString()).payload(it)
                             .build())
                     .map(Arguments::of);
         }

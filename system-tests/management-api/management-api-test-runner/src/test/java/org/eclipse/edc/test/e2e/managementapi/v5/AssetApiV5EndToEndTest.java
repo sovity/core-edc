@@ -27,6 +27,7 @@ import org.eclipse.edc.junit.extensions.ComponentRuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.participantcontext.spi.service.ParticipantContextService;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.uuid.UuidGenerator;
 import org.eclipse.edc.sql.testfixtures.PostgresqlEndToEndExtension;
 import org.eclipse.edc.test.e2e.managementapi.Runtimes;
 import org.junit.jupiter.api.AfterEach;
@@ -39,7 +40,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static jakarta.json.Json.createArrayBuilder;
@@ -149,7 +149,7 @@ public class AssetApiV5EndToEndTest {
 
             var assetJson = createAssetJson(asset);
 
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, otherParticipantId);
             var token = authServer.createToken(otherParticipantId);
 
@@ -225,7 +225,7 @@ public class AssetApiV5EndToEndTest {
 
         @Test
         void queryAsset_byCustomComplexProperty(ManagementEndToEndV5TestContext context) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "Asset")
@@ -267,7 +267,7 @@ public class AssetApiV5EndToEndTest {
 
         @Test
         void queryAsset_byCatalogProperty(ManagementEndToEndV5TestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             assetIndex.create(Asset.Builder.newInstance()
                     .property(Asset.PROPERTY_IS_CATALOG, true)
                     .id(id)
@@ -301,7 +301,7 @@ public class AssetApiV5EndToEndTest {
                     .forEach(i -> {
                         // create assets for participant
                         assetIndex.create(Asset.Builder.newInstance()
-                                        .id(UUID.randomUUID().toString())
+                                        .id(UuidGenerator.INSTANCE.generate().toString())
                                         .property("quizz", "quazz")
                                         .dataAddress(createDataAddress().build())
                                         .participantContextId(PARTICIPANT_CONTEXT_ID)
@@ -329,13 +329,13 @@ public class AssetApiV5EndToEndTest {
         @Test
         void queryAsset_shouldLimitToResourceOwner(ManagementEndToEndV5TestContext context, AssetIndex assetIndex,
                                                    ParticipantContextService srv) {
-            var otherParticipantId = UUID.randomUUID().toString();
+            var otherParticipantId = UuidGenerator.INSTANCE.generate().toString();
 
             srv.createParticipantContext(participantContext(otherParticipantId))
                     .orElseThrow(f -> new AssertionError(f.getFailureDetail()));
 
-            var ownAssetId = UUID.randomUUID().toString();
-            var otherAssetId = UUID.randomUUID().toString();
+            var ownAssetId = UuidGenerator.INSTANCE.generate().toString();
+            var otherAssetId = UuidGenerator.INSTANCE.generate().toString();
 
             assetIndex.create(createAsset()
                             .id(ownAssetId)
@@ -370,14 +370,14 @@ public class AssetApiV5EndToEndTest {
         void queryAsset_tokenBearerNotEqualResourceOwner(ManagementEndToEndV5TestContext context,
                                                          OauthServer authServer,
                                                          AssetIndex assetIndex, ParticipantContextService srv) {
-            var participantId = UUID.randomUUID().toString();
+            var participantId = UuidGenerator.INSTANCE.generate().toString();
             srv.createParticipantContext(participantContext(participantId))
                     .orElseThrow(f -> new AssertionError(
                             "ParticipantContext " + participantId + " not created."));
 
             var token = authServer.createToken(participantId);
 
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             assetIndex.create(Asset.Builder.newInstance()
                     .id(id)
                     .property("foo", "bar")
@@ -401,7 +401,7 @@ public class AssetApiV5EndToEndTest {
 
         @Test
         void createAsset_shouldBeStored(ManagementEndToEndV5TestContext context, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "Asset")
@@ -465,7 +465,7 @@ public class AssetApiV5EndToEndTest {
         @Test
         void createAsset_withoutPrefix_shouldAddEdcNamespace(ManagementEndToEndV5TestContext context,
                                                              AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "Asset")
@@ -506,7 +506,7 @@ public class AssetApiV5EndToEndTest {
         @Test
         void createAsset_whenCatalogAsset_shouldSetProperty(ManagementEndToEndV5TestContext context,
                                                             AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "CatalogAsset")
@@ -536,7 +536,7 @@ public class AssetApiV5EndToEndTest {
         @Test
         void createAsset_whenCatalogInPrivateProps_shouldReturnCatalogType(
                 ManagementEndToEndV5TestContext context, AssetIndex index) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var assetJson = createObjectBuilder()
                     .add(CONTEXT, jsonLdContext())
                     .add(TYPE, "Asset")
@@ -650,7 +650,7 @@ public class AssetApiV5EndToEndTest {
         @Test
         void findById(ManagementEndToEndV5TestContext context, AssetIndex assetIndex) {
 
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset().id(id)
                     .dataAddress(createDataAddress().type("addressType").build())
                     .build();
@@ -691,13 +691,13 @@ public class AssetApiV5EndToEndTest {
         void findById_tokenBearerDoesNotOwnResource(ManagementEndToEndV5TestContext context,
                                                     OauthServer authServer,
                                                     AssetIndex assetIndex, ParticipantContextService srv) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset().id(id)
                     .dataAddress(createDataAddress().type("addressType").build())
                     .build();
             assetIndex.create(asset);
 
-            var participantContextId = UUID.randomUUID().toString();
+            var participantContextId = UuidGenerator.INSTANCE.generate().toString();
             createParticipant(srv, participantContextId);
             var token = authServer.createToken(participantContextId);
 
@@ -714,7 +714,7 @@ public class AssetApiV5EndToEndTest {
 
         @Test
         void findById_tokenBearerIsAdmin(ManagementEndToEndV5TestContext context, OauthServer authServer, AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset().id(id)
                     .dataAddress(createDataAddress().type("addressType").build())
                     .build();
@@ -746,7 +746,7 @@ public class AssetApiV5EndToEndTest {
         void findById_tokenBearerIsAdmin_wrongOwner(ManagementEndToEndV5TestContext context,
                                                     OauthServer authServer,
                                                     AssetIndex assetIndex) {
-            var id = UUID.randomUUID().toString();
+            var id = UuidGenerator.INSTANCE.generate().toString();
             var asset = createAsset().id(id)
                     .dataAddress(createDataAddress().type("addressType").build())
                     .build();
@@ -788,7 +788,7 @@ public class AssetApiV5EndToEndTest {
 
         private Asset.Builder createAsset() {
             return Asset.Builder.newInstance()
-                    .id(UUID.randomUUID().toString())
+                    .id(UuidGenerator.INSTANCE.generate().toString())
                     .description("test description")
                     .dataAddress(createDataAddress().build())
                     .participantContextId(PARTICIPANT_CONTEXT_ID);
