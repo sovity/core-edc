@@ -27,7 +27,6 @@ import org.eclipse.edc.transform.spi.TypeTransformerRegistry;
 
 import static java.lang.String.format;
 import static java.lang.String.join;
-import static org.eclipse.edc.protocol.dsp.spi.type.DspConstants.DSP_CONTEXT_SEPARATOR;
 
 /**
  * Serializes {@link RemoteMessage}s to JSON-LD.
@@ -77,16 +76,12 @@ public class JsonLdRemoteMessageSerializerImpl implements JsonLdRemoteMessageSer
                 if (protocolVersion == null) {
                     throw new EdcException(format("No protocol version found for protocol: %s", message.getProtocol()));
                 }
-                var compacted = jsonLdService.compact(transformResult.getContent(), scopePrefix + DSP_CONTEXT_SEPARATOR + protocolVersion.version());
-                if (compacted.succeeded()) {
-                    return typeManager.getMapper(typeContext).writeValueAsString(compacted.getContent());
-                }
-                throw new EdcException("Failed to compact JSON-LD: " + compacted.getFailureDetail());
+                // omit compaction of JSON-LD to not need @context
+                return typeManager.getMapper(typeContext).writeValueAsString(transformResult.getContent());
             }
             throw new EdcException(format("Failed to transform %s: %s", message.getClass().getSimpleName(), join(", ", transformResult.getFailureMessages())));
         } catch (JsonProcessingException e) {
             throw new EdcException(format("Failed to serialize %s", message.getClass().getSimpleName()), e);
         }
     }
-
 }
