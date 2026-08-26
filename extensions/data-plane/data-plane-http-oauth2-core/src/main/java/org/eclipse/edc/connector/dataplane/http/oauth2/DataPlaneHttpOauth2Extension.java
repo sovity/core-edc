@@ -20,11 +20,14 @@ import org.eclipse.edc.iam.oauth2.spi.client.Oauth2Client;
 import org.eclipse.edc.jwt.spi.signer.JwsSignerProvider;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.runtime.metamodel.annotation.Setting;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.security.Vault;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
 import java.time.Clock;
+import java.time.Duration;
 
 /**
  * Provides support for adding OAuth2 authentication to http data transfer
@@ -33,11 +36,24 @@ import java.time.Clock;
 public class DataPlaneHttpOauth2Extension implements ServiceExtension {
     public static final String NAME = "Data Plane HTTP OAuth2";
 
+    public static final String SOVITY_EDC_DATAPLANE_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY = "sovity.edc.dataplane.oauth2.cache.minimum.time.to.live";
+
+    @Setting(
+            description = "Format: ISO 8601 duration. The minimum duration between the token's age and the time at which it expires. If the token has a shorter remaining lifespan than this, it is renewed.",
+            required = false,
+            defaultValue = "PT5s",
+            key = SOVITY_EDC_DATAPLANE_OAUTH2_CACHE_MINIMUM_TIME_TO_LIVE_KEY
+    )
+    private String minimumTimeToLive;
+
     @Inject
     private Clock clock;
 
     @Inject
     private HttpRequestParamsProvider paramsProvider;
+
+    @Inject
+    private Monitor monitor;
 
     @Inject
     private Vault vault;
@@ -55,8 +71,9 @@ public class DataPlaneHttpOauth2Extension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var requestFactory = new Oauth2CredentialsRequestFactory(jwsSignerProvider, clock, vault);
-        var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client);
+        final var requestFactory = new Oauth2CredentialsRequestFactory(jwsSignerProvider, clock, vault);
+        final var minimumTimeToLiveDuration = Duration.parse(minimumTimeToLive);
+        final var oauth2ParamsDecorator = new Oauth2HttpRequestParamsDecorator(requestFactory, oauth2Client, monitor, minimumTimeToLiveDuration);
 
         paramsProvider.registerSourceDecorator(oauth2ParamsDecorator);
     }
