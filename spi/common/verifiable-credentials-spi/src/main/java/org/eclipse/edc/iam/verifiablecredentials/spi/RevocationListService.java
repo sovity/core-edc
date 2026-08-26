@@ -17,6 +17,7 @@ package org.eclipse.edc.iam.verifiablecredentials.spi;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.CredentialStatus;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.VerifiableCredential;
 import org.eclipse.edc.spi.result.Result;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Checks a {@link CredentialStatus} for revocation. Implementors should maintain an internal cache to limit remote calls
@@ -48,5 +49,5 @@ public interface RevocationListService {
      * @param credential The credential to inspect.
      * @return either the status purpose, if the status is active, or null, if not active or not present. returns a failure if the status check failed, or the {@code credentialStatus} object is invalid.
      */
-    Result<String> getStatusPurpose(VerifiableCredential credential);
+    @Nullable Result<String> getStatusPurpose(VerifiableCredential credential);
 }

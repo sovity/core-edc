@@ -19,6 +19,7 @@ import org.eclipse.edc.policy.engine.spi.AtomicConstraintRuleFunction;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.spi.EdcException;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -102,7 +103,7 @@ public class ContractExpiryCheckFunction<C extends AgreementPolicyContext> imple
      * @param rightValueStr A string potentially containing a duration expression.
      * @return A {@link Duration} or null if input doesn't match
      */
-    private Duration asDuration(String rightValueStr) {
+    private @Nullable Duration asDuration(String rightValueStr) {
         var matcher = Pattern.compile(EXPRESSION_REGEX).matcher(rightValueStr);
         if (matcher.matches()) {
             var number = Integer.parseInt(matcher.group(REGEX_GROUP_NUMERIC));

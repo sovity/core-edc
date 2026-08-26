@@ -76,6 +76,7 @@ public interface InjectionPoint<T> {
      * @return The resolved value, or null if the injected field is not required.
      * @throws EdcInjectionException in case the value could not be resolved
      */
+    @Nullable
     Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier);
 
     /**

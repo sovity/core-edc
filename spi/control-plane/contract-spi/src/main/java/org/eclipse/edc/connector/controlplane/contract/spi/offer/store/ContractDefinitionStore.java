@@ -20,6 +20,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
@@ -49,7 +50,7 @@ public interface ContractDefinitionStore {
      * @param definitionId the id.
      * @return the definition with the given id, or null.
      */
-    ContractDefinition findById(String definitionId);
+    @Nullable ContractDefinition findById(String definitionId);
 
     /**
      * Stores the contract definition if a contract definition with the same ID doesn't already exists.

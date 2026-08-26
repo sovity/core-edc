@@ -28,6 +28,7 @@ import org.eclipse.edc.spi.command.CommandHandlerRegistry;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.ServiceResult;
 import org.eclipse.edc.transaction.spi.TransactionContext;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,7 @@ public class ContractNegotiationServiceImpl implements ContractNegotiationServic
     }
 
     @Override
-    public ContractAgreement getForNegotiation(String negotiationId) {
+    public @Nullable ContractAgreement getForNegotiation(String negotiationId) {
         return transactionContext.execute(() -> ofNullable(store.findById(negotiationId))
                 .map(ContractNegotiation::getContractAgreement).orElse(null));
     }

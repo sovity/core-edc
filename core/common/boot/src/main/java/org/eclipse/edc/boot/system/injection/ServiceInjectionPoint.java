@@ -87,7 +87,7 @@ public class ServiceInjectionPoint<T> implements InjectionPoint<T> {
     }
 
     @Override
-    public Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
+    public @Nullable Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
         var serviceClass = getType();
         if (context.hasService(serviceClass)) {
             return context.getService(serviceClass, !isRequired());

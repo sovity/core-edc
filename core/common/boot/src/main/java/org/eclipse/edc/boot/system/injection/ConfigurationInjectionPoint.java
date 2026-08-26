@@ -101,7 +101,7 @@ public class ConfigurationInjectionPoint<T> implements InjectionPoint<T> {
     }
 
     @Override
-    public Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
+    public @Nullable Object resolve(ServiceExtensionContext context, DefaultServiceSupplier defaultServiceSupplier) {
         var keyPrefix = configurationField.getAnnotation(SettingContext.class) != null
                 ? configurationField.getAnnotation(SettingContext.class).value() : null;
         return configurationObjectFactory.instantiate(context, keyPrefix, configurationField.getType());

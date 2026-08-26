@@ -20,6 +20,7 @@ import org.eclipse.edc.runtime.metamodel.annotation.ExtensionPoint;
 import org.eclipse.edc.spi.persistence.EdcPersistenceException;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
@@ -39,7 +40,7 @@ public interface PolicyDefinitionStore {
      * @return {@link Policy} or null if not found.
      * @throws EdcPersistenceException if something goes wrong.
      */
-    PolicyDefinition findById(String policyId);
+    @Nullable PolicyDefinition findById(String policyId);
 
     /**
      * Find stream of policies in the store based on query spec.

@@ -16,6 +16,7 @@ package org.eclipse.edc.sql.translation;
 
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.util.reflection.PathItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,7 @@ public abstract class TranslationMapping {
      * @param fieldPath the path name.
      * @return the {@link FieldTranslator}, or null if it does not exist.
      */
-    public Function<Class<?>, String> getFieldTranslator(String fieldPath) {
+    public @Nullable Function<Class<?>, String> getFieldTranslator(String fieldPath) {
         return getFieldTranslator(PathItem.parse(fieldPath));
     }
 

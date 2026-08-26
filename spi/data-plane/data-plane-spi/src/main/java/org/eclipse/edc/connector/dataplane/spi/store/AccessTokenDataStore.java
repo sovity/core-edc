@@ -17,6 +17,7 @@ package org.eclipse.edc.connector.dataplane.spi.store;
 import org.eclipse.edc.connector.dataplane.spi.AccessTokenData;
 import org.eclipse.edc.spi.query.QuerySpec;
 import org.eclipse.edc.spi.result.StoreResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -36,7 +37,7 @@ public interface AccessTokenDataStore {
      * @return The entity, or null if not found.
      * @throws NullPointerException if the id parameter was null
      */
-    AccessTokenData getById(String id);
+    @Nullable AccessTokenData getById(String id);
 
     /**
      * Adds an {@link AccessTokenData} object to the persistence layer. Will return a failure if an object with the same already exists.

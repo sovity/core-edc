@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 public class ReflectionUtil {
     private static final String OPENING_BRACKET = "[";
@@ -77,19 +78,19 @@ public class ReflectionUtil {
                 }
                 var propName = firstAsString.substring(0, openingBracketIx);
                 var iterableObject = (List) getFieldValue("'" + propName + "'", object);
-            return (T) iterableObject.get(arrayIndex);
-        } else {
+                return (T) iterableObject.get(arrayIndex);
+            } else {
                 return fallback(object, firstAsString);
             }
         }
     }
 
     private static <T> T fallback(Object object, String firstAsString) {
-            if (object instanceof Map<?, ?> map) {
+        if (object instanceof Map<?, ?> map) {
             return (T) map.get(firstAsString);
-            } else if (object instanceof List<?> list) {
+        } else if (object instanceof List<?> list) {
             return (T) list.stream().filter(Objects::nonNull).map(it -> getRecursiveValue(firstAsString, it)).toList();
-            } else {
+        } else {
             return getRecursiveValue(firstAsString, object);
         }
     }
@@ -144,7 +145,7 @@ public class ReflectionUtil {
      * @param clazz The class of the object
      * @return The type argument {@link Class} or null
      */
-    public static Class<?> getSingleSuperTypeGenericArgument(Class<?> clazz, Class<?> target) {
+    public static @Nullable Class<?> getSingleSuperTypeGenericArgument(Class<?> clazz, Class<?> target) {
         var supertype = clazz.getGenericSuperclass();
         var superclass = clazz.getSuperclass();
         while (superclass != null && superclass != Object.class) {
