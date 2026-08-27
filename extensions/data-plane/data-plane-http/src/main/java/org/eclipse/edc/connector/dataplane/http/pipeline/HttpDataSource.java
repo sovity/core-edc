@@ -73,8 +73,8 @@ public class HttpDataSource implements DataSource {
                 return success(Stream.of(new HttpPart(name, stream, mediaType)));
             } else {
                 try {
-                    monitor.warning(format("Error {%s: %s} received reading HTTP data %s from endpoint %s %s. Response body: %s",
-                            response.code(), response.message(), name, request.method(), request.url().url(), readErrorBody(response)));
+                    monitor.warning(format("Error {%s: %s} received reading HTTP data from endpoint '%s %s'. Response body: '%s'",
+                            response.code(), response.message(), request.method(), request.url().url(), readErrorBody(response)));
 
                     if (UNAUTHORIZED == response.code() || FORBIDDEN == response.code()) {
                         return StreamResult.notAuthorized();
@@ -101,7 +101,7 @@ public class HttpDataSource implements DataSource {
         try {
             return response.peekBody(ERROR_BODY_LOG_LIMIT).string();
         } catch (Exception e) {
-            return "HTTP response error body could not be read: " + e.getMessage();
+            return "HTTP response error body could not be read: " + e;
         }
     }
 
