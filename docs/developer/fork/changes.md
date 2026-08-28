@@ -2,7 +2,7 @@
 
 ## 0.14.0.6
 
-- The `HttpDataSource` now logs a warning when the upstream data source responds with a non-2xx status code. Previously such responses were forwarded without any log output, making failed transfers hard to diagnose.
+- When an HTTP data source responds with a non-2xx status code, the `HttpDataSource` now logs the failure as a warning, including the status code, the request method and URL, and the (truncated) response body. Previously the error was swallowed by the EDC and only surfaced in the transfer result, so there was no way to see what the source actually returned without reproducing the request by hand. Logging it makes failed HTTP transfers diagnosable from the connector logs alone.
 
 ## 0.14.0.5
 
