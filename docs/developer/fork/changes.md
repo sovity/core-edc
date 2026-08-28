@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.4.1
+
+- When an HTTP data source returns a non-2xx status code, the `HttpDataSource` now logs it as a warning. Previously the error was swallowed by the EDC or only surfaced in the response, so it could not be seen without reproducing the request.
+
 ## 0.14.0.4
 
 - Remove the `updateFlowLease` function from the State Machine in the DataPlaneManagerImpl.java. This function is not needed since we only have a single data-plane and only negatively impacts the performance. Removing it reduces the number of lease queries.

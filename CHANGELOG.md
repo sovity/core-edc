@@ -6,13 +6,27 @@
 
 #### Changes
 
-- `HttpDataSource` now logs a warning when the data source returns a non-2xx status code
-
 #### Details
 
 #### Compatibility
 
 #### Resolution plan
+
+---
+
+## [0.14.0.4.1] - 2026-09-02
+
+### Overview
+
+Improve observability of HTTP data plane transfers.
+
+#### Changes
+
+- `HttpDataSource` now logs a warning when the data source returns a non-2xx status code
+
+#### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
 
 ---
 
