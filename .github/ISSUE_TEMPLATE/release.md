@@ -26,8 +26,8 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
           configuration properties.
         - [ ] Write or review a release summary.
         - [ ] Write or review the compatible versions section.
+        - [ ] Link each change to the GitHub issue that documents it in detail.
         - [ ] Remove empty sections from the patch notes.
-    - [ ] Update `docs/developer/fork/changes.md` with a new section for the version, describing the fork-specific changes.
     - [ ] Merge the `release-prep` PR.
 - [ ] Wait for the `sovity/X.Y.Z` branch to be green. You can check the status in GH [actions](https://github.com/sovity/core-edc/actions).
 - [ ] [Create a release](https://github.com/sovity/core-edc/releases/new)
