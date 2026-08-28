@@ -39,6 +39,6 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
 - [ ] ~~[Promote](https://github.com/sovity/core-edc/blob/default/docs/publication/promote.md) the artifacts in Azure.~~
 - [ ] Check that the artifacts have been promoted [on Azure](https://dev.azure.com/sovity/Core%20EDC/_artifacts/feed/core-edc).
 - [ ] Revisit the changed list of tasks and compare it
-  with [.github/ISSUE_TEMPLATE/release.md](https://github.com/sovity/edc-extensions/blob/default/.github/ISSUE_TEMPLATE/release.md).
+  with [.github/ISSUE_TEMPLATE/release.md](https://github.com/sovity/core-edc/blob/default/.github/ISSUE_TEMPLATE/release.md).
   Propose changes where it makes sense.
 - [ ] Close this issue.
