@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,6 +90,29 @@ class HttpDataSourceTest {
 
         assertThat(result).isFailed().extracting(StreamFailure::getReason).isEqualTo(reason);
         verify(requestFactory).toRequest(any());
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(StreamFailureArguments.class)
+    void verifyCallFailed_logsStatusCodeUrlAndResponseBody(int code, StreamFailure.Reason reason) {
+        var responseBody = ResponseBody.create("Test body", MediaType.parse("text/plain"));
+        var interceptor = new CustomInterceptor(code, responseBody, "Test message");
+        var monitor = mock(Monitor.class);
+        var source = defaultBuilder(interceptor).params(mock()).requestFactory(requestFactory).monitor(monitor).build();
+        when(requestFactory.toRequest(any())).thenReturn(dummyRequest());
+
+        var result = source.openPartStream();
+
+        var logLine = ArgumentCaptor.forClass(String.class);
+        verify(monitor).warning(logLine.capture());
+        assertThat(logLine.getValue())
+                .contains(String.valueOf(code))
+                .contains("Test message")
+                .contains("http://some.test.url/")
+                .contains("Test body");
+        // the response body is logged but deliberately not added to the failure returned to the consumer
+        assertThat(result).isFailed().extracting(StreamFailure::getReason).isEqualTo(reason);
+        assertThat(result.getFailureMessages()).noneMatch(it -> it.contains("Test body"));
     }
 
     @Test
