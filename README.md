@@ -28,6 +28,8 @@ This is a fork of the [Eclipse EDC Connector](https://github.com/eclipse-edc/Con
 - The `sovity/x.y.z` branches will contain forked **Eclipse EDC** releases with sovity commits on top.
     - [sovity/0.2.1](https://github.com/sovity/core-edc/blob/sovity/0.2.1/CHANGELOG.md)
     - [sovity/0.7.2](https://github.com/sovity/core-edc/blob/sovity/0.7.2/CHANGELOG.md)
+    - [sovity/0.11.1](https://github.com/sovity/core-edc/blob/sovity/0.11.1/CHANGELOG.md)
+    - [sovity/0.14.0](https://github.com/sovity/core-edc/blob/sovity/0.14.0/CHANGELOG.md)
 
 Each branch has its own Changelog, as patches are always applied on top of releases and the entire history of the Eclipse EDC Connector is not maintained.
 
@@ -61,7 +63,7 @@ The sovity Maven Registry on Azure is public and can be added to any Maven or Gr
 
 #### Test
 
-The artifacts on the `sovity/*` branches, before releasing, are published in the [test feed](https://dev.azure.com/sovity/Test/_artifacts/feed/test.
+The artifacts on the `sovity/*` branches, before releasing, are published in the [test feed](https://dev.azure.com/sovity/Test/_artifacts/feed/test).
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
