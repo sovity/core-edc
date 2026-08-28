@@ -32,7 +32,7 @@ Feel free to edit this release checklist in-progress depending on what tasks nee
 - [ ] [Create a release](https://github.com/sovity/core-edc/releases/new)
     - [ ] In `Choose the tag`, type your new release version in the format `vX.Y.Z.W` (for instance `v1.2.3.4`) then
       click `+Create new tag vX.Y.Z.W on release`.
-    - [ ] Set the target branch to `sovity/0.2.1`.
+    - [ ] Set the target branch to the branch you checked out for this release e.g. `v0.11.1.x` -> `sovity/0.11.1`.
     - [ ] Re-use the changelog section as release description, and the version as title.
 - [ ] Check if the pipeline built the release versions in the Actions-Section (or you won't see it).
 - [ ] ~~[Promote](https://github.com/sovity/core-edc/blob/default/docs/publication/promote.md) the artifacts in Azure.~~
