@@ -6,6 +6,8 @@
 
 #### Changes
 
+- `HttpDataSource` now logs a warning when the data source returns a non-2xx status code
+
 #### Details
 
 #### Compatibility
