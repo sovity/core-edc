@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.6
+
+- When an HTTP data source returns a non-2xx status code, the `HttpDataSource` now logs it as a warning. Previously the error was swallowed by the EDC or only surfaced in the response, so it could not be seen without reproducing the request.
+
 ## 0.14.0.5
 
 - Remove the `/v3/secrets/{secretId}` endpoint from the secrets API. This endpoint makes it possible to read secrets from the vault as soon as a user has access to the management API. This is a security risk since it allows a user to read secrets that they should not have access to, in particular for the test EDCs on Sirius with unsecure API protection.
