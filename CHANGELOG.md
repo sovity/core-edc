@@ -6,9 +6,13 @@
 
 #### Changes
 
+#### Details
+
 #### Compatibility
 
 Should be compatible without any modification with a `0.14.0` version.
+
+#### Resolution plan
 
 ---
 
@@ -101,14 +105,23 @@ Initial migration of changes from `0.11.1.3` into `0.14.0`.
 
 #### Changes
 
-- Replace UUID generation to use time-based UUIDs ([#92](https://github.com/sovity/core-edc/issues/92))
-- Improve performance of catalog requests ([#93](https://github.com/sovity/core-edc/issues/93))
-- Add configurable OAuth2 token caching ([#94](https://github.com/sovity/core-edc/issues/94))
-- Add @Nullable markers ([#95](https://github.com/sovity/core-edc/issues/95))
+- Port the previous changes
+    - Replacement of java.util.UUID with UUIDv7 ([#92](https://github.com/sovity/core-edc/issues/92))
+    - Catalog performance ([#93](https://github.com/sovity/core-edc/issues/93))
+    - Add caching for data plane OAuth requests (`8df1baceb`) ([#94](https://github.com/sovity/core-edc/issues/94))
+    - Add nullability correctness ([#95](https://github.com/sovity/core-edc/issues/95))
+
+- Changes that were not ported
+  - Force `/` in IdentityTrustTransformExtension
+    - The mistake is not present anymore
+
+#### Details
 
 #### Compatibility
 
 Should be compatible without any modification with a `0.14.0` version.
+
+#### Resolution plan
 
 ---
 
