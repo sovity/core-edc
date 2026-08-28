@@ -565,6 +565,12 @@ This part describes how to find where a missing action was and how to make it wo
         - `git checkout sovity/0.7.2 -- .github/workflows/verify.yml build.gradle.kts`
     - `0.2.1.x`: publishing
         - `git checkout sovity/0.2.1 -- .github/workflows/publish.yml build.gradle.kts`
+    - Double check that the verify.yml has the following after merging:
+        - `on.push.tags: '*'`
+        - `on.push.branches: ` add `sovity/*`
+        - `on.pulll_request: ` add `sovity/*`
+        - `Publish-Artifacts` job
+        - `Promote-Artifacts` job
 - [ ] Adapt the publishing and promoting actions to the new `core-edc`'s actions.
     - [ ] Branches starting with `sovity/` must be published on the `AzureTest` instance.
     - [ ] Tags starting with `v` must be published on the `Azure` (non-test) instance.
