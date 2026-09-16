@@ -1,5 +1,9 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.6
+
+- Throttle the policy monitor. The `PolicyMonitorManagerImpl` state machine re-evaluated every `STARTED` entry on every iteration, i.e. roughly once per second. Since consumer pull transfers stay `STARTED` indefinitely, every connector with such transfers produced a constant stream of lease and entity queries, which showed up as the dominant load on the shared production database. The `STARTED` processor now only picks up entries whose `stateTimestamp` is older than a configurable period, `edc.policy.monitor.period` (ISO-8601 duration, default `PT1H`). This backports the behaviour of upstream [eclipse-edc/Connector#5597](https://github.com/eclipse-edc/Connector/pull/5597) with the same setting name and default, but keeps the state machine implementation to minimize the diff.
+
 ## 0.14.0.5
 
 - Remove the `/v3/secrets/{secretId}` endpoint from the secrets API. This endpoint makes it possible to read secrets from the vault as soon as a user has access to the management API. This is a security risk since it allows a user to read secrets that they should not have access to, in particular for the test EDCs on Sirius with unsecure API protection.

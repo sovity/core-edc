@@ -7,10 +7,13 @@
 #### Changes
 
 - `HttpDataSource` now logs a warning when the data source returns a non-2xx status code
+- Policy monitor re-evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` (ISO-8601 duration, default `PT1H`) instead of on every state machine iteration, which removes the dominant lease query load on the database
 
 #### Details
 
 #### Compatibility
+
+New optional setting `edc.policy.monitor.period`. A policy violation on a running transfer is now detected within the configured period instead of within about one second. Set a shorter period, e.g. `PT1M`, if faster detection is required.
 
 #### Resolution plan
 

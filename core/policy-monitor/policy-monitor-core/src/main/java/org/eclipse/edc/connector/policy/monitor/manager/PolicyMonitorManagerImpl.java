@@ -30,6 +30,7 @@ import org.eclipse.edc.statemachine.Processor;
 import org.eclipse.edc.statemachine.ProcessorImpl;
 import org.eclipse.edc.statemachine.StateMachineManager;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Function;
 
@@ -42,9 +43,12 @@ import static org.eclipse.edc.spi.persistence.StateEntityStore.hasState;
 public class PolicyMonitorManagerImpl extends AbstractStateEntityManager<PolicyMonitorEntry, PolicyMonitorStore>
         implements PolicyMonitorManager {
 
+    public static final Duration DEFAULT_CHECK_PERIOD = Duration.ofHours(1);
+
     private PolicyEngine policyEngine;
     private TransferProcessService transferProcessService;
     private ContractAgreementService contractAgreementService;
+    private Duration checkPeriod = DEFAULT_CHECK_PERIOD;
 
     private PolicyMonitorManagerImpl() {
 
@@ -112,11 +116,19 @@ public class PolicyMonitorManagerImpl extends AbstractStateEntityManager<PolicyM
     }
 
     private Processor processEntriesInState(PolicyMonitorEntryStates state, Function<PolicyMonitorEntry, Boolean> function) {
-        var filter = new Criterion[]{ hasState(state.code()) };
-        return ProcessorImpl.Builder.newInstance(() -> store.nextNotLeased(batchSize, filter))
+        return ProcessorImpl.Builder.newInstance(() -> store.nextNotLeased(batchSize, hasState(state.code()), notCheckedWithinPeriod()))
                 .process(telemetry.contextPropagationMiddleware(function))
                 .onNotProcessed(this::breakLease)
                 .build();
+    }
+
+    /**
+     * Only entries whose state timestamp is older than the check period are picked up. The state timestamp is refreshed
+     * after every check in {@link #processMonitoring}, so each entry is evaluated at most once per period instead of on
+     * every iteration of the state machine.
+     */
+    private Criterion notCheckedWithinPeriod() {
+        return new Criterion("stateTimestamp", "<", clock.millis() - checkPeriod.toMillis());
     }
 
     public static class Builder
@@ -142,6 +154,11 @@ public class PolicyMonitorManagerImpl extends AbstractStateEntityManager<PolicyM
 
         public Builder transferProcessService(TransferProcessService transferProcessService) {
             manager.transferProcessService = transferProcessService;
+            return this;
+        }
+
+        public Builder checkPeriod(Duration checkPeriod) {
+            manager.checkPeriod = checkPeriod;
             return this;
         }
 
