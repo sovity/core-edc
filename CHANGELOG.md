@@ -6,7 +6,6 @@
 
 #### Changes
 
-- `HttpDataSource` now logs a warning when the data source returns a non-2xx status code
 - Policy monitor re-evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` (ISO-8601 duration, default `PT1H`) instead of on every state machine iteration, which removes the dominant lease query load on the database
 
 #### Details
@@ -19,6 +18,22 @@ New optional setting `edc.policy.monitor.period`. A policy violation on a runnin
 
 ---
 
+## [0.14.0.6] - 2026-08-28
+
+### Overview
+
+Improve observability of HTTP data plane transfers.
+
+#### Changes
+
+- Log Non-2xx responses from HTTP data source to data plane ([#100](https://github.com/sovity/core-edc/issues/100))
+
+#### Compatibility
+
+Should be compatible without any modification with a `0.14.0` version.
+
+---
+
 ## [0.14.0.5] - 2026-08-10
 
 ### Overview
@@ -27,7 +42,7 @@ Remove endpoint for reading Vault secrets.
 
 #### Changes
 
-- Remove `GET /v3/secrets/{secretId}` endpoint from the secrets API
+- Remove GET secrets endpoint from the Secrets API ([#98](https://github.com/sovity/core-edc/issues/98))
 
 #### Compatibility
 
@@ -43,7 +58,7 @@ Performance improvements in the data flow state machine.
 
 #### Changes
 
-- Remove the `updateFlowLease` function from DataPlaneManagerImpl to reduce lease queries
+- Remove unnecessary data flow updates in the state machine ([#97](https://github.com/sovity/core-edc/issues/97))
 
 #### Compatibility
 
@@ -59,8 +74,7 @@ Fix further compatibility issues with Jupiter EDCs.
 
 #### Changes
 
-- Support Legacy fields in PresentationResponseMessage JSON-LD
-  - Enables the EDC to parse responses from DIM-Wallets compatible with both Saturn- and Jupiter-EDCs
+- Support legacy fields in PresentationResponseMessage JSON-LD ([#104](https://github.com/sovity/core-edc/issues/104))
 
 #### Compatibility
 
@@ -76,8 +90,8 @@ Fix compatibility issues with Jupiter EDCs.
 
 #### Changes
 
-- JSON-LD is no longer compacted in JsonLdRemoteMessages
-- Conditionally add Bearer prefix to authorization header in DSP requests
+- Omit JSON-LD compaction for remote messages ([#68](https://github.com/sovity/core-edc/issues/68))
+- Conditionally add Bearer prefix to authorization header in DSP requests ([#66](https://github.com/sovity/core-edc/issues/66))
 
 #### Compatibility
 
@@ -94,10 +108,10 @@ Initial migration of changes from `0.11.1.3` into `0.14.0`.
 #### Changes
 
 - Port the previous changes
-    - Replacement of java.util.UUID with UUIDv7
-    - Catalog performance
-    - Add caching for data plane OAuth requests (`8df1baceb`)
-    - Add nullability correctness
+    - Replacement of java.util.UUID with UUIDv7 ([#92](https://github.com/sovity/core-edc/issues/92))
+    - Catalog performance ([#93](https://github.com/sovity/core-edc/issues/93))
+    - Add caching for data plane OAuth requests (`8df1baceb`) ([#94](https://github.com/sovity/core-edc/issues/94))
+    - Add nullability correctness ([#95](https://github.com/sovity/core-edc/issues/95))
 
 - Changes that were not ported
   - Force `/` in IdentityTrustTransformExtension
