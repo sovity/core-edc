@@ -69,6 +69,7 @@ public class TransferEndToEndParticipant extends Participant {
                 put("edc.negotiation.provider.state-machine.iteration-wait-millis", "50");
                 put("edc.transfer.state-machine.iteration-wait-millis", "50");
                 put("edc.data.plane.selector.state-machine.iteration-wait-millis", "100");
+                put("edc.policy.monitor.period", "PT1S");
             }
         };
 
