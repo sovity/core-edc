@@ -6,15 +6,29 @@
 
 #### Changes
 
-- Policy monitor re-evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` (ISO-8601 duration, default `PT1H`) instead of on every state machine iteration, which removes the dominant lease query load on the database
-
 #### Details
 
 #### Compatibility
 
-New optional setting `edc.policy.monitor.period`. A policy violation on a running transfer is now detected within the configured period instead of within about one second. Set a shorter period, e.g. `PT1M`, if faster detection is required.
+Should be compatible without any modification with a `0.14.0` version.
 
 #### Resolution plan
+
+---
+
+## [0.14.0.7] - 2026-09-17
+
+### Overview
+
+Reduce database load caused by the policy monitor.
+
+#### Changes
+
+- Policy monitor evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` instead of on every state machine iteration ([sovity/edc-ee#1636](https://github.com/sovity/edc-ee/issues/1636))
+
+#### Compatibility
+
+New optional setting `edc.policy.monitor.period`  (ISO-8601 duration, default `PT1H`). A policy violation on a running transfer is now detected within the configured period instead of within about one second.
 
 ---
 
