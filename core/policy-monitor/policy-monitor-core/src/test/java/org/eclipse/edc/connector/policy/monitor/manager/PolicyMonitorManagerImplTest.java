@@ -34,6 +34,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -61,6 +65,8 @@ class PolicyMonitorManagerImplTest {
     private final ContractAgreementService contractAgreementService = mock();
     private final TransferProcessService transferProcessService = mock();
     private final PolicyEngine policyEngine = mock();
+    private final Clock clock = Clock.fixed(Instant.parse("2026-01-01T00:00:00Z"), ZoneOffset.UTC);
+    private final Duration checkPeriod = Duration.ofMinutes(10);
     private PolicyMonitorManager manager;
 
     @BeforeEach
@@ -68,7 +74,8 @@ class PolicyMonitorManagerImplTest {
         manager = PolicyMonitorManagerImpl.Builder.newInstance()
                 .executorInstrumentation(ExecutorInstrumentation.noop())
                 .monitor(mock())
-                .clock(mock())
+                .clock(clock)
+                .checkPeriod(checkPeriod)
                 .contractAgreementService(contractAgreementService)
                 .policyEngine(policyEngine)
                 .transferProcessService(transferProcessService)
@@ -228,6 +235,7 @@ class PolicyMonitorManagerImplTest {
     }
 
     private Criterion[] stateIs(int state) {
-        return aryEq(new Criterion[]{ hasState(state) });
+        var notCheckedWithinPeriod = new Criterion("stateTimestamp", "<", clock.millis() - checkPeriod.toMillis());
+        return aryEq(new Criterion[]{ hasState(state), notCheckedWithinPeriod });
     }
 }
