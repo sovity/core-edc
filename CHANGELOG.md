@@ -6,6 +6,8 @@
 
 #### Changes
 
+- Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([sovity/edc-ee#2064](https://github.com/sovity/edc-ee/issues/2064))
+
 #### Details
 
 #### Compatibility
