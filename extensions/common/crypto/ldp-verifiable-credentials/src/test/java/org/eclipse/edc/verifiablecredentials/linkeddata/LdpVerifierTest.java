@@ -15,7 +15,6 @@
 package org.eclipse.edc.verifiablecredentials.linkeddata;
 
 import com.apicatalog.jsonld.loader.SchemeRouter;
-import com.apicatalog.ld.DocumentError;
 import com.apicatalog.ld.signature.VerificationMethod;
 import com.apicatalog.vc.method.resolver.MethodResolver;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +34,6 @@ import org.eclipse.edc.spi.types.TypeManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,9 +48,8 @@ import static org.eclipse.edc.verifiablecredentials.linkeddata.TestData.NAME_CRE
 import static org.eclipse.edc.verifiablecredentials.linkeddata.TestData.VC_CONTENT_CERTIFICATE_EXAMPLE;
 import static org.eclipse.edc.verifiablecredentials.linkeddata.TestData.createMembershipCredential;
 import static org.eclipse.edc.verifiablecredentials.linkeddata.TestData.createNameCredential;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class LdpVerifierTest {
@@ -60,7 +57,7 @@ class LdpVerifierTest {
     private static final String VP_HOLDER = "did:web:vp-holder";
     private final ObjectMapper mapper = createObjectMapper();
     private final TestDocumentLoader testDocLoader = new TestDocumentLoader("https://org.eclipse.edc/", "", SchemeRouter.defaultInstance());
-    private final MethodResolver mockDidResolver = mock();
+    private final TestMethodResolver methodResolver = new TestMethodResolver();
 
     private final SignatureSuiteRegistry suiteRegistry = mock();
     private final TypeManager typeManager = mock();
@@ -81,18 +78,21 @@ class LdpVerifierTest {
             jsonLd.registerCachedDocument("https://w3id.org/security/suites/jws-2020/v1", Thread.currentThread().getContextClassLoader().getResource("jws2020.json").toURI());
             jsonLd.registerCachedDocument("https://www.w3.org/2018/credentials/v1", Thread.currentThread().getContextClassLoader().getResource("credentials.v1.json").toURI());
             jsonLd.registerCachedDocument("https://www.w3.org/2018/credentials/examples/v1", Thread.currentThread().getContextClassLoader().getResource("examples.v1.json").toURI());
-            ldpVerifier = LdpVerifier.Builder.newInstance()
-                    .signatureSuites(suiteRegistry)
-                    .jsonLd(jsonLd)
-                    .typeManager(typeManager)
-                    .typeContext("test")
-                    .methodResolvers(List.of(mockDidResolver))
-                    .loader(testDocLoader)
-                    .build();
+            ldpVerifier = verifierBuilder().build();
             context = VerifierContext.Builder.newInstance().verifier(ldpVerifier).build();
 
             when(suiteRegistry.getAllSuites()).thenReturn(List.of(jwsSignatureSuite));
             when(typeManager.getMapper("test")).thenReturn(mapper);
+        }
+
+        private LdpVerifier.Builder verifierBuilder() {
+            return LdpVerifier.Builder.newInstance()
+                    .signatureSuites(suiteRegistry)
+                    .jsonLd(jsonLd)
+                    .typeManager(typeManager)
+                    .typeContext("test")
+                    .methodResolvers(List.of(methodResolver))
+                    .loader(testDocLoader);
         }
 
         private Jws2020ProofDraft generateEmbeddedProof(VerificationMethod verificationMethod) {
@@ -118,7 +118,7 @@ class LdpVerifierTest {
                         .generate();
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted("");
 
-                var verificationMethod = createKeyPair(vpKey, VP_HOLDER);
+                var verificationMethod = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(verificationMethod), testDocLoader);
 
                 var res = ldpVerifier.verify(rawVp, context);
@@ -131,7 +131,7 @@ class LdpVerifierTest {
                 var vcKey = new ECKeyGenerator(Curve.P_256)
                         .keyID("vc-sign-key")
                         .generate();
-                var vcVerificationMethod = createKeyPair(vcKey, "did:web:test-issuer");
+                var vcVerificationMethod = methodResolver.publish("did:web:test-issuer#vc-sign-key", vcKey);
                 var rawVc = LdpCreationUtils.signDocument(VC_CONTENT_CERTIFICATE_EXAMPLE, vcKey, generateEmbeddedProof(vcVerificationMethod), testDocLoader);
 
                 // create signed VP, that contains the VC
@@ -140,7 +140,7 @@ class LdpVerifierTest {
                         .generate();
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted(rawVc);
 
-                var vpVerificationMethod = createKeyPair(vpKey, VP_HOLDER);
+                var vpVerificationMethod = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(vpVerificationMethod), testDocLoader);
 
                 var res = ldpVerifier.verify(rawVp, context);
@@ -156,7 +156,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var nameVm = createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER);
+                var nameVm = methodResolver.publish(NAME_CREDENTIAL_ISSUER + "#key-1", nameKey);
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, generateEmbeddedProof(nameVm), testDocLoader);
 
                 // create Membership credential
@@ -164,7 +164,7 @@ class LdpVerifierTest {
                 var membershipKey = new ECKeyGenerator(Curve.P_384)
                         .keyID("dataspace-issuance-key1")
                         .generate();
-                var memberVm = createKeyPair(membershipKey, MEMBERSHIP_CREDENTIAL_ISSUER);
+                var memberVm = methodResolver.publish(MEMBERSHIP_CREDENTIAL_ISSUER + "#key-1", membershipKey);
                 var signedMembershipCred = LdpCreationUtils.signDocument(membershipCredential, membershipKey, generateEmbeddedProof(memberVm), testDocLoader);
 
                 // create signed VP, that contains the VC
@@ -174,7 +174,7 @@ class LdpVerifierTest {
                 var content = "%s, %s".formatted(signedNameCredential, signedMembershipCred);
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted(content);
 
-                var vpVerificationMethod = createKeyPair(vpKey, VP_HOLDER);
+                var vpVerificationMethod = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(vpVerificationMethod), testDocLoader);
                 var res = ldpVerifier.verify(rawVp, context);
                 assertThat(res).isSucceeded();
@@ -187,7 +187,7 @@ class LdpVerifierTest {
                 var membershipKey = new ECKeyGenerator(Curve.P_384)
                         .keyID("dataspace-issuance-key1")
                         .generate();
-                var vm1 = createKeyPair(membershipKey, MEMBERSHIP_CREDENTIAL_ISSUER);
+                var vm1 = methodResolver.publish(MEMBERSHIP_CREDENTIAL_ISSUER + "#key-1", membershipKey);
                 var signedMembershipCred = LdpCreationUtils.signDocument(membershipCredential, membershipKey, generateEmbeddedProof(vm1), testDocLoader);
 
                 // create name credential, but altered after-the-fact
@@ -196,7 +196,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var vm2 = createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER);
+                var vm2 = methodResolver.publish(NAME_CREDENTIAL_ISSUER + "#key-1", nameKey);
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, generateEmbeddedProof(vm2), testDocLoader);
                 // now change the name
                 signedNameCredential = signedNameCredential.replace("Test Person III", "Test Person IV");
@@ -208,7 +208,7 @@ class LdpVerifierTest {
                 var content = "%s, %s".formatted(signedNameCredential, signedMembershipCred);
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted(content);
 
-                var vpVm = createKeyPair(vpKey, VP_HOLDER);
+                var vpVm = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(vpVm), testDocLoader);
                 var res = ldpVerifier.verify(rawVp, context);
                 assertThat(res).isFailed().detail().contains("InvalidSignature");
@@ -222,7 +222,7 @@ class LdpVerifierTest {
                 var membershipKey = new ECKeyGenerator(Curve.P_384)
                         .keyID("dataspace-issuance-key1")
                         .generate();
-                var verificationMethod = createKeyPair(membershipKey, MEMBERSHIP_CREDENTIAL_ISSUER);
+                var verificationMethod = methodResolver.publish(MEMBERSHIP_CREDENTIAL_ISSUER + "#key-1", membershipKey);
                 var signedMembershipCred = LdpCreationUtils.signDocument(membershipCredential, membershipKey, generateEmbeddedProof(verificationMethod), testDocLoader);
                 // tamper with the status -> causes signature failure!
                 signedMembershipCred = signedMembershipCred.replace("active", "super-active");
@@ -234,7 +234,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var nameVm = createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER);
+                var nameVm = methodResolver.publish(NAME_CREDENTIAL_ISSUER + "#key-1", nameKey);
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, generateEmbeddedProof(nameVm), testDocLoader);
                 // tamper with the name -> causes signature failure!
                 signedNameCredential = signedNameCredential.replace("Test Person III", "Test Person IV");
@@ -246,7 +246,7 @@ class LdpVerifierTest {
                 var content = "%s, %s".formatted(signedNameCredential, signedMembershipCred);
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted(content);
 
-                var vpVm = createKeyPair(vpKey, VP_HOLDER);
+                var vpVm = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(vpVm), testDocLoader);
                 var res = ldpVerifier.verify(rawVp, context);
                 assertThat(res).isFailed().detail().contains("InvalidSignature");
@@ -260,7 +260,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var nameVm = createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER);
+                var nameVm = methodResolver.publish(NAME_CREDENTIAL_ISSUER + "#key-1", nameKey);
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, generateEmbeddedProof(nameVm), testDocLoader);
 
                 // create Membership credential
@@ -268,7 +268,7 @@ class LdpVerifierTest {
                 var membershipKey = new ECKeyGenerator(Curve.P_384)
                         .keyID("dataspace-issuance-key1")
                         .generate();
-                var memberVm = createKeyPair(membershipKey, MEMBERSHIP_CREDENTIAL_ISSUER);
+                var memberVm = methodResolver.publish(MEMBERSHIP_CREDENTIAL_ISSUER + "#key-1", membershipKey);
                 var signedMembershipCred = LdpCreationUtils.signDocument(membershipCredential, membershipKey, generateEmbeddedProof(memberVm), testDocLoader);
 
                 // create signed VP, that contains the VC
@@ -279,7 +279,7 @@ class LdpVerifierTest {
                 var input = TestData.VP_CONTENT_TEMPLATE.formatted(content);
 
 
-                var vpVm = createKeyPair(vpKey, VP_HOLDER);
+                var vpVm = methodResolver.publish(VP_HOLDER + "#key-1", vpKey);
                 var rawVp = LdpCreationUtils.signDocument(input, vpKey, generateEmbeddedProof(vpVm), testDocLoader);
                 // tamper with the presentation
                 rawVp = rawVp.replace("\"https://holder.test.com\"", "\"https://another-holder.test.com\"");
@@ -296,7 +296,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var proofOptions = proofBuilder(createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER));
+                var proofOptions = proofBuilder(methodResolver.publish(NAME_CREDENTIAL_ISSUER + "#key-1", nameKey));
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey,
                         proofOptions.proofPurpose(URI.create("https://test.org/notValid")).build(), testDocLoader);
 
@@ -307,6 +307,8 @@ class LdpVerifierTest {
 
         @Nested
         class Credentials {
+            private static final String NAME_ISSUER_KEY = NAME_CREDENTIAL_ISSUER + "#key-1";
+
             @Test
             void verify_success() throws JOSEException {
                 var signingKey = new ECKeyGenerator(Curve.P_256)
@@ -314,12 +316,9 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var verificationMethod = new JsonWebKeyPair(URI.create(TestData.NAME_CREDENTIAL_ISSUER), URI.create("https://w3id.org/security#JsonWebKey2020"), null, signingKey);
+                var proofOptions = proofBuilder(methodResolver.publish(NAME_ISSUER_KEY, signingKey)).build();
 
-                var proofOptions = proofBuilder(verificationMethod)
-                        .build();
-
-                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, verificationMethod, proofOptions, testDocLoader);
+                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, signingKey, proofOptions, testDocLoader);
 
                 assertThat(ldpVerifier.verify(signedNameCredential, context)).isSucceeded();
             }
@@ -335,13 +334,65 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-
-                var proofKey = new JsonWebKeyPair(URI.create(TestData.NAME_CREDENTIAL_ISSUER), URI.create("https://w3id.org/security#JsonWebKey2020"), null, nameKey);
-                var proofDraft = proofBuilder(proofKey).build();
+                var proofDraft = proofBuilder(methodResolver.publish(NAME_ISSUER_KEY, nameKey)).build();
 
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, forgedKey, proofDraft, testDocLoader);
 
                 assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed().detail().contains("InvalidSignature");
+            }
+
+            @Test
+            void verify_embeddedKeyOfOtherParty_shouldFail() throws JOSEException {
+                var issuerKey = new ECKeyGenerator(Curve.P_256).generate();
+                var attackerKey = new ECKeyGenerator(Curve.P_256).generate();
+                methodResolver.publish(NAME_ISSUER_KEY, issuerKey);
+
+                var nameCredential = createNameCredential();
+                var proofDraft = proofBuilder(createKeyPair(attackerKey, NAME_ISSUER_KEY)).build();
+                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, attackerKey, proofDraft, testDocLoader);
+
+                assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed().detail().contains("InvalidSignature");
+            }
+
+            @Test
+            void verify_embeddedKeyNotResolvable_shouldFail() throws JOSEException {
+                var attackerKey = new ECKeyGenerator(Curve.P_256).generate();
+
+                var nameCredential = createNameCredential();
+                var proofDraft = proofBuilder(createKeyPair(attackerKey, NAME_ISSUER_KEY)).build();
+                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, attackerKey, proofDraft, testDocLoader);
+
+                assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed().detail().contains("ProofVerificationMethod");
+            }
+
+            @Test
+            void verify_verificationMethodOfOtherIssuer_shouldFail() throws JOSEException {
+                var attackerKey = new ECKeyGenerator(Curve.P_256).generate();
+
+                var nameCredential = createNameCredential();
+                var proofDraft = proofBuilder(methodResolver.publish("did:web:attacker#key-1", attackerKey)).build();
+                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, attackerKey, proofDraft, testDocLoader);
+                MethodResolver resolver = mock();
+
+                assertThat(verifierBuilder().methodResolvers(List.of(resolver)).build().verify(signedNameCredential, context)).isFailed()
+                        .detail().contains("Issuer and proof.verificationMethod mismatch");
+                verifyNoInteractions(resolver);
+            }
+
+            @Test
+            void verify_resolvedMethodHasOtherId_shouldFail() throws JOSEException {
+                var attackerKey = new ECKeyGenerator(Curve.P_256).generate();
+                var reference = methodResolver.publish(NAME_ISSUER_KEY, attackerKey);
+                // e.g. a document fetched from the method URL that lists a method with another ID
+                methodResolver.register(NAME_ISSUER_KEY, new JsonWebKeyPair(URI.create(NAME_CREDENTIAL_ISSUER + "#key-2"),
+                        URI.create("https://w3id.org/security#JsonWebKey2020"), null, attackerKey.toPublicJWK()));
+
+                var nameCredential = createNameCredential();
+                var proofDraft = proofBuilder(reference).build();
+                var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, attackerKey, proofDraft, testDocLoader);
+
+                assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed()
+                        .detail().contains("Resolved verification method does not match");
             }
 
             @Test
@@ -357,7 +408,7 @@ class LdpVerifierTest {
                         .generate();
 
                 var nameCredential = createNameCredential();
-                var proofOptions = proofBuilder(createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER)).proofPurpose(URI.create("https://test.org/notValid")).build();
+                var proofOptions = proofBuilder(methodResolver.publish(NAME_ISSUER_KEY, nameKey)).proofPurpose(URI.create("https://test.org/notValid")).build();
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, proofOptions, testDocLoader);
 
                 assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed()
@@ -365,47 +416,34 @@ class LdpVerifierTest {
             }
 
             @Test
-            void verify_verificationMethodIsDid() throws JOSEException, DocumentError {
+            void verify_verificationMethodIsDid() throws JOSEException {
                 var nameKey = new ECKeyGenerator(Curve.P_256)
                         .keyID("vc-sign-key1")
                         .generate();
 
-                var identifier = URI.create("did:web:test-issuer");
-                var nameCredential = createNameCredential(identifier.toString());
-                var did = new JsonWebKeyPair(identifier, null, null, null);
-                ArgumentMatcher<URI> uriMatcher = argument -> argument.equals(identifier);
+                var identifier = "did:web:test-issuer";
+                var nameCredential = createNameCredential(identifier);
 
-                when(mockDidResolver.isAccepted(argThat(uriMatcher))).thenReturn(true);
-                when(mockDidResolver.resolve(argThat(uriMatcher), any(), any())).thenReturn(new JsonWebKeyPair(identifier, null, null, nameKey));
-
-                var proofOptions = proofBuilder(createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER)).verificationMethod(did).build();
+                var proofOptions = proofBuilder(methodResolver.publish(identifier, nameKey)).build();
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, proofOptions, testDocLoader);
 
                 assertThat(ldpVerifier.verify(signedNameCredential, context)).isSucceeded();
             }
 
             @Test
-            void verify_verificationMethodIsDid_doesNotMatchIssuer() throws JOSEException, DocumentError {
+            void verify_verificationMethodIsDid_doesNotMatchIssuer() throws JOSEException {
                 var nameKey = new ECKeyGenerator(Curve.P_256)
                         .keyID("vc-sign-key1")
                         .generate();
 
-                var identifier = URI.create("did:web:test-issuer");
                 var nameCredential = createNameCredential("did:web:some-other-issuer");
-                var did = new JsonWebKeyPair(identifier, null, null, null);
-                ArgumentMatcher<URI> uriMatcher = argument -> argument.equals(identifier);
 
-                when(mockDidResolver.isAccepted(argThat(uriMatcher))).thenReturn(true);
-                when(mockDidResolver.resolve(argThat(uriMatcher), any(), any())).thenReturn(new JsonWebKeyPair(identifier, null, null, nameKey));
-
-                var proofOptions = proofBuilder(createKeyPair(nameKey, NAME_CREDENTIAL_ISSUER)).verificationMethod(did).build();
+                var proofOptions = proofBuilder(methodResolver.publish("did:web:test-issuer", nameKey)).build();
                 var signedNameCredential = LdpCreationUtils.signDocument(nameCredential, nameKey, proofOptions, testDocLoader);
 
                 assertThat(ldpVerifier.verify(signedNameCredential, context)).isFailed()
                         .detail().contains("Issuer and proof.verificationMethod mismatch");
             }
-
-
         }
     }
 
