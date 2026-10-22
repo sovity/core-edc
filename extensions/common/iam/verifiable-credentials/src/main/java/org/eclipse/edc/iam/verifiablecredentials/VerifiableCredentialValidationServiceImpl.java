@@ -70,22 +70,33 @@ public class VerifiableCredentialValidationServiceImpl implements VerifiableCred
     @NotNull
     private Result<Void> validateVerifiableCredentials(List<VerifiableCredential> credentials, String presentationHolder, Collection<? extends CredentialValidationRule> additionalRules) {
 
+        // issuer trust and subject binding are checked first: the other rules may fetch remote resources referenced by the credential
+        // (e.g. status lists, schemas), which must not happen for credentials of untrusted issuers
+        var trustRules = new ArrayList<CredentialValidationRule>();
+        trustRules.add(new HasValidIssuer(trustedIssuerRegistry));
+
+        trustRules.add(new HasValidSubjectIds(presentationHolder));
+
         // in addition, verify that all VCs are valid
-        var filters = new ArrayList<>(List.of(
+        var baseRules = new ArrayList<CredentialValidationRule>(List.of(
                 new IsInValidityPeriod(clock),
-                new HasValidSubjectIds(presentationHolder),
                 new IsNotRevoked(revocationServiceRegistry),
-                new HasValidIssuer(trustedIssuerRegistry),
                 new HasValidSubjectSchema(mapper)));
 
-        filters.addAll(additionalRules);
+        baseRules.addAll(additionalRules);
 
+        var trustRule = combine(trustRules);
+        var baseRule = combine(baseRules);
 
         return credentials
                 .stream()
-                .map(c -> filters.stream().reduce(t -> success(), CredentialValidationRule::and).apply(c))
+                .map(c -> trustRule.apply(c).compose(v -> baseRule.apply(c)))
                 .reduce(Result::merge)
                 .orElseGet(Result::success);
+    }
+
+    private CredentialValidationRule combine(List<? extends CredentialValidationRule> rules) {
+        return rules.stream().reduce(t -> success(), CredentialValidationRule::and, CredentialValidationRule::and);
     }
 
 }
