@@ -6,7 +6,7 @@
 
 #### Changes
 
-- Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([sovity/edc-ee#2064](https://github.com/sovity/edc-ee/issues/2064))
+- Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([#117](https://github.com/sovity/core-edc/issues/117))
 
 #### Details
 
@@ -26,7 +26,7 @@ Reduce database load caused by the policy monitor.
 
 #### Changes
 
-- Policy monitor evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` instead of on every state machine iteration ([sovity/edc-ee#1636](https://github.com/sovity/edc-ee/issues/1636))
+- Policy monitor evaluates each `STARTED` entry at most once per `edc.policy.monitor.period` instead of on every state machine iteration ([#118](https://github.com/sovity/core-edc/issues/118))
 
 #### Compatibility
 
