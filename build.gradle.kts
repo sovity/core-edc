@@ -34,6 +34,16 @@ allprojects {
     apply(plugin = edcBuildId)
     apply(plugin = "org.eclipse.edc.autodoc")
 
+    // The edc-build plugin puts mavenLocal() in front of every project's repositories. Jars served from
+    // ~/.m2 carry no signatures, so the dependency verification of a build that includes this one records
+    // them as unsigned checksums, with a result that depends on the developer's ~/.m2. Opt in with
+    // -PuseMavenLocal, as in edc-ee.
+    afterEvaluate {
+        if (!hasProperty("useMavenLocal")) {
+            repositories.removeIf { it.name == "MavenLocal" }
+        }
+    }
+
     configure<org.eclipse.edc.plugins.edcbuild.extensions.BuildExtension> {
         pom {
             scmUrl.set(edcScmUrl)
