@@ -14,6 +14,7 @@
 - Remove unnecessary data flow updates in state machine ([#97](https://github.com/sovity/core-edc/issues/97))
 - Remove GET secrets endpoint from Secrets API ([#98](https://github.com/sovity/core-edc/issues/98))
 - Log Non-2xx responses from HTTP data source to data plane ([#100](https://github.com/sovity/core-edc/issues/100))
+- The build resolves dependencies without `mavenLocal()` unless `-PuseMavenLocal` is set, so the dependency verification of a build that includes core-edc sees the same artifacts on every machine ([#116](https://github.com/sovity/core-edc/issues/116))
 
 #### Compatibility
 
