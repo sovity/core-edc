@@ -7,6 +7,7 @@
 #### Changes
 
 - Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([#117](https://github.com/sovity/core-edc/issues/117))
+- The build resolves dependencies without `mavenLocal()` unless `-PuseMavenLocal` is set, so that the artifacts of a build including local core-edc do not differ between machines for dependency verification ([#116](https://github.com/sovity/core-edc/issues/116))
 
 #### Details
 
