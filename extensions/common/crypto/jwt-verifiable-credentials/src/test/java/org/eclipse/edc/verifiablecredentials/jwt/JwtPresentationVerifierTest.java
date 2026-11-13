@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import static org.eclipse.edc.junit.assertions.AbstractResultAssert.assertThat;
@@ -111,6 +112,67 @@ class JwtPresentationVerifierTest {
                 .build();
         var result = verifier.verify(vpJwt, context);
         assertThat(result).isFailed().detail().contains("Either 'vp' or 'vc' claim must be present in JWT.");
+    }
+
+    @DisplayName("VP-JWT without credentials is rejected if its signature is invalid")
+    @Test
+    void verifyPresentation_noCredential_wrongSigningKey() throws JOSEException {
+        var otherKey = new ECKeyGenerator(Curve.P_256).keyID(VP_HOLDER_ID + "#" + PRESENTER_KEY_ID).generate();
+        var vpJwt = JwtCreationUtils.createJwt(otherKey, VP_HOLDER_ID, "degreePres", MY_OWN_DID, Map.of("vp", asMap(VP_CONTENT_TEMPLATE.formatted(""))));
+
+        var context = VerifierContext.Builder.newInstance()
+                .verifier(verifier)
+                .audience(MY_OWN_DID)
+                .build();
+        var result = verifier.verify(vpJwt, context);
+        assertThat(result).isFailed();
+    }
+
+    @DisplayName("VP-JWT that also declares the VCDM 2.0 context is rejected")
+    @Test
+    void verifyPresentation_vpClaimAndVcdm20Context() {
+        var vpJwt = JwtCreationUtils.createJwt(vpSigningKey, VP_HOLDER_ID, "degreePres", MY_OWN_DID, Map.of(
+                "vp", asMap(VP_CONTENT_TEMPLATE.formatted("")),
+                "@context", List.of("https://www.w3.org/ns/credentials/v2"),
+                "type", "EnvelopedVerifiablePresentation",
+                "id", "data:application/vp+jwt,some-token"));
+
+        var context = VerifierContext.Builder.newInstance()
+                .verifier(verifier)
+                .audience(MY_OWN_DID)
+                .build();
+        var result = verifier.verify(vpJwt, context);
+        assertThat(result).isFailed().detail().contains("VCDM 2.0");
+    }
+
+    @DisplayName("VC-JWT that also declares the VCDM 2.0 context is rejected")
+    @Test
+    void verifyCredential_vcClaimAndVcdm20Context() {
+        var vcJwt = JwtCreationUtils.createJwt(vcSigningKey, CENTRAL_ISSUER_DID, "degreeSub", VP_HOLDER_ID, Map.of(
+                "vc", asMap(VC_CONTENT_DEGREE_EXAMPLE),
+                "@context", "https://www.w3.org/ns/credentials/v2"));
+
+        var context = VerifierContext.Builder.newInstance()
+                .verifier(verifier)
+                .audience(VP_HOLDER_ID)
+                .build();
+        var result = verifier.verify(vcJwt, context);
+        assertThat(result).isFailed().detail().contains("VCDM 2.0");
+    }
+
+    @DisplayName("JWT with both a vc and a vp claim is rejected")
+    @Test
+    void verify_vcAndVpClaim() {
+        var jwt = JwtCreationUtils.createJwt(vpSigningKey, VP_HOLDER_ID, "degreePres", MY_OWN_DID, Map.of(
+                "vp", asMap(VP_CONTENT_TEMPLATE.formatted("")),
+                "vc", asMap(VC_CONTENT_DEGREE_EXAMPLE)));
+
+        var context = VerifierContext.Builder.newInstance()
+                .verifier(verifier)
+                .audience(MY_OWN_DID)
+                .build();
+        var result = verifier.verify(jwt, context);
+        assertThat(result).isFailed().detail().contains("must not contain both");
     }
 
     @DisplayName("VP-JWT does not contain any credential")

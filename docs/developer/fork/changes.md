@@ -1,5 +1,11 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.4.3
+
+Security fix backported from Eclipse EDC `0.18.2`:
+
+- JWT presentations and credentials are only accepted in exactly one format. JWTs that mix the `vc` claim, the `vp` claim or the VCDM 2.0 `@context` are rejected (upstream [#6214](https://github.com/eclipse-edc/Connector/pull/6214)).
+
 ## 0.14.0.4.2
 
 Security fixes backported from Eclipse EDC `0.18.2`:
