@@ -1,5 +1,13 @@
 # Changes Implemented in `0.14.0`'s fork
 
+## 0.14.0.4.2
+
+Security fixes backported from Eclipse EDC `0.18.2`:
+
+- Linked Data Proof credentials are only verified with the key from the issuer's DID document. A key that is embedded in the proof is ignored (upstream [#6147](https://github.com/eclipse-edc/Connector/pull/6147)).
+- JSON-LD contexts are no longer loaded from `file:` or `jar:` URLs. Contexts configured via `edc.jsonld.document.*` still work (upstream [#6109](https://github.com/eclipse-edc/Connector/pull/6109)).
+- The issuer of a credential is checked before its revocation status is fetched (upstream [#6150](https://github.com/eclipse-edc/Connector/pull/6150)).
+
 ## 0.14.0.4.1
 
 - When an HTTP data source returns a non-2xx status code, the `HttpDataSource` now logs it as a warning. Previously the error was swallowed by the EDC or only surfaced in the response, so it could not be seen without reproducing the request.
