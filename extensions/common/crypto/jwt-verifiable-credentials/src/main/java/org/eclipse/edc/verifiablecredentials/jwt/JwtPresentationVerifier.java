@@ -18,6 +18,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jwt.SignedJWT;
 import org.eclipse.edc.iam.identitytrust.spi.verification.CredentialVerifier;
 import org.eclipse.edc.iam.identitytrust.spi.verification.VerifierContext;
+import org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants;
+import org.eclipse.edc.jsonld.spi.JsonLdKeywords;
 import org.eclipse.edc.keys.spi.PublicKeyResolver;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.result.Result;
@@ -113,6 +115,12 @@ public class JwtPresentationVerifier implements CredentialVerifier {
         try {
             // obtain the actual JSON structure
             var signedJwt = SignedJWT.parse(serializedJwt);
+
+            var formatCheck = checkSingleFormat(signedJwt.getJWTClaimsSet().getClaims());
+            if (formatCheck.failed()) {
+                return formatCheck;
+            }
+
             var keyId = signedJwt.getHeader().getKeyID();
             if (isCredential(signedJwt)) {
                 var rules = new ArrayList<>(tokenValidationRulesRegistry.getRules(JWT_VC_TOKEN_CONTEXT));
@@ -128,6 +136,10 @@ public class JwtPresentationVerifier implements CredentialVerifier {
             //we can be sure to have a presentation token
             verificationResult = tokenValidationService.validate(serializedJwt, publicKeyResolver, vpValidationRules(context.getAudience(), keyId));
 
+            if (verificationResult.failed()) {
+                return verificationResult.mapEmpty();
+            }
+
             var vpClaim = (Map<String, Object>) signedJwt.getJWTClaimsSet().getClaim(VP_CLAIM);
 
             if (!vpClaim.containsKey(VERIFIABLE_CREDENTIAL_JSON_KEY)) {
@@ -136,8 +148,8 @@ public class JwtPresentationVerifier implements CredentialVerifier {
             var rawCredentials = extractCredentials(vpClaim.get(VERIFIABLE_CREDENTIAL_JSON_KEY));
 
             if (rawCredentials.isEmpty()) {
-                // todo: this is allowed by the spec, but it is semantic nonsense. Should we return failure or not?
-                return Result.success();
+                // allowed by the spec
+                return verificationResult.mapEmpty();
             }
 
             // every VC is represented as another JWT, so we verify all of them
@@ -164,6 +176,32 @@ public class JwtPresentationVerifier implements CredentialVerifier {
                 })
                 .orElse(rules);
 
+    }
+
+    /**
+     * This verifier only verifies VCDM 1.1 tokens, i.e. the content of the {@code vc} or the {@code vp} claim. A token must therefore
+     * declare exactly one of the two, and must not be a VCDM 2.0 token. Otherwise the token could later be read in a different
+     * format than the one that was verified here.
+     *
+     * @param claims the claims of the JWT
+     * @return a failure if the token declares more than one format, success otherwise
+     */
+    private Result<Void> checkSingleFormat(Map<String, Object> claims) {
+        if (claims.containsKey(VC_CLAIM) && claims.containsKey(VP_CLAIM)) {
+            return Result.failure("JWT must not contain both a '%s' and a '%s' claim.".formatted(VC_CLAIM, VP_CLAIM));
+        }
+        if (isVcDataModel20(claims)) {
+            return Result.failure("JWT must not declare the VCDM 2.0 '%s', VCDM 2.0 tokens are not supported.".formatted(JsonLdKeywords.CONTEXT));
+        }
+        return Result.success();
+    }
+
+    private boolean isVcDataModel20(Map<String, Object> claims) {
+        var context = claims.get(JsonLdKeywords.CONTEXT);
+        if (context instanceof Collection<?> contexts) {
+            return contexts.contains(VcConstants.VC_PREFIX_V2);
+        }
+        return context != null && VcConstants.VC_PREFIX_V2.equals(context.toString());
     }
 
     private boolean isCredential(SignedJWT jwt) throws ParseException {
