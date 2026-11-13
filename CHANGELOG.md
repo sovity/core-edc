@@ -14,6 +14,27 @@
 
 ---
 
+## [0.14.0.4.2] - 2026-11-13
+
+### Overview
+
+Security fixes for the validation of credentials and JSON-LD documents, backported from Eclipse EDC `0.18.2`.
+
+#### Changes
+
+- Security: Linked Data Proof credentials are only verified with the key from the issuer's DID document ([eclipse-edc/Connector#6147](https://github.com/eclipse-edc/Connector/pull/6147))
+- Security: JSON-LD contexts are no longer loaded from `file:` or `jar:` URLs ([eclipse-edc/Connector#6109](https://github.com/eclipse-edc/Connector/pull/6109))
+- Security: The issuer of a credential is checked before its revocation status is fetched ([eclipse-edc/Connector#6150](https://github.com/eclipse-edc/Connector/pull/6150))
+
+#### Compatibility
+
+The following is now rejected:
+
+- Linked Data Proof credentials that bring their own key, or whose key cannot be found in the issuer's DID document.
+- JSON-LD documents that reference a context via a `file:` or `jar:` URL. Contexts configured via `edc.jsonld.document.*` still work.
+
+---
+
 ## [0.14.0.4.1] - 2026-09-02
 
 ### Overview
