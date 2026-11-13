@@ -14,6 +14,25 @@
 
 ---
 
+## [0.14.0.4.3] - 2026-11-13
+
+### Overview
+
+Security fix for the validation of JWT presentations, backported from Eclipse EDC `0.18.2`.
+
+#### Changes
+
+- Security: JWT presentations and credentials are only accepted in exactly one format ([eclipse-edc/Connector#6214](https://github.com/eclipse-edc/Connector/pull/6214))
+
+#### Compatibility
+
+The following is now rejected:
+
+- JWTs that contain both a `vc` and a `vp` claim, or that combine one of them with the VCDM 2.0 `@context`.
+- JWT presentations without credentials whose signature is invalid.
+
+---
+
 ## [0.14.0.4.2] - 2026-11-13
 
 ### Overview
