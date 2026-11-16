@@ -28,7 +28,7 @@ jobs:
     secrets: inherit
 
   Checkstyle:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
 
   Javadoc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew javadoc
 
   Unit-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew test
 
   Postgresql-Integration-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -60,7 +60,7 @@ jobs:
         run: ./gradlew test -DincludeTags="PostgresqlIntegrationTest"
 
   End-To-End-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -68,7 +68,7 @@ jobs:
         run: ./gradlew test -DincludeTags="EndToEndTest"
 
   Component-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -76,7 +76,7 @@ jobs:
         run: ./gradlew test -DincludeTags="ComponentTest"
 
   API-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -84,7 +84,7 @@ jobs:
         run: ./gradlew test -DincludeTags="ApiTest"
 
   Tck-Tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: sovity/core-edc-github/.github/actions/setup-build@5ad1a49278025ebb93393ed891cbcebf2c481ecc #0.14.0_2025-08-21
@@ -105,7 +105,7 @@ jobs:
       - Unit-Tests
 
     name: Publish artefacts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
       contents: read
@@ -136,7 +136,7 @@ jobs:
   Promote-Artifacts:
     needs:
       - Publish-Artifacts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: "Promote artifacts"
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
