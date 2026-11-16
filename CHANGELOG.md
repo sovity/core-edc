@@ -6,9 +6,6 @@
 
 #### Changes
 
-- Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([#117](https://github.com/sovity/core-edc/issues/117))
-- The build resolves dependencies without `mavenLocal()` unless `-PuseMavenLocal` is set, so that the artifacts of a build including local core-edc do not differ between machines for dependency verification ([#116](https://github.com/sovity/core-edc/issues/116))
-
 #### Details
 
 #### Compatibility
@@ -16,6 +13,24 @@
 Should be compatible without any modification with a `0.14.0` version.
 
 #### Resolution plan
+
+---
+
+## [0.14.0.8] - 2026-11-16
+
+### Overview
+
+Security fixes for the validation of credentials, presentations and JSON-LD documents, backported from Eclipse EDC `0.18.2`.
+
+#### Changes
+
+- Security: stricter validation of credentials, presentations and JSON-LD documents ([#123](https://github.com/sovity/core-edc/issues/123))
+- Remove the empty `@Path("/")` from the version API endpoint, so Jersey no longer warns about an empty path annotation at startup ([#117](https://github.com/sovity/core-edc/issues/117))
+- The build resolves dependencies without `mavenLocal()` unless `-PuseMavenLocal` is set, so that the artifacts of a build including local core-edc do not differ between machines for dependency verification ([#116](https://github.com/sovity/core-edc/issues/116))
+
+#### Compatibility
+
+Credentials, presentations and JSON-LD documents that fail the stricter validation are now rejected, see [#123](https://github.com/sovity/core-edc/issues/123).
 
 ---
 
