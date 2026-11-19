@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Bayerische Motoren Werke Aktiengesellschaft (BMW AG) - initial API and implementation
+ *       Think-it GmbH - nested credential verification
  *
  */
 
@@ -28,6 +29,7 @@ import com.apicatalog.ld.signature.VerificationMethod;
 import com.apicatalog.ld.signature.key.VerificationKey;
 import com.apicatalog.vc.Presentation;
 import com.apicatalog.vc.VcVocab;
+import com.apicatalog.vc.integrity.DataIntegrityVocab;
 import com.apicatalog.vc.method.resolver.HttpMethodResolver;
 import com.apicatalog.vc.method.resolver.MethodResolver;
 import com.apicatalog.vc.proof.EmbeddedProof;
@@ -46,6 +48,7 @@ import org.eclipse.edc.util.uri.UriUtils;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,20 +56,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.eclipse.edc.security.signature.jws2020.Jws2020SignatureSuite.EXPIRATION_TERM;
 import static org.eclipse.edc.spi.constants.CoreConstants.JSON_LD;
 import static org.eclipse.edc.spi.result.Result.failure;
 import static org.eclipse.edc.spi.result.Result.success;
 
 public class LdpVerifier implements CredentialVerifier {
+    private static final URI ASSERTION_METHOD = URI.create("https://w3id.org/security#assertionMethod");
+    private static final URI AUTHENTICATION = URI.create("https://w3id.org/security#authentication");
 
     private JsonLd jsonLd;
     private TypeManager typeManager;
     private String typeContext = JSON_LD;
     private SignatureSuiteRegistry suiteRegistry;
-    private Map<String, Object> params;
     private Collection<MethodResolver> methodResolvers = new ArrayList<>(List.of(new HttpMethodResolver()));
     private DocumentLoader loader;
-    private URI base;
+    private Clock clock = Clock.systemUTC();
+    private boolean requireBinding;
 
     private LdpVerifier() {
     }
@@ -116,22 +122,16 @@ public class LdpVerifier implements CredentialVerifier {
         });
     }
 
-    public URI getBase() {
-        return base;
-    }
-
     private VerificationMethod resolveMethod(URI id, Proof proof, DocumentLoader loader) throws DocumentError {
 
         if (id == null) {
             throw new DocumentError(ErrorType.Missing, "ProofVerificationId");
         }
 
-        // find the method id resolver
-        final Optional<MethodResolver> resolver = methodResolvers.stream()
+        var resolver = methodResolvers.stream()
                 .filter(r -> r.isAccepted(id))
                 .findFirst();
 
-        // try to resolve the method
         if (resolver.isPresent()) {
             return resolver.get().resolve(id, loader, proof);
         }
@@ -140,20 +140,20 @@ public class LdpVerifier implements CredentialVerifier {
     }
 
     /**
-     * Validates the credential issuer by comparing it with the provided verification method.
+     * Validates the credential issuer by comparing it with the ID of the verification method that the proof references.
      *
-     * @param expanded           The expanded JSON-LD object representing the credential.
-     * @param verificationMethod The verification method to compare with the issuer.
+     * @param expanded             The expanded JSON-LD object representing the credential.
+     * @param verificationMethodId The ID of the verification method to compare with the issuer.
      * @return A {@link Result} indicating success or failure.
      */
-    private Result<Void> validateCredentialIssuer(JsonObject expanded, VerificationMethod verificationMethod) {
+    private Result<Void> validateCredentialIssuer(JsonObject expanded, URI verificationMethodId) {
         try {
             var issuerUri = LdNode.of(expanded).node(VcVocab.ISSUER);
             if (!issuerUri.exists()) {
                 return failure("Document must contain an 'issuer' property.");
             }
-            if (!UriUtils.equalsIgnoreFragment(issuerUri.id(), verificationMethod.id())) {
-                return failure("Issuer and proof.verificationMethod mismatch: %s <> %s".formatted(issuerUri, verificationMethod.id()));
+            if (!UriUtils.equalsIgnoreFragment(issuerUri.id(), verificationMethodId)) {
+                return failure("Issuer and proof.verificationMethod mismatch: %s <> %s".formatted(issuerUri, verificationMethodId));
             }
         } catch (DocumentError e) {
             return failure("Error getting issuer: %s".formatted(e.getMessage()));
@@ -161,42 +161,94 @@ public class LdpVerifier implements CredentialVerifier {
         return success();
     }
 
+    /**
+     * Validates the presentation holder by comparing it with the ID of the verification method that the proof references.
+     *
+     * @param expanded             The expanded JSON-LD object representing the presentation.
+     * @param verificationMethodId The ID of the verification method to compare with the holder.
+     * @return A {@link Result} indicating success or failure.
+     */
+    private Result<Void> validatePresentationHolder(JsonObject expanded, URI verificationMethodId) {
+        try {
+            var holderUri = LdNode.of(expanded).node(VcVocab.HOLDER);
+            if (!holderUri.exists()) {
+                return failure("Presentation must contain a 'holder' property.");
+            }
+            if (!UriUtils.equalsIgnoreFragment(holderUri.id(), verificationMethodId)) {
+                return failure("Holder and proof.verificationMethod mismatch: %s <> %s".formatted(holderUri.id(), verificationMethodId));
+            }
+        } catch (DocumentError e) {
+            return failure("Error getting holder: %s".formatted(e.getMessage()));
+        }
+        return success();
+    }
+
+    /**
+     * Validates the proof purpose: credential proofs must have the purpose {@code assertionMethod}, presentation proofs
+     * {@code authentication}. Presentation proofs with the purpose {@code assertionMethod} are accepted as well, because
+     * holders create them that way so far.
+     *
+     * @param expanded      The expanded JSON-LD object representing the credential or presentation.
+     * @param expandedProof The expanded proof of that document.
+     * @return A {@link Result} indicating success or failure.
+     */
+    private Result<Void> validateProofPurpose(JsonObject expanded, JsonObject expandedProof) {
+        var allowedPurposes = isPresentation(expanded) ? List.of(AUTHENTICATION, ASSERTION_METHOD) : List.of(ASSERTION_METHOD);
+        try {
+            var purpose = LdNode.of(expandedProof).node(DataIntegrityVocab.PURPOSE);
+            if (!purpose.exists()) {
+                return failure("Proof must contain a 'proofPurpose' property.");
+            }
+            if (!allowedPurposes.contains(purpose.id())) {
+                return failure("Invalid proof purpose '%s', expected one of %s.".formatted(purpose.id(), allowedPurposes));
+            }
+        } catch (DocumentError e) {
+            return failure("Error getting proof purpose: %s".formatted(e.getMessage()));
+        }
+        return success();
+    }
+
     private Result<Void> verifyExpanded(JsonObject expanded, VerifierContext context, JsonStructure ldContext) throws VerificationError, DocumentError {
 
         if (isCredential(expanded)) {
-            // data integrity validation
             return verifyProofs(expanded, ldContext);
+        }
 
-        } else if (isPresentation(expanded)) {
-            // verify presentation proofs
-            var presentationValidation = verifyProofs(expanded, ldContext);
-            if (!presentationValidation.succeeded()) {
-                return presentationValidation.mapFailure();
-            }
+        if (context.isCredentialExpected()) {
+            return failure("Expected a credential, but the document is not of type %s".formatted(VcVocab.CREDENTIAL_TYPE.uri()));
+        }
 
-            // verify embedded credentials
-
-            // verifiableCredentials
-            var credentials = new ArrayList<JsonObject>();
-            for (var credential : Presentation.getCredentials(expanded)) {
-
-                if (JsonUtils.isNotObject(credential)) {
-                    return failure("Presentation contained an invalid 'verifiableCredential' object!");
-                }
-                credentials.add(credential.asJsonObject());
-            }
-
-            return credentials.stream()
-                    .map(expCred -> context.verify(expCred.toString()))
-                    .reduce(Result::merge)
-                    .orElse(success()); // "no credentials" is still valid according to https://www.w3.org/TR/vc-data-model/#presentations-0
-
-        } else {
+        if (!isPresentation(expanded)) {
             return failure("%s: %s".formatted(ErrorType.Unknown, Term.TYPE));
         }
+
+        // verify presentation proofs
+        var presentationValidation = verifyProofs(expanded, ldContext)
+                .compose(v -> verifyBinding(expanded, context.getAudience()));
+        if (!presentationValidation.succeeded()) {
+            return presentationValidation.mapFailure();
+        }
+
+        // verify embedded credentials
+
+        // verifiableCredentials
+        var credentials = new ArrayList<JsonObject>();
+        for (var credential : Presentation.getCredentials(expanded)) {
+
+            if (JsonUtils.isNotObject(credential)) {
+                return failure("Presentation contained an invalid 'verifiableCredential' object!");
+            }
+            credentials.add(credential.asJsonObject());
+        }
+
+        var credentialContext = context.toBuilder().credentialExpected(true).build();
+        return credentials.stream()
+                .map(expCred -> credentialContext.verify(expCred.toString()))
+                .reduce(Result::merge)
+                .orElse(success()); // "no credentials" is still valid according to https://www.w3.org/TR/vc-data-model/#presentations-0
     }
 
-    private Result<Void> verifyProofs(JsonObject expanded, JsonStructure context) throws VerificationError, DocumentError {
+    private Result<Void> verifyProofs(JsonObject expanded, JsonStructure context) throws DocumentError {
 
         // get proofs - throws an exception if there is no proof, never null nor an
         // empty collection
@@ -219,6 +271,11 @@ public class LdpVerifier implements CredentialVerifier {
 
             if (proofTypes == null || proofTypes.isEmpty()) {
                 return failure("%s: %s, %s".formatted(ErrorType.Missing, VcVocab.PROOF, Term.TYPE));
+            }
+
+            var purposeValidation = validateProofPurpose(expanded, expandedProof.asJsonObject());
+            if (purposeValidation.failed()) {
+                return purposeValidation;
             }
 
             var signatureSuite = findSuite(proofTypes, expandedProof);
@@ -245,18 +302,27 @@ public class LdpVerifier implements CredentialVerifier {
                     return failure("Proof did not contain a valid signature.");
                 }
 
-                var verificationMethod = getMethod(proof, loader);
-                if (verificationMethod == null) {
+                var verificationMethodId = Optional.ofNullable(proof.method()).map(VerificationMethod::id).orElse(null);
+                if (verificationMethodId == null) {
                     return failure("Proof did not contain a VerificationMethod.");
+                }
+
+                if (isCredential(expanded)) {
+                    var failure = validateCredentialIssuer(expanded, verificationMethodId);
+                    if (failure.failed()) return failure;
+                } else if (isPresentation(expanded)) {
+                    var failure = validatePresentationHolder(expanded, verificationMethodId);
+                    if (failure.failed()) return failure;
+                }
+
+                // key material embedded in the proof is never used, the method is always resolved by its ID
+                var verificationMethod = resolveMethod(verificationMethodId, proof, loader);
+                if (verificationMethod == null || verificationMethod.id() == null || !isSameMethod(verificationMethodId, verificationMethod.id())) {
+                    return failure("Resolved verification method does not match proof.verificationMethod '%s'".formatted(verificationMethodId));
                 }
 
                 if (!(verificationMethod instanceof VerificationKey)) {
                     return failure("Proof did not contain a valid VerificationMethod, expected VerificationKey, got: %s".formatted(verificationMethod.getClass()));
-                }
-
-                if (isCredential(expanded)) {
-                    var failure = validateCredentialIssuer(expanded, verificationMethod);
-                    if (failure.failed()) return failure;
                 }
 
                 proof.verify(context, data, (VerificationKey) verificationMethod);
@@ -269,20 +335,45 @@ public class LdpVerifier implements CredentialVerifier {
         return success();
     }
 
-    private VerificationMethod getMethod(Proof proof, DocumentLoader loader) throws DocumentError {
-        final VerificationMethod method = proof.method();
+    /**
+     * Checks the {@code domain} and {@code expires} options of the presentation proofs. They are checked whenever they are present,
+     * and they must be present if {@link Builder#requireBinding(boolean)} is set.
+     */
+    private Result<Void> verifyBinding(JsonObject expanded, String audience) {
+        try {
+            for (var expandedProof : EmbeddedProof.assertProof(expanded)) {
+                var proof = LdNode.of(expandedProof.asJsonObject());
 
-        if (method == null) {
-            throw new DocumentError(ErrorType.Missing, "ProofVerificationMethod");
+                var domain = proof.scalar(DataIntegrityVocab.DOMAIN);
+                if (domain.exists()) {
+                    if (audience != null && !audience.equals(domain.string())) {
+                        return failure("Presentation proof domain '%s' does not match the expected audience '%s'.".formatted(domain.string(), audience));
+                    }
+                } else if (requireBinding) {
+                    return failure("Presentation proof has no 'domain'.");
+                }
+
+                var expires = proof.scalar(EXPIRATION_TERM);
+                if (expires.exists()) {
+                    if (clock.instant().isAfter(expires.xsdDateTime())) {
+                        return failure("Presentation proof has expired.");
+                    }
+                } else if (requireBinding) {
+                    return failure("Presentation proof has no 'expires'.");
+                }
+            }
+        } catch (DocumentError e) {
+            return failure("Invalid presentation proof: %s".formatted(e.getMessage()));
         }
+        return success();
+    }
 
-        final URI methodType = method.type();
-
-        if (methodType != null && method instanceof VerificationKey && (((VerificationKey) method).publicKey() != null)) {
-            return method;
-        }
-
-        return resolveMethod(method.id(), proof, loader);
+    /**
+     * Checks that a resolved verification method is the one that was requested. If the requested ID has no fragment, e.g. a DID
+     * with a single verification method, the resolved ID may add one.
+     */
+    private boolean isSameMethod(URI requestedId, URI resolvedId) {
+        return requestedId.getFragment() == null ? UriUtils.equalsIgnoreFragment(requestedId, resolvedId) : requestedId.equals(resolvedId);
     }
 
     private SignatureSuite findSuite(Collection<String> proofTypes, JsonObject expandedProof) {
@@ -315,16 +406,6 @@ public class LdpVerifier implements CredentialVerifier {
             return this;
         }
 
-        public Builder params(Map<String, Object> params) {
-            this.verifier.params = params;
-            return this;
-        }
-
-        public Builder param(String key, Object object) {
-            this.verifier.params.put(key, object);
-            return this;
-        }
-
         public Builder methodResolvers(Collection<MethodResolver> resolvers) {
             this.verifier.methodResolvers = resolvers;
             return this;
@@ -350,18 +431,21 @@ public class LdpVerifier implements CredentialVerifier {
             return this;
         }
 
-        /**
-         * If set, this overrides the input document's IRI.
-         *
-         * @return the processor instance
-         */
-        public Builder base(URI base) {
-            this.verifier.base = base;
+        public Builder loader(DocumentLoader loader) {
+            this.verifier.loader = loader;
             return this;
         }
 
-        public Builder loader(DocumentLoader loader) {
-            this.verifier.loader = loader;
+        public Builder clock(Clock clock) {
+            this.verifier.clock = clock;
+            return this;
+        }
+
+        /**
+         * If set, the proofs of a presentation must have a {@code domain} and an {@code expires} option. Otherwise, these are only checked when present.
+         */
+        public Builder requireBinding(boolean requireBinding) {
+            this.verifier.requireBinding = requireBinding;
             return this;
         }
 

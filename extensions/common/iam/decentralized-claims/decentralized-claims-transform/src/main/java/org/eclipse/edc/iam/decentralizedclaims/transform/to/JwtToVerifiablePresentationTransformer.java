@@ -10,6 +10,7 @@
  *  Contributors:
  *       Bayerische Motoren Werke Aktiengesellschaft (BMW AG) - initial API and implementation
  *       Cofinity-X - updates for VCDM 2.0
+ *       Think-it GmbH - presentation format detection
  *
  */
 
@@ -19,6 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.json.JsonObject;
+import org.eclipse.edc.iam.decentralizedclaims.spi.verification.JwtPresentationFormat;
+import org.eclipse.edc.iam.verifiablecredentials.spi.model.CredentialFormat;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.DataModelVersion;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.VerifiableCredential;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.VerifiablePresentation;
@@ -32,6 +35,8 @@ import org.jetbrains.annotations.Nullable;
 import java.text.ParseException;
 import java.util.Map;
 
+import static org.eclipse.edc.iam.verifiablecredentials.spi.VcConstants.VERIFIABLE_PRESENTATION_TYPE;
+
 @SuppressWarnings("unchecked")
 public class JwtToVerifiablePresentationTransformer extends AbstractJwtTransformer<VerifiablePresentation> {
 
@@ -40,6 +45,7 @@ public class JwtToVerifiablePresentationTransformer extends AbstractJwtTransform
     private static final String VP_CLAIM = "vp";
     private static final String DATA_URL_VP_JWT = "data:application/vp+jwt,";
     private static final String DATA_URL_VC_JWT = "data:application/vc+jwt,";
+    private static final String ENVELOPED_PRESENTATION_TYPE = "EnvelopedVerifiablePresentation";
 
     private final Monitor monitor;
     private final TypeManager typeManager;
@@ -60,8 +66,12 @@ public class JwtToVerifiablePresentationTransformer extends AbstractJwtTransform
             var builder = VerifiablePresentation.Builder.newInstance();
             var signedJwt = SignedJWT.parse(jsonWebToken);
             var claimsSet = signedJwt.getJWTClaimsSet();
-            if (isVcDataModel2_0(claimsSet)) {
-                return parseEnvelopedPresentation(claimsSet, builder, context);
+            var format = JwtPresentationFormat.of(claimsSet.getClaims());
+            if (format == null) {
+                context.reportProblem("JWT is not a presentation of either VCDM 1.1 (with a '%s' claim) or VCDM 2.0 (with the VCDM 2.0 '@context'), but has to be exactly one of them."
+                        .formatted(VP_CLAIM));
+            } else if (format == CredentialFormat.VC2_0_JOSE) {
+                return parseVcdm20Presentation(claimsSet, builder, context);
             } else {
 
                 var vpObject = claimsSet.getClaim(VP_CLAIM);
@@ -92,34 +102,45 @@ public class JwtToVerifiablePresentationTransformer extends AbstractJwtTransform
         return null;
     }
 
-    private @Nullable VerifiablePresentation parseEnvelopedPresentation(JWTClaimsSet claimsSet, VerifiablePresentation.Builder builder, @NotNull TransformerContext context) throws ParseException {
-        var typeClaim = claimsSet.getClaim(TYPE_PROPERTY);
-        if (typeClaim.equals("EnvelopedVerifiablePresentation")) {
+    /**
+     * Parses a VCDM 2.0 presentation, which is either the VP JWT itself (type {@code VerifiablePresentation}) or a JWT of type
+     * {@code EnvelopedVerifiablePresentation} that carries the VP JWT in its {@code id} claim.
+     */
+    private @Nullable VerifiablePresentation parseVcdm20Presentation(JWTClaimsSet claimsSet, VerifiablePresentation.Builder builder, @NotNull TransformerContext context) throws ParseException {
+        var types = listOrReturn(claimsSet.getClaim(TYPE_PROPERTY), Object::toString);
+        if (types.contains(ENVELOPED_PRESENTATION_TYPE)) {
             // the "id" claim must be present, and start with "data:application/vp+jwt"
-            var idClaim = claimsSet.getClaim(VERIFIABLE_CREDENTIAL_PROPERTY_ID).toString();
+            var idClaim = claimsSet.getStringClaim(VERIFIABLE_CREDENTIAL_PROPERTY_ID);
             if (idClaim != null && idClaim.startsWith(DATA_URL_VP_JWT)) {
-
-
-                // parse encapsulated VP
                 var vpToken = idClaim.substring(DATA_URL_VP_JWT.length());
-                // credentialObject should contain EnvelopedVerifiableCredentials
                 var vpClaims = SignedJWT.parse(vpToken).getJWTClaimsSet();
-                builder.holder(vpClaims.getIssuer());
-                builder.id(vpClaims.getJWTID());
-                // verifiable credentials as EnvelopedVerifiableCredentials
-                listOrReturn(vpClaims.getClaim(VERIFIABLE_CREDENTIAL_PROPERTY), o -> extractEnvelopedCredential(o, context)).forEach(builder::credential);
-                // types
-                listOrReturn(vpClaims.getClaim(TYPE_PROPERTY), Object::toString).forEach(builder::type);
-
-                return builder.dataModelVersion(DataModelVersion.V_2_0).build();
+                var vpTypes = listOrReturn(vpClaims.getClaim(TYPE_PROPERTY), Object::toString);
+                if (JwtPresentationFormat.of(vpClaims.getClaims()) != CredentialFormat.VC2_0_JOSE || !vpTypes.contains(VERIFIABLE_PRESENTATION_TYPE)) {
+                    context.reportProblem("The VP token of an EnvelopedVerifiablePresentation must be a VCDM 2.0 presentation of type '%s'".formatted(VERIFIABLE_PRESENTATION_TYPE));
+                    return null;
+                }
+                return parseVpClaims(vpClaims, builder, context);
             } else {
                 context.reportProblem("EnvelopedVerifiablePresentation objects must have their VP token encoded in the 'id' property: \"id\":\"data:application/vp+jwt,<VPTOKEN>\"");
                 return null;
             }
-        } else {
-            context.reportProblem("Presentations secured with JOSE MUST be of type 'EnvelopedVerifiablePresentation', but was %s".formatted(typeClaim));
-            return null;
         }
+        if (types.contains(VERIFIABLE_PRESENTATION_TYPE)) {
+            return parseVpClaims(claimsSet, builder, context);
+        }
+        context.reportProblem("Presentations secured with JOSE MUST be of type '%s' or '%s', but was %s".formatted(VERIFIABLE_PRESENTATION_TYPE, ENVELOPED_PRESENTATION_TYPE, types));
+        return null;
+    }
+
+    private VerifiablePresentation parseVpClaims(JWTClaimsSet vpClaims, VerifiablePresentation.Builder builder, @NotNull TransformerContext context) throws ParseException {
+        builder.holder(vpClaims.getStringClaim("holder"));
+        builder.id(vpClaims.getJWTID());
+        // verifiable credentials as EnvelopedVerifiableCredentials
+        listOrReturn(vpClaims.getClaim(VERIFIABLE_CREDENTIAL_PROPERTY), o -> extractEnvelopedCredential(o, context)).forEach(builder::credential);
+        // types
+        listOrReturn(vpClaims.getClaim(TYPE_PROPERTY), Object::toString).forEach(builder::type);
+
+        return builder.dataModelVersion(DataModelVersion.V_2_0).build();
     }
 
     private VerifiableCredential extractEnvelopedCredential(Object credentialObject, @NotNull TransformerContext context) {
