@@ -133,7 +133,7 @@ public class JwtToVerifiablePresentationTransformer extends AbstractJwtTransform
     }
 
     private VerifiablePresentation parseVpClaims(JWTClaimsSet vpClaims, VerifiablePresentation.Builder builder, @NotNull TransformerContext context) throws ParseException {
-        builder.holder(vpClaims.getIssuer());
+        builder.holder(vpClaims.getStringClaim("holder"));
         builder.id(vpClaims.getJWTID());
         // verifiable credentials as EnvelopedVerifiableCredentials
         listOrReturn(vpClaims.getClaim(VERIFIABLE_CREDENTIAL_PROPERTY), o -> extractEnvelopedCredential(o, context)).forEach(builder::credential);
