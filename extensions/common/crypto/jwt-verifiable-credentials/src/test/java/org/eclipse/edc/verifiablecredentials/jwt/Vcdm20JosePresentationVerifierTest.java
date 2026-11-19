@@ -50,6 +50,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatchers;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Base64;
@@ -282,7 +283,7 @@ class Vcdm20JosePresentationVerifierTest {
      */
     @Nested
     class PresentationRules {
-        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, new TokenValidationServiceImpl(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
+        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, lenientTokenValidationService(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
 
         @BeforeEach
         void setUp() {
@@ -436,7 +437,7 @@ class Vcdm20JosePresentationVerifierTest {
         }
 
         private Vcdm20JosePresentationVerifier verifier(boolean requireAudience) {
-            return new Vcdm20JosePresentationVerifier(monitor, new TokenValidationServiceImpl(), rulesRegistry, publicKeyResolver, requireAudience);
+            return new Vcdm20JosePresentationVerifier(monitor, lenientTokenValidationService(), rulesRegistry, publicKeyResolver, requireAudience);
         }
 
         private String vpToken(String additionalClaims) {
@@ -454,7 +455,7 @@ class Vcdm20JosePresentationVerifierTest {
         private static final String ISSUER_KEY_ID = ISSUER_DID + "#key-1";
         private static final String ATTACKER_KEY_ID = "did:web:attacker.example.com#key-1";
         private static final String LOOKALIKE_KEY_ID = "did:web:issuer-example.com#key-1";
-        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, new TokenValidationServiceImpl(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
+        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, lenientTokenValidationService(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
         private final VerifierContext context = VerifierContext.Builder.newInstance().verifier(verifier).build();
         private ECKey issuerKey;
         private ECKey attackerKey;
@@ -599,7 +600,7 @@ class Vcdm20JosePresentationVerifierTest {
     class HolderBinding {
         private static final String ATTACKER_KEY_ID = "did:web:attacker.example.com#key-1";
         private static final String LOOKALIKE_KEY_ID = "did:web:holder-example.com#key-1";
-        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, new TokenValidationServiceImpl(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
+        private final Vcdm20JosePresentationVerifier verifier = new Vcdm20JosePresentationVerifier(monitor, lenientTokenValidationService(), new TokenValidationRulesRegistryImpl(), publicKeyResolver, false);
         private final VerifierContext context = VerifierContext.Builder.newInstance().verifier(verifier).build();
 
         @BeforeEach
@@ -715,5 +716,35 @@ class Vcdm20JosePresentationVerifierTest {
         var payload = Base64.getUrlEncoder().withoutPadding()
                 .encodeToString(payloadJson.getBytes(StandardCharsets.UTF_8));
         return header + "." + payload + ".AAAA";
+    }
+
+    /**
+     * Returns the actual {@link TokenValidationServiceImpl}, except that the signature check is skipped for keys that resolve
+     * to null. This lets the tests use unsigned JWTs for everything that is checked by token validation rules.
+     */
+    private static TokenValidationService lenientTokenValidationService() {
+        var delegate = new TokenValidationServiceImpl();
+        return (tokenRepresentation, publicKeyResolver, rules) -> {
+            try {
+                var jwt = SignedJWT.parse(tokenRepresentation.getToken());
+                var key = publicKeyResolver.resolveKey(jwt.getHeader().getKeyID());
+                if (key.succeeded() && key.getContent() == null) {
+                    var builder = ClaimToken.Builder.newInstance();
+                    jwt.getJWTClaimsSet().getClaims().entrySet().stream()
+                            .filter(entry -> entry.getValue() != null)
+                            .forEach(entry -> builder.claim(entry.getKey(), entry.getValue()));
+                    var claimToken = builder.build();
+                    var errors = rules.stream()
+                            .map(rule -> rule.checkRule(claimToken, tokenRepresentation.getAdditional()))
+                            .filter(Result::failed)
+                            .flatMap(result -> result.getFailureMessages().stream())
+                            .toList();
+                    return errors.isEmpty() ? Result.success(claimToken) : Result.failure(errors);
+                }
+            } catch (ParseException e) {
+                return Result.failure("Failed to decode token");
+            }
+            return delegate.validate(tokenRepresentation, publicKeyResolver, rules);
+        };
     }
 }
