@@ -6,9 +6,13 @@
 
 #### Changes
 
+- Security: stricter validation of credentials, presentations and JSON-LD documents, backported from Eclipse EDC `0.18.2` ([#123](https://github.com/sovity/core-edc/issues/123))
+- VCDM 2.0 presentations secured as a plain `vp+jwt` are accepted in addition to enveloped presentations ([#123](https://github.com/sovity/core-edc/issues/123))
+- New setting `edc.iam.presentation.binding.required` (default `false`): rejects presentations that are not bound to an audience and an expiry ([#123](https://github.com/sovity/core-edc/issues/123))
+
 #### Compatibility
 
-Should be compatible without any modification with a `0.17.0` version.
+Credentials, presentations and JSON-LD documents that fail the stricter validation are now rejected, see [#123](https://github.com/sovity/core-edc/issues/123). A VCDM 2.0 presentation must have a `holder` property and be signed with a key of that holder.
 
 ---
 
