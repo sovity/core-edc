@@ -6,6 +6,20 @@
 
 #### Changes
 
+#### Compatibility
+
+Should be compatible without any modification with a `0.17.0` version.
+
+---
+
+## [0.17.0.1] - 2026-11-20
+
+### Overview
+
+Port Core-EDC to Version 0.17.0 of Eclipse EDC, including the security fixes for the validation of credentials, presentations and JSON-LD documents from Eclipse EDC `0.18.2`.
+
+#### Changes
+
 - Replace UUID Generation to use time-based UUIDs ([#92](https://github.com/sovity/core-edc/issues/92))
 - Improve performance of catalog requests ([#93](https://github.com/sovity/core-edc/issues/93))
 - Add configurable OAuth2 token caching ([#94](https://github.com/sovity/core-edc/issues/94))
