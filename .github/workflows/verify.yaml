@@ -112,6 +112,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: sovity/core-edc-github/.github/actions/setup-build@255e962d85b9e0b972ced7cf9750e7333f172127 #pinned/0.17.0_2026-08-26 #main@2026-08-25
 
       - name: "Gradle: Publish to Production"
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
